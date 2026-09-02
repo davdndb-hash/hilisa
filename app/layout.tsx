@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import Logo from "@/components/Logo";
+import Nav from "@/components/Nav";
+import { ZWEIG_LISTE } from "@/lib/zweige";
 
 /**
  * Die Schriften kommen als npm-Paket und werden von unserer eigenen Domain
@@ -12,14 +15,16 @@ import "@fontsource-variable/manrope";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hi Lisa — Begleitung für ältere Menschen in München",
+  title: {
+    default: "Hi Lisa — Begleitung für ältere Menschen in München",
+    template: "%s · Hi Lisa",
+  },
   description:
     "Deine Pflegekasse zahlt 131 Euro im Monat für Begleitung und Hilfe im Haushalt. Wir schicken jede Woche dieselbe Begleiterin und rechnen direkt mit der Kasse ab.",
   metadataBase: new URL("https://hilisa.example"),
   openGraph: {
     title: "Hi Lisa — Begleitung für ältere Menschen in München",
-    description:
-      "Begleitung, die sich anfühlt wie ein Hallo — nicht wie ein Formular.",
+    description: "Begleitung, die sich anfühlt wie ein Hallo — nicht wie ein Formular.",
     locale: "de_DE",
     type: "website",
   },
@@ -32,67 +37,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const NAV = [
-  { href: "#rechner", text: "Was zahlt die Kasse?" },
-  { href: "#leistungen", text: "Was wir machen" },
-  { href: "#preise", text: "Preise" },
-  { href: "#fragen", text: "Fragen" },
-];
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">
       <body>
-        <a href="#inhalt" className="sr-only">
+        <a href="#inhalt" className="skip-link">
           Zum Inhalt springen
         </a>
 
-        <header
-          style={{
-            borderBottom: "1px solid var(--rule)",
-            background: "var(--paper)",
-            position: "sticky",
-            top: 0,
-            zIndex: 20,
-          }}
-        >
-          <div
-            className="wrap"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "var(--s4)",
-              flexWrap: "wrap",
-              paddingTop: "var(--s3)",
-              paddingBottom: "var(--s3)",
-            }}
-          >
-            <a href="/" aria-label="Hi Lisa — Startseite" style={{ textDecoration: "none" }}>
-              <Logo variant="paper" size={38} />
-            </a>
-
-            <nav
-              aria-label="Hauptnavigation"
-              style={{ display: "flex", gap: "var(--s4)", alignItems: "center" }}
-            >
-              <span className="nav-links">
-                {NAV.map((n) => (
-                  <a
-                    key={n.href}
-                    href={n.href}
-                    style={{ fontSize: 17, fontWeight: 500, textDecoration: "none" }}
-                  >
-                    {n.text}
-                  </a>
-                ))}
-              </span>
-              <a className="btn btn-accent" href="tel:+4989000000">
-                089 — Nummer
-              </a>
-            </nav>
-          </div>
-        </header>
+        <Nav />
 
         <main id="inhalt">{children}</main>
 
@@ -132,26 +85,43 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p style={{ color: "rgba(252,251,247,0.78)" }}>Montag bis Freitag, 8 bis 18 Uhr</p>
               </div>
               <div>
-                <span className="label on-dark">Rechtliches</span>
-                <p style={{ marginBottom: 4 }}>
-                  <a href="/impressum" style={{ color: "var(--paper)" }}>
-                    Impressum
-                  </a>
+                <span className="label on-dark">Unsere drei Wege</span>
+                {ZWEIG_LISTE.map((z) => (
+                  <p key={z.id} style={{ margin: 0 }}>
+                    <Link href={z.href} className="footer-link">
+                      {z.name}
+                    </Link>
+                  </p>
+                ))}
+                <p style={{ margin: 0 }}>
+                  <Link href="/#finder" className="footer-link">
+                    Welches passt?
+                  </Link>
                 </p>
-                <p style={{ marginBottom: 4 }}>
-                  <a href="/datenschutz" style={{ color: "var(--paper)" }}>
-                    Datenschutz
-                  </a>
-                </p>
-                <p>
-                  <a href="#preise" style={{ color: "var(--paper)" }}>
-                    Preise
-                  </a>
+                <p style={{ margin: 0 }}>
+                  <Link href="/mitarbeiten" className="footer-link">
+                    Mitarbeiten
+                  </Link>
                 </p>
               </div>
               <div>
-                <span className="label on-dark">Gut zu wissen</span>
-                <p style={{ color: "rgba(252,251,247,0.78)" }}>
+                <span className="label on-dark">Rechtliches</span>
+                <p style={{ margin: 0 }}>
+                  <Link href="/impressum" className="footer-link">
+                    Impressum
+                  </Link>
+                </p>
+                <p style={{ margin: "0 0 var(--s4)" }}>
+                  <Link href="/datenschutz" className="footer-link">
+                    Datenschutz
+                  </Link>
+                </p>
+                <p style={{ margin: 0 }}>
+                  <a href="/hi-lisa-blatt-kunden.pdf" className="footer-link">
+                    Ein-Blatt-Übersicht (PDF)
+                  </a>
+                </p>
+                <p style={{ color: "rgba(252,251,247,0.78)", fontSize: 17, marginTop: "var(--s4)" }}>
                   Wir machen keine Pflege im medizinischen Sinn. Kein Waschen, keine
                   Medikamente. Dafür alles, was den Tag leichter macht.
                 </p>
@@ -160,8 +130,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <p
               style={{
-                fontSize: 15,
-                color: "rgba(252,251,247,0.55)",
+                fontSize: 16,
+                color: "rgba(252,251,247,0.62)",
                 borderTop: "1px solid rgba(252,251,247,0.18)",
                 paddingTop: "var(--s6)",
                 marginBottom: 0,

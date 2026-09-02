@@ -1,6 +1,24 @@
-import Rechner from "@/components/Rechner";
-import Rueckruf from "@/components/Rueckruf";
-import { Bildmarke } from "@/components/Logo";
+import Link from "next/link";
+import ModellFinder from "@/components/ModellFinder";
+import {
+  Abschnitt,
+  Fragenliste,
+  Kartenraster,
+  Rueckrufblock,
+  Zweigkarte,
+} from "@/components/Bausteine";
+import { GRENZE, ZWEIG_LISTE } from "@/lib/zweige";
+
+/**
+ * Startseite.
+ *
+ * Aufgabe: in dreißig Sekunden klarmachen, dass es drei Wege gibt und welcher
+ * gemeint ist. Erst danach kommt, was wir eigentlich machen.
+ *
+ * Gelesen wird das von der Tochter, 50 bis 65, abends am Handy. Deshalb steht
+ * die Telefonnummer ohne Scrollen in der Kopfzeile und der Finder direkt unter
+ * den drei Karten.
+ */
 
 const LEISTUNGEN = [
   {
@@ -29,25 +47,6 @@ const LEISTUNGEN = [
   },
 ];
 
-const ABLAUF = [
-  {
-    titel: "Du rufst an oder schreibst uns",
-    text: "Zwanzig Minuten am Telefon. Wir klären, was gebraucht wird und was die Kasse dazuzahlt.",
-  },
-  {
-    titel: "Wir kommen einmal zum Kennenlernen",
-    text: "Kostenlos, bei euch zu Hause, zusammen mit der Begleiterin, die später auch wirklich kommt.",
-  },
-  {
-    titel: "Wir übernehmen den Papierkram",
-    text: "Einmal unterschreiben, dann rechnen wir direkt mit der Pflegekasse ab. Du bekommst keine Rechnung.",
-  },
-  {
-    titel: "Fester Termin, feste Person",
-    text: "Zum Beispiel jeden Dienstag von zehn bis zwölf. Ist sie krank, kommt die Vertretung, die ihr schon kennt.",
-  },
-];
-
 const VERTRAUEN = [
   {
     titel: "Festangestellt",
@@ -59,7 +58,7 @@ const VERTRAUEN = [
   },
   {
     titel: "Geschult, bevor sie kommt",
-    text: "Mindestens 30 Stunden Ausbildung, bevor jemand das erste Mal allein zu euch kommt.",
+    text: "30 Unterrichtseinheiten nach dem bayerischen Schulungskonzept, bevor jemand das erste Mal allein kommt.",
   },
   {
     titel: "Wir schauen selbst vorbei",
@@ -77,9 +76,14 @@ const VERTRAUEN = [
 
 const FRAGEN = [
   {
+    frage: "Was ist der Unterschied zwischen Care und Privat?",
+    antwort:
+      "Nur, wer bezahlt. Die Begleiterin, die Aufgaben und die Regeln sind identisch. Bei Care zahlt die Pflegekasse und wir rechnen dort direkt ab — du bekommst keine Rechnung, brauchst aber einen Pflegegrad. Bei Privat zahlst du selbst, brauchst dafür keinen Pflegegrad, keinen Antrag und keine Begutachtung. Viele nutzen beides: die Kassenstunden zuerst, den Rest privat dazu.",
+  },
+  {
     frage: "Meine Mutter hat noch keinen Pflegegrad. Geht das trotzdem?",
     antwort:
-      "Ja, dann zahlt ihr erst mal selbst. Schon Pflegegrad 1 reicht für das Geld von der Kasse, und der wird öfter anerkannt, als die meisten denken. Wir sagen dir am Telefon, ob ein Antrag Sinn ergibt.",
+      "Ja, über Hi Lisa Privat. Schon Pflegegrad 1 reicht aber für das Geld von der Kasse, und der wird öfter anerkannt, als die meisten denken. Wir sagen dir am Telefon, ob ein Antrag Sinn ergibt — und du kannst privat starten, während er läuft.",
   },
   {
     frage: "Wir haben das Geld seit Jahren nicht genutzt. Ist es weg?",
@@ -106,6 +110,11 @@ const FRAGEN = [
     antwort:
       "Wir bauen München Viertel für Viertel auf, damit unsere Begleiterinnen nicht im Verkehr stehen statt bei euch zu sitzen. Aktuell: Stadtteile eintragen. Wohnt ihr außerhalb, sag uns Bescheid — wir melden uns, sobald wir da sind.",
   },
+  {
+    frage: "Ich würde gern bei Hi Lisa arbeiten. Wen rufe ich an?",
+    antwort:
+      "Dieselbe Nummer. Sag am Telefon, dass es um eine Stelle geht. Wir stellen fest an — Minijob oder Teilzeit, nach Stunden bezahlt, mit bezahlter Schulung vor dem ersten Einsatz. Keine Selbstständigkeit, keine Fahrten quer durch die Stadt.",
+  },
 ];
 
 export default function Home() {
@@ -116,16 +125,17 @@ export default function Home() {
         <div className="wrap">
           <div className="surface-olive" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
             <span className="label on-olive">Begleitung in München</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "17ch" }}>
-              Deine Pflegekasse zahlt 131 Euro im Monat. Die meisten holen sie sich nie.
+            <h1 style={{ color: "var(--paper)", maxWidth: "19ch" }}>
+              Jede Woche dieselbe Begleiterin. In den meisten Fällen zahlt die Kasse.
             </h1>
-            <p className="lead" style={{ color: "rgba(252,251,247,0.9)" }}>
-              Wir schicken jede Woche dieselbe Begleiterin — für einen Spaziergang, den
-              Einkauf oder einfach zum Reden. Den Papierkram mit der Kasse machen wir.
+            <p className="lead" style={{ color: "var(--on-olive-soft)" }}>
+              Spaziergang, Einkauf, Arzttermin oder einfach zwei Stunden reden. Es gibt drei
+              Wege zu uns — je nachdem, wer bezahlt. Wir sagen dir am Telefon, welcher deiner
+              ist.
             </p>
             <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="#rechner">
-                Was steht mir zu?
+              <a className="btn btn-accent" href="#zweige">
+                Die drei Wege ansehen
               </a>
               <a
                 className="btn btn-outline"
@@ -140,201 +150,128 @@ export default function Home() {
                 marginTop: "var(--s6)",
                 marginBottom: 0,
                 fontSize: 17,
-                color: "rgba(252,251,247,0.75)",
+                color: "var(--on-olive-soft)",
               }}
             >
-              Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben noch offen ist.
+              Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch
+              offen ist.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- Rechner */}
-      <section id="rechner" style={{ paddingTop: 0 }}>
-        <div className="wrap narrow">
-          <Rechner />
+      {/* ------------------------------------------------------------ Zweige */}
+      <Abschnitt
+        id="zweige"
+        style={{ paddingTop: 0 }}
+        label="Die drei Wege"
+        titel="Dieselbe Begleiterin. Drei Wege, sie zu bezahlen."
+        lead="Was wir machen, ist in allen drei Fällen gleich. Der Unterschied ist, wer die Rechnung bekommt — und ob es dafür einen Pflegegrad braucht."
+      >
+        <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
+          {ZWEIG_LISTE.map((z) => (
+            <Zweigkarte key={z.id} zweig={z} />
+          ))}
         </div>
-      </section>
+        <div className="card card-quiet" style={{ marginTop: "var(--s6)" }}>
+          <h3>Wo wir aufhören — in allen drei Fällen</h3>
+          <p style={{ marginBottom: 0, fontSize: 18 }}>{GRENZE}</p>
+        </div>
+      </Abschnitt>
+
+      {/* ------------------------------------------------------------ Finder */}
+      <Abschnitt
+        id="finder"
+        narrow
+        label="Zwei Fragen"
+        titel="Nicht sicher, welcher Weg gemeint ist?"
+      >
+        <div style={{ marginTop: "var(--s6)" }}>
+          <ModellFinder />
+        </div>
+      </Abschnitt>
 
       {/* -------------------------------------------------------- Leistungen */}
-      <section id="leistungen">
-        <div className="wrap">
-          <span className="label">Was wir machen</span>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>
-            Gesellschaft. Und alles, was den Tag leichter macht.
-          </h2>
-          <p className="lead">
-            Zwei Stunden, ein fester Termin, dieselbe Person. Keine Pflege im medizinischen
-            Sinn — dafür genau das, wofür sonst niemand mehr Zeit hat.
-          </p>
-          <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
-            {LEISTUNGEN.map((l) => (
-              <div className="card" key={l.titel}>
-                <h3>{l.titel}</h3>
-                <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{l.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------ Preise */}
-      <section id="preise">
-        <div className="wrap">
-          <span className="label">Was es kostet</span>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>
-            In den meisten Fällen: nichts aus eigener Tasche.
-          </h2>
-          <div className="grid grid-2" style={{ marginTop: "var(--s9)" }}>
-            <div className="card">
-              <span className="badge badge-olive">Mit Pflegegrad</span>
-              <p style={{ marginTop: "var(--s4)", marginBottom: "var(--s2)" }}>
-                Deine Pflegekasse zahlt
-              </p>
-              <span className="big-number mono-num">131 €</span>
-              <p style={{ marginTop: "var(--s3)" }}>
-                im Monat. Das sind 1.572 Euro im Jahr. Wir rechnen direkt mit der Kasse ab,
-                du bekommst keine Rechnung.
-              </p>
-              <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>
-                Ab Pflegegrad 2 kommt oft noch deutlich mehr dazu. Das rechnen wir dir im
-                Gespräch aus.
-              </p>
-            </div>
-            <div className="card card-rose">
-              <span className="badge" style={{ background: "var(--paper)" }}>
-                Ohne Pflegegrad
-              </span>
-              <p style={{ marginTop: "var(--s4)", marginBottom: "var(--s2)" }}>Du zahlst</p>
-              <span className="big-number mono-num">Preis eintragen</span>
-              <p style={{ marginTop: "var(--s3)" }}>
-                pro Stunde. Keine Mitgliedsgebühr, keine Mindestlaufzeit, monatlich kündbar.
-              </p>
-              <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>
-                Anfahrt pauschal pro Einsatz. Zwei Stunden sind die kleinste Buchung.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------ Ablauf */}
-      <section id="ablauf">
-        <div className="wrap">
-          <span className="label">So läuft es ab</span>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>
-            Vier Schritte, und du machst davon einen.
-          </h2>
-          <ol style={{ listStyle: "none", padding: 0, margin: "var(--s9) 0 0", maxWidth: "56rem" }}>
-            {ABLAUF.map((s, i) => (
-              <li
-                key={s.titel}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "56px 1fr",
-                  gap: "var(--s6)",
-                  padding: "var(--s6) 0",
-                  borderTop: "1px solid var(--rule)",
-                }}
-              >
-                <span
-                  className="display"
-                  aria-hidden="true"
-                  style={{ fontSize: 34, color: "var(--olive)", lineHeight: 1 }}
-                >
-                  {i + 1}
-                </span>
-                <div>
-                  <h3>{s.titel}</h3>
-                  <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <Abschnitt
+        id="leistungen"
+        label="Was wir machen"
+        titel="Gesellschaft. Und alles, was den Tag leichter macht."
+        lead="Zwei Stunden, ein fester Termin, dieselbe Person. Keine Pflege im medizinischen Sinn — dafür genau das, wofür sonst niemand mehr Zeit hat."
+      >
+        <Kartenraster eintraege={LEISTUNGEN} />
+      </Abschnitt>
 
       {/* --------------------------------------------------------- Vertrauen */}
-      <section id="vertrauen">
-        <div className="wrap">
-          <span className="label">Warum Angehörige uns die Wohnung anvertrauen</span>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>
-            Wir schicken keine Fremden. Wir schicken deine Begleiterin.
+      <Abschnitt
+        id="vertrauen"
+        label="Warum Angehörige uns die Wohnung anvertrauen"
+        titel="Wir schicken keine Fremden. Wir schicken deine Begleiterin."
+        lead="Das Schwierigste an dieser Arbeit ist nicht die Wäsche. Es ist die Frage, wer da eigentlich in der Wohnung steht, wenn du nicht dabei bist."
+      >
+        <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
+          {VERTRAUEN.map((v) => (
+            <div key={v.titel} style={{ borderTop: "3px solid var(--olive-ink)", paddingTop: "var(--s4)" }}>
+              <h3>{v.titel}</h3>
+              <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{v.text}</p>
+            </div>
+          ))}
+        </div>
+      </Abschnitt>
+
+      {/* -------------------------------------------------------- Mitarbeiten */}
+      <Abschnitt id="mitarbeiten" narrow>
+        <div className="card card-rose">
+          <span className="badge" style={{ background: "var(--paper)" }}>
+            Mitarbeiten
+          </span>
+          <h2 style={{ marginTop: "var(--s4)", fontSize: "clamp(24px, 3.6vw, 30px)" }}>
+            Du willst diese Arbeit machen?
           </h2>
-          <p className="lead">
-            Das Schwierigste an dieser Arbeit ist nicht die Wäsche. Es ist die Frage, wer da
-            eigentlich in der Wohnung steht, wenn du nicht dabei bist.
+          <p style={{ fontSize: 18 }}>
+            Wir stellen fest an — Minijob oder Teilzeit, nach Stunden bezahlt, mit bezahlter
+            Schulung vor dem ersten Einsatz. Keine Selbstständigkeit, keine Rechnungen, die du
+            selbst schreiben musst. Feste Kundinnen in deinem Viertel statt Fahrten quer durch
+            die Stadt.
           </p>
-          <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
-            {VERTRAUEN.map((v) => (
-              <div key={v.titel} style={{ borderTop: "3px solid var(--olive)", paddingTop: "var(--s4)" }}>
-                <h3>{v.titel}</h3>
-                <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{v.text}</p>
-              </div>
-            ))}
+          <p style={{ fontSize: 18 }}>
+            Was der Unterschied zwischen den drei Zweigen für dich bedeutet, steht auf jeder
+            Zweigseite unter <em>Was das für Begleiterinnen bedeutet</em>.
+          </p>
+          <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
+            <a className="btn btn-primary" href="tel:+4989000000">
+              089 — Nummer eintragen
+            </a>
+            <Link className="btn btn-outline" href="#rueckruf">
+              Rückruf anfordern
+            </Link>
           </div>
         </div>
-      </section>
+      </Abschnitt>
 
       {/* ------------------------------------------------------------ Fragen */}
-      <section id="fragen">
-        <div className="wrap narrow">
-          <span className="label">Häufige Fragen</span>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>Was Angehörige uns zuerst fragen</h2>
-          <div style={{ marginTop: "var(--s6)" }}>
-            {FRAGEN.map((f) => (
-              <details
-                key={f.frage}
-                style={{ borderBottom: "1px solid var(--rule)", padding: "var(--s2) 0" }}
-              >
-                <summary
-                  style={{
-                    cursor: "pointer",
-                    padding: "var(--s4) 0",
-                    fontWeight: 800,
-                    fontSize: 19,
-                    lineHeight: 1.35,
-                    minHeight: 44,
-                  }}
-                >
-                  {f.frage}
-                </summary>
-                <p style={{ paddingBottom: "var(--s4)", color: "var(--ink-70)" }}>{f.antwort}</p>
-              </details>
-            ))}
+      <Abschnitt id="fragen" narrow label="Häufige Fragen" titel="Was Angehörige uns zuerst fragen">
+        <Fragenliste fragen={FRAGEN} />
+
+        {/* Für die Hälfte des Marktes, die nicht online liest: ein Blatt zum Ausdrucken,
+            Hinlegen und Wochen später wieder in die Hand nehmen. Internetnutzung bei
+            78+ liegt bei 42 Prozent (D21-Digital-Index). */}
+        <div className="card card-quiet" style={{ marginTop: "var(--s9)" }}>
+          <h3>Zum Ausdrucken und Hinlegen</h3>
+          <p style={{ fontSize: 18 }}>
+            Eine Seite, große Schrift, Telefonnummer unten: was wir machen, was wir nicht
+            machen, was die Kasse zahlt und wie es anfängt. Zum Mitnehmen für jemanden, der
+            das nicht am Handy lesen will.
+          </p>
+          <div className="stack-cta">
+            <a className="btn btn-primary" href="/hi-lisa-blatt-kunden.pdf">
+              Ein-Blatt-Übersicht als PDF
+            </a>
           </div>
         </div>
-      </section>
+      </Abschnitt>
 
       {/* ----------------------------------------------------------- Rückruf */}
-      <section id="rueckruf" style={{ paddingBottom: 0 }}>
-        <div className="wrap">
-          <div className="surface-ink" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <div className="grid grid-2" style={{ alignItems: "start" }}>
-              <div>
-                <Bildmarke variant="ink" size={52} title="" />
-                <span className="label on-dark" style={{ marginTop: "var(--s6)" }}>
-                  Erstgespräch
-                </span>
-                <h2 style={{ color: "var(--paper)", fontSize: "clamp(26px, 4vw, 34px)" }}>
-                  Zwanzig Minuten, und du weißt, woran du bist.
-                </h2>
-                <p style={{ color: "rgba(252,251,247,0.8)" }}>
-                  Ruf uns an unter <strong style={{ color: "var(--paper)" }}>089 — Nummer
-                  eintragen</strong>, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine
-                  Nummer da — wir melden uns am selben Werktag zurück.
-                </p>
-              </div>
-              <div
-                className="card"
-                style={{ background: "var(--paper)", borderColor: "transparent" }}
-              >
-                <Rueckruf />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Rueckrufblock />
     </>
   );
 }

@@ -34,13 +34,16 @@ export function Bildmarke({
   title?: string;
 }) {
   const c = PALETTE[variant];
+  /* Ohne Titel ist die Bildmarke reine Dekoration — dann darf sie kein Bild mit
+     leerem Namen sein, sondern muss für Vorleseprogramme verschwinden.
+     Mit Titel ist sie ein Bild mit Namen. Beides ist richtig, das Dazwischen nicht. */
+  const dekorativ = !title;
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 48 48"
-      role="img"
-      aria-label={title}
+      {...(dekorativ ? { "aria-hidden": true, focusable: false } : { role: "img", "aria-label": title })}
       style={{ display: "block", flexShrink: 0 }}
     >
       {/* Sprechblase mit Schwanz unten links */}

@@ -7,6 +7,15 @@
 :root {
   /* Markenfarben */
   --olive: #7c8a2a;         /* Primärfarbe: große Flächen, Header, Primärbuttons */
+
+  /* Dunklere Ableitung derselben Farbe — gleicher Farbton, 12 Prozent dunkler.
+     Wird überall gebraucht, wo Text im Spiel ist: kleiner oliver Text auf Papier
+     und Papiertext auf oliver Fläche kommen mit #7c8a2a nur auf 3,67 zu 1 und
+     fallen damit unter die geforderten 4,5 zu 1 (WCAG 2.1 AA, 1.4.3).
+     Mit #6d7925 sind es 4,6 zu 1 — in beide Richtungen.
+     Das ist eine Abweichung vom Brand Guide und mit dem Markeninhaber abzustimmen. */
+  --olive-ink: #6d7925;     /* oliver Text und Linien auf hellem Grund */
+  --olive-deep: #6d7925;    /* olive Flächen, auf denen Text steht */
   --lila: #d64fb0;          /* Akzentfarbe: Aktionen, Marker, Hervorhebungen */
 
   /* Hilfsfarben & Text */
@@ -17,12 +26,15 @@
 
   /* Abgeleitete Töne — nur Transparenzen der Markenfarben, keine neuen Farben */
   --ink-70: rgba(25, 27, 13, 0.72);
-  --ink-55: rgba(25, 27, 13, 0.58);
+  --ink-55: rgba(25, 27, 13, 0.62);   /* 0,58 lag bei 4,25 zu 1 — knapp unter AA */
   --rule: rgba(25, 27, 13, 0.14);
   --rule-soft: rgba(25, 27, 13, 0.08);
   --olive-wash: rgba(124, 138, 42, 0.08);
   --on-olive: #fcfbf7;
-  --on-olive-soft: rgba(252, 251, 247, 0.82);
+  /* Auf oliver Fläche wird Text nicht abgeschwächt. Jede Transparenz drückt den
+     Kontrast unter 4,5 zu 1 — und diese Seite wird von 60-Jährigen abends
+     am Handy gelesen. */
+  --on-olive-soft: #fcfbf7;
 
   /* Eckenradien: 10 Bedienelemente, 16 Karten, 28 Bildschirmflächen */
   --r-control: 10px;
@@ -109,15 +121,16 @@ p { margin: 0 0 var(--s4); max-width: 62ch; }
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--olive);
+  color: var(--olive-ink);
   margin: 0 0 var(--s3);
   display: block;
 }
 .label.on-dark { color: var(--lila); }
-.label.on-olive { color: var(--light-olive); }
+/* Hellolive auf Olive erreicht nur 3,8 zu 1. Auf oliver Fläche daher Papier. */
+.label.on-olive { color: var(--on-olive); }
 
 a { color: var(--ink); text-underline-offset: 3px; }
-a:hover { color: var(--olive); }
+a:hover { color: var(--olive-ink); }
 
 /* ------------------------------------------------------------- Layout ---- */
 
@@ -131,11 +144,52 @@ section { padding: var(--s18) 0; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* Auf dem Telefon bleibt in der Kopfzeile nur Marke und Telefonnummer.
-   Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
+/* Auf dem Telefon bleibt in der Kopfzeile nur Marke, Telefonnummer und das
+   Menü. Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
 .nav-links { display: none; }
+.nav-toggle { display: inline-flex; }
+.tel-lang { display: none; }
+.tel-kurz { display: inline; }
 @media (min-width: 900px) {
   .nav-links { display: flex; gap: var(--s6); flex-wrap: wrap; align-items: center; }
+  /* Am Rechner stehen die Links offen da — Menü und Klapptafel sind dort überflüssig. */
+  .nav-toggle { display: none !important; }
+  .tel-lang { display: inline; }
+  .tel-kurz { display: none; }
+  .nav-panel { display: none !important; }
+}
+
+/* Der Sprunglink ist unsichtbar, bis er den Fokus hat. Dann muss man ihn sehen. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 40;
+}
+.skip-link:focus {
+  left: var(--s4);
+  top: var(--s4);
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 12px var(--s6);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--r-control);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Fußzeile: Die Links dort sind Navigation, nicht Kleingedrucktes. Sie müssen
+   sich auf dem Telefon treffen lassen — 44 px sind die Untergrenze. */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--paper);
+  font-size: 18px;
 }
 
 /* ---------------------------------------------------- Bedienelemente ---- */
@@ -158,8 +212,8 @@ html { scroll-behavior: smooth; }
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.btn-primary { background: var(--olive); color: var(--on-olive); border-color: var(--olive); }
-.btn-primary:hover { background: #6b7724; border-color: #6b7724; color: var(--on-olive); }
+.btn-primary { background: var(--olive-deep); color: var(--on-olive); border-color: var(--olive-deep); }
+.btn-primary:hover { background: #5c661f; border-color: #5c661f; color: var(--on-olive); }
 
 /* Rosa nie mit weißem Text — immer Ink auf Lilarosa */
 .btn-accent { background: var(--lila); color: var(--ink); border-color: var(--lila); }
@@ -210,12 +264,13 @@ html { scroll-behavior: smooth; }
 .card-rose { background: var(--rose); border-color: transparent; box-shadow: none; }
 
 .surface-olive {
-  background: var(--olive);
+  background: var(--olive-deep);
   color: var(--on-olive);
   border-radius: var(--r-surface);
 }
 .surface-olive h1, .surface-olive h2, .surface-olive h3 { color: var(--on-olive); }
 .surface-olive p { color: var(--on-olive-soft); }
+.surface-olive .lead { color: var(--on-olive); }
 
 .surface-ink {
   background: var(--ink);
@@ -251,7 +306,7 @@ textarea {
 }
 textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
 
-input:focus, select:focus, textarea:focus { border-color: var(--olive); }
+input:focus, select:focus, textarea:focus { border-color: var(--olive-ink); }
 
 .hint { font-size: 16px; color: var(--ink-55); margin-top: calc(var(--s6) * -1 + var(--s2)); margin-bottom: var(--s6); }
 
@@ -287,3 +342,243 @@ input:focus, select:focus, textarea:focus { border-color: var(--olive); }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ==========================================================================
+   Ein-Blatt-Übersichten (Routen unter /blatt/…)
+   Druckvorlagen für die drei Zielgruppen. Aus diesen Seiten werden die PDFs in
+   `public/` erzeugt — Layout in Millimeter und Punkt, nicht in Pixel.
+
+   Das Wurzel-Layout von Next.js lässt sich nicht umgehen, deshalb werden
+   Kopf- und Fußzeile der Website über :has() ausgeblendet, sobald ein Blatt
+   auf der Seite steht.
+   ========================================================================== */
+
+body:has(.blatt) > header,
+body:has(.blatt) > footer { display: none !important; }
+
+/* Die Spalten eines Blatts sind <section>-Elemente und erben sonst die
+   72 px Abschnittspolsterung der Website — das sind 38 mm Luft je Rasterzeile
+   und der Grund, warum ein Blatt scheinbar grundlos auf zwei Seiten läuft. */
+.blatt section { padding: 0; }
+body:has(.blatt) main { margin: 0 !important; }
+body:has(.blatt) { background: #ffffff; }
+
+.blatt {
+  /* Ein Blatt A4. Der Rand steckt im Blatt selbst, nicht in @page — sonst
+     rechnen Browser und PDF-Erzeugung mit zwei verschiedenen Seitenhöhen und
+     der Inhalt rutscht auf eine zweite Seite, ohne dass man es im Browser sieht.
+     Der Rand ist mit 12 mm bewusst schmal: jeder Millimeter ist Platz für
+     Schriftgröße, und 12 mm druckt jeder Bürodrucker randlos genug. */
+  box-sizing: border-box;
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto;
+  padding: 12mm;
+  overflow: hidden;
+  background: #ffffff;
+  color: #191b0d;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-manrope), "Inter Tight", sans-serif;
+  font-size: 11pt;
+  line-height: 1.34;
+}
+
+/* ------------------------------------------------------------------- Kopf --- */
+
+.blatt-kopf { border-bottom: 2.5pt solid var(--olive-ink); padding-bottom: 3mm; }
+
+.blatt-marke { display: flex; align-items: center; gap: 3mm; margin-bottom: 3mm; }
+
+.blatt-wortmarke {
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 20pt;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.blatt-lisa { color: var(--olive-ink); }
+
+.blatt-marker {
+  margin-left: auto;
+  background: var(--rose);
+  color: #191b0d;
+  font-weight: 800;
+  font-size: 9.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1.6mm 3.5mm;
+  border-radius: 2mm;
+}
+
+.blatt-titel {
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 19pt;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  margin: 0 0 2.5mm;
+  max-width: 36ch;
+}
+
+.blatt-unterzeile {
+  font-size: 11pt;
+  line-height: 1.33;
+  margin: 0;
+  max-width: 70ch;
+  color: #2c2f18;
+}
+
+/* ----------------------------------------------------------------- Körper --- */
+
+.blatt-koerper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm 8mm;
+  padding: 3.5mm 0 0;
+  align-content: start;
+}
+.blatt-koerper > .blatt-breit { grid-column: 1 / -1; }
+
+.blatt-h2 {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 800;
+  font-size: 12pt;
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin: 0 0 1.7mm;
+  color: var(--olive-ink);
+  text-transform: none;
+}
+
+.blatt-spalte p { font-size: 11pt; margin: 0 0 2mm; max-width: none; }
+.blatt-spalte p:last-child { margin-bottom: 0; }
+
+.blatt-liste { list-style: none; margin: 0; padding: 0; }
+.blatt-liste li {
+  display: grid;
+  grid-template-columns: 4.5mm 1fr;
+  gap: 1.5mm;
+  align-items: start;
+  margin-bottom: 1.3mm;
+  font-size: 11pt;
+  line-height: 1.3;
+}
+.blatt-haken { color: var(--olive-ink); font-weight: 800; }
+.blatt-kreuz { color: #8d2b6b; font-weight: 800; }
+
+.blatt-zahl-box {
+  border: 1.5pt solid var(--olive-ink);
+  border-radius: 2.5mm;
+  padding: 3mm 3.5mm;
+  margin: 0 0 2.5mm;
+}
+.blatt-zahl {
+  display: block;
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 22pt;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--olive-ink);
+  font-variant-numeric: tabular-nums;
+}
+.blatt-zahl-text { display: block; font-size: 10.5pt; margin-top: 1mm; }
+
+.blatt-schritte { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.blatt-schritte li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 7mm 1fr;
+  gap: 2mm;
+  margin-bottom: 1.5mm;
+  font-size: 11pt;
+  line-height: 1.3;
+}
+.blatt-schritte li::before {
+  content: counter(s);
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 13pt;
+  color: var(--olive-ink);
+  line-height: 1.15;
+}
+
+.blatt-tabelle { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+.blatt-tabelle th,
+.blatt-tabelle td { padding: 0.7mm 2mm; text-align: left; vertical-align: top; line-height: 1.2; }
+.blatt-tabelle thead th { border-bottom: 1.2pt solid var(--olive-ink); font-weight: 800; }
+.blatt-tabelle tbody tr { border-bottom: 0.4pt solid rgba(25, 27, 13, 0.16); }
+.blatt-tabelle .zahl { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.blatt-tabelle tr.summe { border-top: 1.6pt solid var(--olive-ink); border-bottom: none; }
+.blatt-tabelle tr.summe th,
+.blatt-tabelle tr.summe td { font-weight: 800; font-size: 10.5pt; padding-top: 1.4mm; }
+
+.blatt-kasten {
+  border: 0.8pt solid rgba(25, 27, 13, 0.3);
+  border-left: 3pt solid var(--olive-ink);
+  border-radius: 0 2mm 2mm 0;
+  padding: 3mm 3.5mm;
+  font-size: 10.5pt;
+  line-height: 1.32;
+}
+.blatt-kasten strong { font-weight: 800; }
+
+/* ------------------------------------------------------------------ Fuß --- */
+
+.blatt-fuss {
+  border-top: 2.5pt solid var(--olive-ink);
+  /* auto schiebt den Fuß an das untere Ende des Blatts, wenn Platz bleibt */
+  margin-top: auto;
+  padding-top: 3mm;
+}
+
+.blatt-fuss-tel { display: flex; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
+.blatt-fuss-label { font-size: 10.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; }
+.blatt-tel {
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 19pt;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+.blatt-fuss-zeit { font-size: 10.5pt; color: #3a3d24; }
+.blatt-fuss-zeile { font-size: 10.5pt; margin: 1.2mm 0 0; max-width: none; }
+.blatt-fuss-klein { font-size: 8.5pt; color: #4a4d33; margin: 1.8mm 0 0; max-width: none; }
+
+/* ------------------------------------------------------------- Am Drucker --- */
+
+@page { size: A4; margin: 0; }
+
+@media print {
+  html, body { background: #ffffff; }
+  .blatt { margin: 0; }
+  /* Auf Papier hilft eine URL hinter dem Link niemandem, der ihn nicht anklicken kann. */
+  a[href]::after { content: ""; }
+  .blatt, .blatt * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* Auf dem Bildschirm liegt das Blatt als Blatt auf grauem Grund, damit man beim
+   Prüfen sieht, wo die Seite endet. */
+/* Auf dem Bildschirm liegt das Blatt als Blatt auf grauem Grund, damit beim
+   Prüfen sichtbar ist, wo die Seite endet. `overflow: hidden` oben heißt: was
+   hier abgeschnitten aussieht, ist auch im PDF abgeschnitten. */
+@media screen {
+  body:has(.blatt) { background: #e8e7e0; padding: 10mm 0; }
+  .blatt { box-shadow: 0 2mm 8mm rgba(0, 0, 0, 0.18); }
+}
+
+/* Eine breite Liste in zwei Spalten. Spart auf dem Blatt eine ganze Zeile —
+   und ein Blatt, das auf zwei Seiten läuft, verliert die zweite. */
+.blatt-liste-zwei { column-count: 2; column-gap: 8mm; }
+.blatt-liste-zwei li { break-inside: avoid; }
+
+/* Die beiden Geschäftsblätter — Bewerbung und Partnerschaft — werden am
+   Schreibtisch gelesen und dürfen einen halben Punkt kleiner setzen. Das
+   Kundenblatt bleibt bei 11 pt: es liest jemand, der 78 ist. */
+.blatt-kompakt { font-size: 10.5pt; display: contents; }
+.blatt-kompakt .blatt-liste li,
+.blatt-kompakt .blatt-schritte li,
+.blatt-kompakt .blatt-spalte p { font-size: 10.5pt; }
+.blatt-kompakt .blatt-kasten { font-size: 9.5pt; line-height: 1.3; }
