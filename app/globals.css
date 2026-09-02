@@ -1,0 +1,289 @@
+/* ==========================================================================
+   Hi Lisa — Design-Token aus dem Brand Guide v1.0 (September 2026)
+   Farben, Radien und Abstände sind hier zentral definiert.
+   Änderungen an Farben, Logo oder Schriftarten nur nach Abstimmung.
+   ========================================================================== */
+
+:root {
+  /* Markenfarben */
+  --olive: #7c8a2a;         /* Primärfarbe: große Flächen, Header, Primärbuttons */
+  --lila: #d64fb0;          /* Akzentfarbe: Aktionen, Marker, Hervorhebungen */
+
+  /* Hilfsfarben & Text */
+  --rose: #f6c7e8;          /* Karten, Badges, ruhige Hervorhebung */
+  --light-olive: #e2ebb4;   /* Text auf Olive, Flächen zweiter Ordnung */
+  --ink: #191b0d;           /* Alle Texte auf hellem Grund */
+  --paper: #fcfbf7;         /* Standard-Hintergrund */
+
+  /* Abgeleitete Töne — nur Transparenzen der Markenfarben, keine neuen Farben */
+  --ink-70: rgba(25, 27, 13, 0.72);
+  --ink-55: rgba(25, 27, 13, 0.58);
+  --rule: rgba(25, 27, 13, 0.14);
+  --rule-soft: rgba(25, 27, 13, 0.08);
+  --olive-wash: rgba(124, 138, 42, 0.08);
+  --on-olive: #fcfbf7;
+  --on-olive-soft: rgba(252, 251, 247, 0.82);
+
+  /* Eckenradien: 10 Bedienelemente, 16 Karten, 28 Bildschirmflächen */
+  --r-control: 10px;
+  --r-card: 16px;
+  --r-surface: 28px;
+
+  /* Abstände in Schritten von 4 px */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s6: 24px;
+  --s9: 36px;
+  --s12: 48px;
+  --s18: 72px;
+
+  --shadow-card: 0 1px 2px rgba(25, 27, 13, 0.04), 0 12px 28px -22px rgba(25, 27, 13, 0.45);
+
+  /* Schriften — selbst gehostet über @fontsource, keine Anfrage an Google.
+     Ersatzschriften laut Brand Guide 03. */
+  --font-bricolage: "Bricolage Grotesque Variable", Archivo, "Helvetica Neue", sans-serif;
+  --font-manrope: "Manrope Variable", "Inter Tight", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-manrope), "Inter Tight", "Segoe UI", sans-serif;
+  font-size: 19px;            /* Fließtext nie unter 18 px */
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--lila); color: var(--ink); }
+
+/* --------------------------------------------------------- Typografie ---- */
+
+.display,
+h1, h2.display {
+  font-family: var(--font-bricolage), Archivo, "Helvetica Neue", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+h1 {
+  font-size: clamp(32px, 5.4vw, 52px);
+  line-height: 1.1;
+  margin: 0 0 var(--s6);
+  text-wrap: balance;
+}
+
+h2 {
+  font-family: var(--font-manrope), "Inter Tight", sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 3vw, 26px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--s4);
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--font-manrope), "Inter Tight", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0 0 var(--s2);
+}
+
+p { margin: 0 0 var(--s4); max-width: 62ch; }
+
+.lead { font-size: 21px; line-height: 1.55; color: var(--ink-70); max-width: 56ch; }
+
+.label {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--olive);
+  margin: 0 0 var(--s3);
+  display: block;
+}
+.label.on-dark { color: var(--lila); }
+.label.on-olive { color: var(--light-olive); }
+
+a { color: var(--ink); text-underline-offset: 3px; }
+a:hover { color: var(--olive); }
+
+/* ------------------------------------------------------------- Layout ---- */
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--s6); }
+.narrow { max-width: 720px; }
+
+section { padding: var(--s18) 0; }
+
+/* Sprungziele nicht unter der klebenden Kopfzeile verstecken */
+[id] { scroll-margin-top: 92px; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Auf dem Telefon bleibt in der Kopfzeile nur Marke und Telefonnummer.
+   Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
+.nav-links { display: none; }
+@media (min-width: 900px) {
+  .nav-links { display: flex; gap: var(--s6); flex-wrap: wrap; align-items: center; }
+}
+
+/* ---------------------------------------------------- Bedienelemente ---- */
+/* Bedienelemente nie unter 44 px Höhe */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 12px var(--s6);
+  border-radius: var(--r-control);
+  border: 2px solid transparent;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary { background: var(--olive); color: var(--on-olive); border-color: var(--olive); }
+.btn-primary:hover { background: #6b7724; border-color: #6b7724; color: var(--on-olive); }
+
+/* Rosa nie mit weißem Text — immer Ink auf Lilarosa */
+.btn-accent { background: var(--lila); color: var(--ink); border-color: var(--lila); }
+.btn-accent:hover { background: #c53fa0; border-color: #c53fa0; color: var(--ink); }
+
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-outline:hover { background: var(--olive-wash); color: var(--ink); border-color: var(--ink); }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  background: var(--rule-soft);
+  color: var(--ink-55);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 3px solid var(--lila);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------ Marker ---- */
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 7px 14px;
+  border-radius: var(--r-control);
+  color: var(--ink);
+}
+.badge-rose { background: var(--rose); }
+.badge-olive { background: var(--light-olive); }
+.badge-lila { background: var(--lila); }
+
+/* ------------------------------------------------------------- Karten ---- */
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  padding: var(--s6);
+  box-shadow: var(--shadow-card);
+}
+.card-quiet { background: var(--light-olive); border-color: transparent; box-shadow: none; }
+.card-rose { background: var(--rose); border-color: transparent; box-shadow: none; }
+
+.surface-olive {
+  background: var(--olive);
+  color: var(--on-olive);
+  border-radius: var(--r-surface);
+}
+.surface-olive h1, .surface-olive h2, .surface-olive h3 { color: var(--on-olive); }
+.surface-olive p { color: var(--on-olive-soft); }
+
+.surface-ink {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--r-surface);
+}
+.surface-ink p { color: rgba(252, 251, 247, 0.78); }
+
+/* ------------------------------------------------------------ Formular ---- */
+
+label.field {
+  display: block;
+  font-weight: 800;
+  font-size: 17px;
+  margin: 0 0 var(--s2);
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px var(--s4);
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 18px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: var(--r-control);
+  margin: 0 0 var(--s6);
+}
+textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+
+input:focus, select:focus, textarea:focus { border-color: var(--olive); }
+
+.hint { font-size: 16px; color: var(--ink-55); margin-top: calc(var(--s6) * -1 + var(--s2)); margin-bottom: var(--s6); }
+
+/* --------------------------------------------------------------- Grid ---- */
+
+.grid { display: grid; gap: var(--s4); }
+.grid-2 { grid-template-columns: 1fr; }
+.grid-3 { grid-template-columns: 1fr; }
+@media (min-width: 700px) {
+  .grid-2 { grid-template-columns: 1fr 1fr; gap: var(--s6); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
+}
+
+.stack-cta { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+
+/* -------------------------------------------------------------- Utils ---- */
+
+.center { text-align: center; }
+.mono-num { font-variant-numeric: tabular-nums; }
+.big-number {
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  font-size: clamp(40px, 8vw, 64px);
+  line-height: 0.95;
+  display: block;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
