@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Bildmarke } from "@/components/Logo";
+import { HeroTitlePop } from "@/components/HeroTitlePop";
 import Rueckruf from "@/components/Rueckruf";
 import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
 
@@ -54,6 +55,7 @@ export function Hero({
   eyebrow,
   title,
   titleWidth = "20ch",
+  titleVariant = "default",
   lead,
   cta,
   fineprint,
@@ -62,6 +64,10 @@ export function Hero({
   eyebrow: string;
   title: React.ReactNode;
   titleWidth?: string;
+  /** "display" = übergroßer Marken-Titel mit Auftauch-Effekt beim Reinscrollen
+   *  (siehe h1.hero-title-display / HeroTitlePop). Nur für kurze Titel wie
+   *  "Hi Lisa!" gedacht — ein voller Satz würde bei dieser Größe umbrechen. */
+  titleVariant?: "default" | "display";
   lead?: React.ReactNode;
   cta?: React.ReactNode;
   fineprint?: React.ReactNode;
@@ -69,6 +75,7 @@ export function Hero({
   const dunkel = variant === "ink";
   const leadColor = dunkel ? "rgba(252,251,247,0.85)" : "var(--on-olive-soft)";
   const fineColor = dunkel ? "rgba(252,251,247,0.7)" : "var(--on-olive-soft)";
+  const gross = titleVariant === "display";
 
   return (
     <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
@@ -80,7 +87,12 @@ export function Hero({
           <div className="hero-texture" aria-hidden="true" />
           <div className="hero-content">
             <span className={dunkel ? "label on-dark" : "label on-olive"}>{eyebrow}</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: titleWidth }}>{title}</h1>
+            <h1
+              className={gross ? "hero-title-display" : undefined}
+              style={{ color: "var(--paper)", maxWidth: gross ? "none" : titleWidth }}
+            >
+              {gross ? <HeroTitlePop>{title}</HeroTitlePop> : title}
+            </h1>
             {lead ? (
               <p className="lead" style={{ color: leadColor }}>
                 {lead}

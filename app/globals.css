@@ -314,6 +314,44 @@ html { scroll-behavior: smooth; }
 }
 .hero-content { position: relative; }
 
+/* Übergroßer Marken-Titel im Hero (nur Startseite, "Hi Lisa!") — bewusst eigene
+   Klasse statt einer Änderung an h1 selbst: die anderen Hero-Titel (Zweigseiten,
+   Mitarbeiten) sind volle Sätze und würden bei dieser Größe umbrechen oder die
+   Fläche sprengen. h1.hero-title-display gilt nur, wo Hero explizit den
+   "display"-Titel-Modus bekommt. */
+h1.hero-title-display {
+  font-size: clamp(56px, 12vw, 132px);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  margin-bottom: var(--s4);
+}
+
+/* Effekt beim Reinscrollen: kurzes Auftauchen (Fade + leichtes Hochgleiten +
+   Skalieren), einmalig, ausgelöst per IntersectionObserver in
+   components/HeroTitlePop.tsx. .is-visible wird per JS gesetzt, sobald der
+   Titel in den Viewport kommt — auf Handys greift das i.d.R. sofort beim
+   Laden, weil der Hero ganz oben steht; scrollt man zurück nach oben und
+   wieder rein, bleibt er sichtbar (kein Loop, kein Geflacker). Wer
+   reduzierte Bewegung eingestellt hat, bekommt den Titel sofort ohne Animation. */
+.hero-title-pop {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px) scale(0.92);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-title-pop.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-pop {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ------------------------------------------------------------ Formular ---- */
 
 label.field {

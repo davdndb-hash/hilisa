@@ -2,16 +2,24 @@ import Link from "next/link";
 import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } from "@/components/Bausteine";
 
 /**
- * Startseite (Care-only, seit 14.9.2026 — überarbeitet 14.9.2026 abends).
+ * Startseite (Care-only, seit 14.9.2026 — dritte Überarbeitung 14.9.2026 abends).
  *
- * Zweite Überarbeitung: Hero auf einen Satz reduziert (keine separate Lead-Zeile
- * mehr). Die Architektur war zu monoton — zwei optisch identische
- * Sechser-Kartenraster hintereinander (Leistungen, Vertrauen) sahen nach
- * derselben Vorlage zweimal aus, und der "So läuft es ab"-Absatz danach hatte
- * kein visuelles Gewicht. Jetzt: Kartenraster (Leistungen) → Punkteliste
- * (Vertrauen, andere Form als eine Bausteine-Wiederholung) → Schritte
- * (kompakter Drei-Schritte-Ablauf, tatsächlich auf der Startseite wie bei
- * papa.com, nicht nur als Textverweis) → Rückruf.
+ * Dritte Überarbeitung: Hero repositioniert. Vorher führte der Hero mit dem
+ * Pflegekassen-Betrag — liest sich wie eine Versicherungs-Transaktion, bevor
+ * überhaupt klar ist, was Hi Lisa eigentlich ist. Jetzt identitätserst wie
+ * papa.com ("Hi! We're Papa."): "Hi Lisa!" als Marke/Begrüßung in einem,
+ * direkt gefolgt von den konkreten Erledigungen (Arzt, Apotheke, Einkauf) —
+ * Geselligkeit ist Teil des Satzes, aber nicht mehr die ganze Botschaft.
+ * "Bezahlter Freund" ist bewusst zweitrangig: Hi Lisa ist in erster Linie
+ * Alltagshilfe für Dinge, die allein nicht mehr gehen, keine Einsamkeitskur.
+ * Das Pflegekassen-Argument bleibt im Fineprint unter dem CTA, nicht im Hero.
+ *
+ * Leistungen-Reihenfolge dementsprechend gedreht: Erledigungen (Begleitung,
+ * Kochen/Einkauf, Post/Papierkram, Haushalt) vor den beiden rein sozialen
+ * Punkten (Zeit zu zweit, Handy/Tablet) — spiegelt die neue Hero-Gewichtung.
+ *
+ * Architektur (unverändert seit zweiter Überarbeitung): Kartenraster
+ * (Leistungen) → Punkteliste (Vertrauen) → Schritte (Ablauf) → Rückruf.
  *
  * Privat und Enterprise bleiben aus Navigation und Querverweisen (siehe
  * Abschnitt 5 im Projekt). Details, der Rechner und die volle FAQ stehen auf /care.
@@ -19,16 +27,8 @@ import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } f
 
 const LEISTUNGEN = [
   {
-    titel: "Zeit zu zweit",
-    text: "Kaffee, Spaziergang, Karten, Fotoalben, erzählen. Der Teil, den Angehörige am meisten vermissen.",
-  },
-  {
     titel: "Begleitung",
     text: "Zum Arzt, zur Bank, zum Friedhof, zum Einkaufen. Mit dem Auto oder zu Fuß, wie es gerade geht.",
-  },
-  {
-    titel: "Haushalt",
-    text: "Wäsche, Küche, aufräumen, Betten frisch beziehen. Keine Handwerksarbeiten.",
   },
   {
     titel: "Kochen und Einkauf",
@@ -37,6 +37,14 @@ const LEISTUNGEN = [
   {
     titel: "Post und Papierkram",
     text: "Briefe sortieren, Formulare verstehen, Termine notieren, Anträge vorbereiten.",
+  },
+  {
+    titel: "Haushalt",
+    text: "Wäsche, Küche, aufräumen, Betten frisch beziehen. Keine Handwerksarbeiten.",
+  },
+  {
+    titel: "Zeit zu zweit",
+    text: "Kaffee, Spaziergang, Karten, Fotoalben, erzählen. Der Teil, den Angehörige am meisten vermissen.",
   },
   {
     titel: "Handy und Tablet",
@@ -78,8 +86,8 @@ export default function Home() {
       {/* -------------------------------------------------------------- Hero */}
       <Hero
         eyebrow="Begleitung in München"
-        title="Deine Pflegekasse zahlt 131 € im Monat — die meisten holen sich das Geld nie."
-        titleWidth="22ch"
+        title="Hi Lisa!"
+        lead="Jemand, der vorbeikommt — für den Arzttermin, die Apotheke, den Wocheneinkauf. Und zwischendurch auch für einen Kaffee und ein offenes Ohr."
         cta={
           <>
             <a className="btn btn-accent" href="#rueckruf">
@@ -101,7 +109,7 @@ export default function Home() {
       <Abschnitt
         id="leistungen"
         label="Was wir machen"
-        titel="Gesellschaft. Und alles, was den Tag leichter macht."
+        titel="Alles, was allein nicht mehr so einfach geht."
         lead="Zwei Stunden, ein fester Termin, dieselbe Person. Keine Pflege im medizinischen Sinn — dafür genau das, wofür sonst niemand mehr Zeit hat."
       >
         <Kartenraster eintraege={LEISTUNGEN} />
