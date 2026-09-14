@@ -4,6 +4,7 @@ import {
   AndereZweige,
   Fragenliste,
   Grenzhinweis,
+  Hero,
   Kartenraster,
   Punkteliste,
   Rueckrufblock,
@@ -108,33 +109,26 @@ const FRAGEN = [
 export default function Privat() {
   return (
     <>
-      <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
-        <div className="wrap">
-          <div className="surface-ink" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <span className="label on-dark">Weg 2 von 3 · Bezahlt wird von: {Z.zahler}</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "20ch" }}>
-              Kein Pflegegrad, kein Antrag, keine Begutachtung.
-            </h1>
-            <p className="lead" style={{ color: "rgba(252,251,247,0.85)" }}>
-              Dieselbe Begleiterin, dieselben Aufgaben, dieselben Regeln wie bei Care — nur
-              ohne die Pflegekasse dazwischen. Du buchst, wir kommen. Ab zwei Stunden,
-              monatlich kündbar.
-            </p>
-            <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="#rueckruf">
-                Rückruf anfordern
-              </a>
-              <a
-                className="btn btn-outline"
-                href="tel:+4989000000"
-                style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-              >
-                089 — Nummer eintragen
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero
+        variant="ink"
+        eyebrow={`Weg 2 von 3 · Bezahlt wird von: ${Z.zahler}`}
+        title="Kein Pflegegrad, kein Antrag, keine Begutachtung."
+        lead="Dieselbe Begleiterin, dieselben Aufgaben, dieselben Regeln wie bei Care — nur ohne die Pflegekasse dazwischen. Du buchst, wir kommen. Ab zwei Stunden, monatlich kündbar."
+        cta={
+          <>
+            <a className="btn btn-accent" href="#rueckruf">
+              Rückruf anfordern
+            </a>
+            <a
+              className="btn btn-outline"
+              href="tel:+4989000000"
+              style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
+            >
+              089 — Nummer eintragen
+            </a>
+          </>
+        }
+      />
 
       <Abschnitt narrow style={{ paddingTop: 0 }} label="Für wen" titel="Privat ist der richtige Weg, wenn">
         <div style={{ marginTop: "var(--s6)" }}>

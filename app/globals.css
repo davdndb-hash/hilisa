@@ -209,8 +209,18 @@ html { scroll-behavior: smooth; }
   line-height: 1.2;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.15s ease, box-shadow 0.15s ease;
 }
+
+/* Ein Klick soll sich wie ein Klick anfühlen, nicht wie ein Opazitätswechsel. */
+.btn-primary:hover,
+.btn-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -10px rgba(25, 27, 13, 0.4);
+}
+.btn-primary:active,
+.btn-accent:active { transform: translateY(0); box-shadow: none; }
 
 .btn-primary { background: var(--olive-deep); color: var(--on-olive); border-color: var(--olive-deep); }
 .btn-primary:hover { background: #5c661f; border-color: #5c661f; color: var(--on-olive); }
@@ -279,6 +289,21 @@ html { scroll-behavior: smooth; }
 }
 .surface-ink p { color: rgba(252, 251, 247, 0.78); }
 
+/* Hero-Flächen: statt einer flachen Farbfläche ein feines Punktraster, das nach
+   unten rechts ausblendet. Rein dekorativ, hinter dem Text, ohne Einfluss auf
+   dessen Kontrast — deshalb aria-hidden im Markup. */
+.hero-surface { position: relative; overflow: hidden; }
+.hero-texture {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(252, 251, 247, 0.16) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(135deg, black, transparent 70%);
+  -webkit-mask-image: linear-gradient(135deg, black, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; }
+
 /* ------------------------------------------------------------ Formular ---- */
 
 label.field {
@@ -338,6 +363,38 @@ input:focus, select:focus, textarea:focus { border-color: var(--olive-ink); }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* Laufende Nummer statt Icon vor Karten und Aufzählungen — dieselbe Ziffernschrift
+   wie bei den nummerierten Schritten, nur kleiner, weil hier mehr Einträge pro
+   Zeile stehen. */
+.index-num {
+  display: block;
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--olive-ink);
+  margin-bottom: var(--s2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Eigenes Auf/Zu-Zeichen statt des Browser-Dreiecks bei den FAQ. */
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary.q { position: relative; padding-right: var(--s9); }
+summary.q::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: var(--s4);
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--olive-ink);
+}
+details[open] > summary.q::after { content: "\2212"; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

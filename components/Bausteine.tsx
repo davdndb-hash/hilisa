@@ -40,8 +40,77 @@ export function Abschnitt({
   );
 }
 
+/* --------------------------------------------------------------------- Hero */
+
+/**
+ * Der Kopfblock jeder Seite (Start, die drei Zweige, Mitarbeiten) — vorher auf
+ * jeder Seite einzeln getippt, jetzt an einer Stelle. Die Fläche bekommt ein
+ * feines Punktraster (`.hero-texture`), das nach unten rechts ausblendet,
+ * statt einer glatten Farbfläche — sonst sehen alle fünf Seiten nach demselben
+ * Baukasten-Screenshot aus. Farbe, Radius und Kontrast sind unverändert.
+ */
+export function Hero({
+  variant = "olive",
+  eyebrow,
+  title,
+  titleWidth = "20ch",
+  lead,
+  cta,
+  fineprint,
+}: {
+  variant?: "olive" | "ink";
+  eyebrow: string;
+  title: React.ReactNode;
+  titleWidth?: string;
+  lead?: React.ReactNode;
+  cta?: React.ReactNode;
+  fineprint?: React.ReactNode;
+}) {
+  const dunkel = variant === "ink";
+  const leadColor = dunkel ? "rgba(252,251,247,0.85)" : "var(--on-olive-soft)";
+  const fineColor = dunkel ? "rgba(252,251,247,0.7)" : "var(--on-olive-soft)";
+
+  return (
+    <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
+      <div className="wrap">
+        <div
+          className={`${dunkel ? "surface-ink" : "surface-olive"} hero-surface`}
+          style={{ padding: "clamp(28px, 5vw, 56px)" }}
+        >
+          <div className="hero-texture" aria-hidden="true" />
+          <div className="hero-content">
+            <span className={dunkel ? "label on-dark" : "label on-olive"}>{eyebrow}</span>
+            <h1 style={{ color: "var(--paper)", maxWidth: titleWidth }}>{title}</h1>
+            {lead ? (
+              <p className="lead" style={{ color: leadColor }}>
+                {lead}
+              </p>
+            ) : null}
+            {cta ? (
+              <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
+                {cta}
+              </div>
+            ) : null}
+            {fineprint ? (
+              <p style={{ marginTop: "var(--s6)", marginBottom: 0, fontSize: 17, color: fineColor }}>
+                {fineprint}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ------------------------------------------------------------------ Karten */
 
+/**
+ * Statt eines Icons vor jedem Eintrag eine laufende Nummer, in derselben
+ * Ziffernschrift wie die Schritte weiter unten. Trennt die Einträge mit einer
+ * Linie statt mit einem Kartenrahmen — dieselbe Sprache wie „Warum Angehörige
+ * uns vertrauen" auf der Startseite, nur einmal geschrieben statt fünfmal.
+ */
 export function Kartenraster({
   eintraege,
   spalten = 3,
@@ -51,8 +120,14 @@ export function Kartenraster({
 }) {
   return (
     <div className={`grid grid-${spalten}`} style={{ marginTop: "var(--s9)" }}>
-      {eintraege.map((e) => (
-        <div className="card" key={e.titel}>
+      {eintraege.map((e, i) => (
+        <div
+          key={e.titel}
+          style={{ borderTop: "3px solid var(--olive-ink)", paddingTop: "var(--s4)" }}
+        >
+          <span className="index-num" aria-hidden="true">
+            {String(i + 1).padStart(2, "0")}
+          </span>
           <h3>{e.titel}</h3>
           <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
         </div>
@@ -133,6 +208,7 @@ export function Fragenliste({ fragen }: { fragen: { frage: string; antwort: stri
           style={{ borderBottom: "1px solid var(--rule)", padding: "var(--s2) 0" }}
         >
           <summary
+            className="q"
             style={{
               cursor: "pointer",
               padding: "var(--s4) 0",

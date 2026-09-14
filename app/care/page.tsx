@@ -5,6 +5,7 @@ import {
   AndereZweige,
   Fragenliste,
   Grenzhinweis,
+  Hero,
   Punkteliste,
   Rueckrufblock,
   Schritte,
@@ -76,32 +77,26 @@ const FRAGEN = [
 export default function Care() {
   return (
     <>
-      <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
-        <div className="wrap">
-          <div className="surface-olive" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <span className="label on-olive">Weg 1 von 3 · Bezahlt wird von: {Z.zahler}</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "18ch" }}>
-              Deine Pflegekasse zahlt 131 Euro im Monat. Die meisten holen sie sich nie.
-            </h1>
-            <p className="lead" style={{ color: "var(--on-olive-soft)" }}>
-              Nur 38 von 100 Familien mit Pflegegeld nutzen dieses Geld überhaupt. Wir rechnen
-              direkt mit der Kasse ab — du bekommst keine Rechnung und streckst nichts vor.
-            </p>
-            <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="#rechner">
-                Was steht uns zu?
-              </a>
-              <a
-                className="btn btn-outline"
-                href="tel:+4989000000"
-                style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-              >
-                089 — Nummer eintragen
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero
+        eyebrow={`Weg 1 von 3 · Bezahlt wird von: ${Z.zahler}`}
+        title="Deine Pflegekasse zahlt 131 Euro im Monat. Die meisten holen sie sich nie."
+        titleWidth="18ch"
+        lead="Nur 38 von 100 Familien mit Pflegegeld nutzen dieses Geld überhaupt. Wir rechnen direkt mit der Kasse ab — du bekommst keine Rechnung und streckst nichts vor."
+        cta={
+          <>
+            <a className="btn btn-accent" href="#rechner">
+              Was steht uns zu?
+            </a>
+            <a
+              className="btn btn-outline"
+              href="tel:+4989000000"
+              style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
+            >
+              089 — Nummer eintragen
+            </a>
+          </>
+        }
+      />
 
       <Abschnitt narrow style={{ paddingTop: 0 }} label="Für wen" titel="Care ist der richtige Weg, wenn">
         <div style={{ marginTop: "var(--s6)" }}>

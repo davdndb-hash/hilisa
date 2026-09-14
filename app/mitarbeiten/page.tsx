@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   Abschnitt,
   Fragenliste,
+  Hero,
   Kartenraster,
   Punkteliste,
   Rueckrufblock,
@@ -164,43 +165,26 @@ const FRAGEN = [
 export default function Mitarbeiten() {
   return (
     <>
-      <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
-        <div className="wrap">
-          <div className="surface-olive" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <span className="label on-olive">Mitarbeiten</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "20ch" }}>
-              Zwei Stunden bei einem Menschen, der sich auf dich freut.
-            </h1>
-            <p className="lead" style={{ color: "var(--on-olive-soft)" }}>
-              Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München.
-              Festangestellt, mit bezahlter Schulung, feste Kundinnen in deinem Viertel.
-              Keine Körperpflege, keine Selbstständigkeit, kein Springerdienst über eine App.
-            </p>
-            <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="tel:+4989000000">
-                089 — Nummer eintragen
-              </a>
-              <a
-                className="btn btn-outline"
-                href="#rueckruf"
-                style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-              >
-                Lieber zurückrufen lassen
-              </a>
-            </div>
-            <p
-              style={{
-                marginTop: "var(--s6)",
-                marginBottom: 0,
-                fontSize: 17,
-                color: "var(--on-olive-soft)",
-              }}
+      <Hero
+        eyebrow="Mitarbeiten"
+        title="Zwei Stunden bei einem Menschen, der sich auf dich freut."
+        lead="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Festangestellt, mit bezahlter Schulung, feste Kundinnen in deinem Viertel. Keine Körperpflege, keine Selbstständigkeit, kein Springerdienst über eine App."
+        cta={
+          <>
+            <a className="btn btn-accent" href="tel:+4989000000">
+              089 — Nummer eintragen
+            </a>
+            <a
+              className="btn btn-outline"
+              href="#rueckruf"
+              style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              Im ersten Schritt genügt ein Anruf. Kein Anschreiben, kein Lebenslauf.
-            </p>
-          </div>
-        </div>
-      </section>
+              Lieber zurückrufen lassen
+            </a>
+          </>
+        }
+        fineprint="Im ersten Schritt genügt ein Anruf. Kein Anschreiben, kein Lebenslauf."
+      />
 
       <Abschnitt
         id="das-ist-es"

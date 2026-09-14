@@ -3,6 +3,7 @@ import {
   Abschnitt,
   AndereZweige,
   Fragenliste,
+  Hero,
   Kartenraster,
   Punkteliste,
   Rueckrufblock,
@@ -124,43 +125,26 @@ const FRAGEN = [
 export default function FuerBetriebe() {
   return (
     <>
-      <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s9)" }}>
-        <div className="wrap">
-          <div className="surface-olive" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <span className="label on-olive">Weg 3 von 3 · Bezahlt wird von: {Z.zahler}</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "20ch" }}>
-              Ihre Bewohner haben Anspruch auf 131 Euro im Monat. Die meisten rufen ihn nicht ab.
-            </h1>
-            <p className="lead" style={{ color: "var(--on-olive-soft)" }}>
-              Bauen Sie die Alltagsbegleitung in Ihrem Haus selbst auf — mit unserem Konzept,
-              unserer Schulung und unserer Erfahrung im Anerkennungsverfahren. Ihr Personal,
-              Ihre Anerkennung, Ihr Ergebnis.
-            </p>
-            <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="#rueckruf">
-                Standortrechnung anfordern
-              </a>
-              <a
-                className="btn btn-outline"
-                href="tel:+4989000000"
-                style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-              >
-                089 — Nummer eintragen
-              </a>
-            </div>
-            <p
-              style={{
-                marginTop: "var(--s6)",
-                marginBottom: 0,
-                fontSize: 17,
-                color: "var(--on-olive-soft)",
-              }}
+      <Hero
+        eyebrow={`Weg 3 von 3 · Bezahlt wird von: ${Z.zahler}`}
+        title="Ihre Bewohner haben Anspruch auf 131 Euro im Monat. Die meisten rufen ihn nicht ab."
+        lead="Bauen Sie die Alltagsbegleitung in Ihrem Haus selbst auf — mit unserem Konzept, unserer Schulung und unserer Erfahrung im Anerkennungsverfahren. Ihr Personal, Ihre Anerkennung, Ihr Ergebnis."
+        cta={
+          <>
+            <a className="btn btn-accent" href="#rueckruf">
+              Standortrechnung anfordern
+            </a>
+            <a
+              className="btn btn-outline"
+              href="tel:+4989000000"
+              style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              Kostenlos und unverbindlich, bevor irgendetwas unterschrieben wird.
-            </p>
-          </div>
-        </div>
-      </section>
+              089 — Nummer eintragen
+            </a>
+          </>
+        }
+        fineprint="Kostenlos und unverbindlich, bevor irgendetwas unterschrieben wird."
+      />
 
       <Abschnitt narrow style={{ paddingTop: 0 }} label="Für wen" titel="Enterprise passt, wenn">
         <div style={{ marginTop: "var(--s6)" }}>

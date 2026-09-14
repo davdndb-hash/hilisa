@@ -3,6 +3,7 @@ import ModellFinder from "@/components/ModellFinder";
 import {
   Abschnitt,
   Fragenliste,
+  Hero,
   Kartenraster,
   Rueckrufblock,
   Zweigkarte,
@@ -121,44 +122,27 @@ export default function Home() {
   return (
     <>
       {/* -------------------------------------------------------------- Hero */}
-      <section style={{ paddingTop: "var(--s12)", paddingBottom: "var(--s12)" }}>
-        <div className="wrap">
-          <div className="surface-olive" style={{ padding: "clamp(28px, 5vw, 56px)" }}>
-            <span className="label on-olive">Begleitung in München</span>
-            <h1 style={{ color: "var(--paper)", maxWidth: "19ch" }}>
-              Jede Woche dieselbe Begleiterin. In den meisten Fällen zahlt die Kasse.
-            </h1>
-            <p className="lead" style={{ color: "var(--on-olive-soft)" }}>
-              Spaziergang, Einkauf, Arzttermin oder einfach zwei Stunden reden. Es gibt drei
-              Wege zu uns — je nachdem, wer bezahlt. Wir sagen dir am Telefon, welcher deiner
-              ist.
-            </p>
-            <div className="stack-cta" style={{ marginTop: "var(--s9)" }}>
-              <a className="btn btn-accent" href="#zweige">
-                Die drei Wege ansehen
-              </a>
-              <a
-                className="btn btn-outline"
-                href="tel:+4989000000"
-                style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-              >
-                089 — Nummer eintragen
-              </a>
-            </div>
-            <p
-              style={{
-                marginTop: "var(--s6)",
-                marginBottom: 0,
-                fontSize: 17,
-                color: "var(--on-olive-soft)",
-              }}
+      <Hero
+        eyebrow="Begleitung in München"
+        title="Jede Woche dieselbe Begleiterin. In den meisten Fällen zahlt die Kasse."
+        titleWidth="19ch"
+        lead="Spaziergang, Einkauf, Arzttermin oder einfach zwei Stunden reden. Es gibt drei Wege zu uns — je nachdem, wer bezahlt. Wir sagen dir am Telefon, welcher deiner ist."
+        cta={
+          <>
+            <a className="btn btn-accent" href="#zweige">
+              Die drei Wege ansehen
+            </a>
+            <a
+              className="btn btn-outline"
+              href="tel:+4989000000"
+              style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch
-              offen ist.
-            </p>
-          </div>
-        </div>
-      </section>
+              089 — Nummer eintragen
+            </a>
+          </>
+        }
+        fineprint="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch offen ist."
+      />
 
       {/* ------------------------------------------------------------ Zweige */}
       <Abschnitt
@@ -208,14 +192,7 @@ export default function Home() {
         titel="Wir schicken keine Fremden. Wir schicken deine Begleiterin."
         lead="Das Schwierigste an dieser Arbeit ist nicht die Wäsche. Es ist die Frage, wer da eigentlich in der Wohnung steht, wenn du nicht dabei bist."
       >
-        <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
-          {VERTRAUEN.map((v) => (
-            <div key={v.titel} style={{ borderTop: "3px solid var(--olive-ink)", paddingTop: "var(--s4)" }}>
-              <h3>{v.titel}</h3>
-              <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{v.text}</p>
-            </div>
-          ))}
-        </div>
+        <Kartenraster eintraege={VERTRAUEN} />
       </Abschnitt>
 
       {/* -------------------------------------------------------- Mitarbeiten */}
