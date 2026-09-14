@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } from "@/components/Bausteine";
+import { IconBegleitung, IconKochen, IconPost, IconHaushalt, IconZeitZuZweit, IconHandy } from "@/components/Icons";
 
 /**
  * Startseite (Care-only, seit 14.9.2026 — dritte Überarbeitung 14.9.2026 abends).
@@ -34,26 +35,32 @@ const LEISTUNGEN = [
   {
     titel: "Begleitung",
     text: "Zum Arzt, zur Bank, zum Friedhof, zum Einkaufen. Mit dem Auto oder zu Fuß, wie es gerade geht.",
+    icon: <IconBegleitung />,
   },
   {
     titel: "Kochen und Einkauf",
     text: "Gemeinsam kochen oder vorkochen, Vorräte auffüllen, Rezepte in der Apotheke holen.",
+    icon: <IconKochen />,
   },
   {
     titel: "Post und Papierkram",
     text: "Briefe sortieren, Formulare verstehen, Termine notieren, Anträge vorbereiten.",
+    icon: <IconPost />,
   },
   {
     titel: "Haushalt",
     text: "Wäsche, Küche, aufräumen, Betten frisch beziehen. Keine Handwerksarbeiten.",
+    icon: <IconHaushalt />,
   },
   {
     titel: "Zeit zu zweit",
     text: "Kaffee, Spaziergang, Karten, Fotoalben, erzählen. Der Teil, den Angehörige am meisten vermissen.",
+    icon: <IconZeitZuZweit />,
   },
   {
     titel: "Handy und Tablet",
     text: "Videoanruf mit den Enkeln, Fotos anschauen, Termine eintragen, Apps erklären.",
+    icon: <IconHandy />,
   },
 ];
 

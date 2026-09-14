@@ -453,6 +453,17 @@ input:focus, select:focus, textarea:focus { border-color: var(--olive-ink); }
   font-variant-numeric: tabular-nums;
 }
 
+/* Eigenes SVG-Icon statt Nummer, nur in der Leistungen-Karte auf der
+   Startseite (siehe LEISTUNGEN in app/page.tsx, Icons in components/Icons.tsx)
+   — nach Vorbild papa.com/companion-care, wo ein Icon über jedem Punkt steht.
+   Andere Kartenraster-Stellen (mitarbeiten, privat, fuer-betriebe) haben kein
+   icon-Feld und zeigen weiter .index-num. */
+.index-icon {
+  display: block;
+  line-height: 1;
+  margin-bottom: var(--s2);
+}
+
 /* Eigenes Auf/Zu-Zeichen statt des Browser-Dreiecks bei den FAQ. */
 summary { list-style: none; }
 summary::-webkit-details-marker { display: none; }

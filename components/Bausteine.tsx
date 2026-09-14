@@ -128,7 +128,7 @@ export function Kartenraster({
   eintraege,
   spalten = 3,
 }: {
-  eintraege: { titel: string; text: string }[];
+  eintraege: { titel: string; text: string; icon?: React.ReactNode }[];
   spalten?: 2 | 3;
 }) {
   return (
@@ -138,9 +138,13 @@ export function Kartenraster({
           key={e.titel}
           style={{ borderTop: "3px solid var(--olive-ink)", paddingTop: "var(--s4)" }}
         >
-          <span className="index-num" aria-hidden="true">
-            {String(i + 1).padStart(2, "0")}
-          </span>
+          {e.icon ? (
+            <div className="index-icon">{e.icon}</div>
+          ) : (
+            <span className="index-num" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+          )}
           <h3>{e.titel}</h3>
           <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
         </div>
