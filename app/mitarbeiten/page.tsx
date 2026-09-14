@@ -21,18 +21,19 @@ import { GRENZE, ZWEIG_LISTE } from "@/lib/zweige";
  *    wird. Und wer sich vor Körperpflege scheut, soll sofort sehen, dass das hier
  *    nicht vorkommt — das ist unser größtes Argument gegenüber dem Pflegedienst.
  *
- * 2. Sie nennt keinen Stundenlohn. Das Lohnregime (PflegeArbbV oder allgemeiner
- *    Mindestlohn) ist noch nicht anwaltlich geklärt; eine Zahl auf der Website wäre
- *    eine öffentliche Zusage vor dieser Klärung. Stattdessen wird konkret, was
- *    schon feststeht: Festanstellung, bezahlte Schulung, bezahlte Fahrzeit.
- *    Sobald die Klärung da ist, gehört hier eine Zahl hin — sie schlägt jedes
- *    qualitative Versprechen.
+ * 2. Sie nennt kein Honorar. Begleiterinnen arbeiten selbstständig auf
+ *    Honorarbasis (Korrektur 14.9.2026, abends — vorher stand hier fälschlich
+ *    Festanstellung), und die genaue Konditionierung ist noch offen. Stattdessen
+ *    wird konkret, was schon feststeht: selbstständig, eigene Zeiteinteilung,
+ *    feste Kundinnen sobald zugesagt. Die Schulung (30 Unterrichtseinheiten,
+ *    gesetzlich vorgeschrieben) bleibt bestehen — wer sie bezahlt, ist noch offen
+ *    und absichtlich nicht behauptet.
  */
 
 export const metadata: Metadata = {
   title: "Mitarbeiten — Alltagsbegleiterin bei Hi Lisa werden",
   description:
-    "Festangestellt, Minijob oder Teilzeit, bezahlte Schulung, feste Kundinnen in deinem Viertel. Keine Körperpflege, keine Selbstständigkeit, keine Fahrten quer durch die Stadt.",
+    "Selbstständig auf Honorarbasis, deine Zeiten, feste Kundinnen in deinem Viertel. Keine Körperpflege, keine Fahrten quer durch die Stadt.",
 };
 
 const DAS_IST_ES = [
@@ -72,24 +73,24 @@ const DAS_IST_ES_NICHT = [
 
 const BEDINGUNGEN = [
   {
-    titel: "Festangestellt, nicht selbstständig",
-    text: "Minijob oder Teilzeit, Arbeitsvertrag, Lohnabrechnung, Sozialversicherung. Du schreibst keine Rechnungen und meldest kein Gewerbe an. Das ist bei uns eine Grundsatzentscheidung, keine Verhandlungssache.",
+    titel: "Selbstständig, mit klarer Vereinbarung",
+    text: "Du arbeitest auf Honorarbasis und stellst uns eine Rechnung. Kein Arbeitsvertrag, keine Festanstellung — dafür entscheidest du, wie viele Kundinnen und wie viele Stunden zu dir passen.",
   },
   {
-    titel: "Schulung bezahlt, vor dem ersten Einsatz",
-    text: "30 Unterrichtseinheiten nach dem bayerischen Schulungskonzept. Die sind gesetzlich vorgeschrieben, wir bezahlen sie, und du gehst erst danach zum ersten Mal allein zu einer Kundin.",
+    titel: "Schulung vor dem ersten Einsatz",
+    text: "30 Unterrichtseinheiten nach dem bayerischen Schulungskonzept sind gesetzlich vorgeschrieben, bevor du zum ersten Mal allein zu einer Kundin gehst. Die Einzelheiten dazu besprechen wir im Gespräch.",
   },
   {
     titel: "Feste Kundinnen in deinem Viertel",
-    text: "Du bekommst dieselben Menschen zu denselben Zeiten, so wohnortnah wie möglich. Wir bauen München absichtlich Viertel für Viertel auf, damit du nicht im Verkehr stehst statt bei den Menschen zu sitzen.",
+    text: "Du wählst deine Kundinnen in deinem Viertel — einmal zugesagt, sind es dieselben Menschen zu denselben Zeiten. Wir bauen München absichtlich Viertel für Viertel auf, damit du nicht im Verkehr stehst statt bei den Menschen zu sitzen.",
   },
   {
-    titel: "Fahrzeit im Viertel wird bezahlt",
-    text: "Die Wege zwischen zwei Einsätzen im Viertel sind Arbeitszeit, nicht dein Privatvergnügen.",
+    titel: "Kurze Wege im Viertel",
+    text: "Weil wir Viertel für Viertel wachsen, liegen deine Kundinnen nah beieinander — nicht quer durch die Stadt verstreut.",
   },
   {
     titel: "Kein Springerdienst über eine App",
-    text: "Es gibt keine Börse, in der du dir morgens Einsätze schnappst. Dein Plan steht, und wenn er sich ändert, ruft ein Mensch an.",
+    text: "Es gibt keine Börse, in der du dir morgens Einsätze schnappst. Du legst deine Zeiten und Kundinnen selbst fest, und wenn sich etwas ändert, ruft ein Mensch an.",
   },
   {
     titel: "Eine Nummer, wenn es Ärger gibt",
@@ -115,8 +116,8 @@ const WEG = [
     text: "Eine Stunde, persönlich. Danach weißt du, was die Arbeit ist, und wir, ob es passt. Lebenslauf und Führungszeugnis brauchen wir bis hierher.",
   },
   {
-    titel: "Vertrag und Schulung",
-    text: "Arbeitsvertrag, dann die 30 Unterrichtseinheiten. Bezahlt, bevor du zum ersten Mal allein arbeitest.",
+    titel: "Vereinbarung und Schulung",
+    text: "Eine Zusammenarbeitsvereinbarung, dann die 30 Unterrichtseinheiten, bevor du zum ersten Mal allein arbeitest.",
   },
   {
     titel: "Kennenlernen bei der Kundin",
@@ -128,7 +129,7 @@ const FRAGEN = [
   {
     frage: "Was verdiene ich?",
     antwort:
-      "Das besprechen wir im Erstgespräch und nennen dir dabei eine konkrete Zahl. Wir schreiben hier bewusst keine hin, solange die Einordnung ins Lohnregime nicht arbeitsrechtlich abschließend geklärt ist — eine Zahl auf einer Website ist eine Zusage, und wir machen keine, die wir vielleicht korrigieren müssen. Was feststeht: nach Stunden bezahlt, Schulung bezahlt, Fahrzeit im Viertel bezahlt.",
+      "Das besprechen wir im Erstgespräch und nennen dir dabei ein konkretes Honorar pro Einsatz. Du arbeitest selbstständig und stellst uns dafür eine Rechnung — die genauen Konditionen legen wir gemeinsam im Gespräch fest.",
   },
   {
     frage: "Brauche ich eine Ausbildung in der Pflege?",
@@ -138,7 +139,7 @@ const FRAGEN = [
   {
     frage: "Wie viele Stunden sind möglich?",
     antwort:
-      "Von einem Minijob mit ein paar Stunden in der Woche bis Teilzeit. Sag uns, was in deine Woche passt — wir bauen den Plan darum, nicht umgekehrt. Vollzeit ist am Anfang die Ausnahme, weil wir Viertel für Viertel wachsen.",
+      "Das entscheidest du. Ob ein paar Stunden in der Woche oder mehr — du wählst, wie viele Kundinnen und Termine zu deiner Woche passen. Am Anfang ist die Auswahl kleiner, weil wir Viertel für Viertel wachsen.",
   },
   {
     frage: "Brauche ich ein Auto?",
@@ -158,7 +159,7 @@ const FRAGEN = [
   {
     frage: "Arbeite ich bei allen drei Modellen?",
     antwort:
-      "Bei Care und Privat ja, oft bei denselben Menschen — der Unterschied ist nur, wer die Rechnung bekommt, nicht dein Gehalt. In einem Partnerhaus (Enterprise) bist du beim Partnerbetrieb angestellt, nicht bei uns; die Schulung machen trotzdem wir.",
+      "Bei Care und Privat ja, oft bei denselben Menschen — der Unterschied ist nur, wer die Rechnung bekommt, nicht dein Honorar. In einem Partnerhaus (Enterprise) bist du beim Partnerbetrieb angestellt, nicht bei uns; die Schulung machen trotzdem wir.",
   },
 ];
 
@@ -168,7 +169,7 @@ export default function Mitarbeiten() {
       <Hero
         eyebrow="Mitarbeiten"
         title="Zwei Stunden bei einem Menschen, der sich auf dich freut."
-        lead="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Festangestellt, mit bezahlter Schulung, feste Kundinnen in deinem Viertel. Keine Körperpflege, keine Selbstständigkeit, kein Springerdienst über eine App."
+        lead="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Selbstständig auf Honorarbasis, deine Zeiten, feste Kundinnen in deinem Viertel. Keine Körperpflege, kein Springerdienst über eine App."
         cta={
           <>
             <a className="btn btn-accent" href="tel:+4989000000">

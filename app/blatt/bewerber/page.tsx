@@ -9,6 +9,7 @@ import { BlattFuss, BlattKopf, BlattListe, BlattSpalte } from "@/components/Blat
  * das Angebot in der Überschrift und die Nummer groß am Fuß.
  *
  * Kein Stundenlohn. Begründung steht in app/mitarbeiten/page.tsx.
+ * Selbstständig auf Honorarbasis, nicht angestellt (Korrektur 14.9.2026, abends).
  */
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function BlattBewerber() {
       <BlattKopf
         marker="Stellenangebot"
         titel="Zwei Stunden bei einem Menschen, der sich auf Sie freut."
-        unterzeile="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Festangestellt im Minijob oder in Teilzeit, bezahlte Schulung, feste Kundinnen in Ihrem Viertel."
+        unterzeile="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Selbstständig auf Honorarbasis, Ihre Zeiten, feste Kundinnen in Ihrem Viertel."
       />
 
       <div className="blatt-koerper">
@@ -57,11 +58,11 @@ export default function BlattBewerber() {
           <BlattListe
             zwei
             punkte={[
-              "Festanstellung im Minijob oder in Teilzeit — Vertrag, Lohnabrechnung, Sozialversicherung. Keine Rechnungen, kein Gewerbe.",
-              "Die vorgeschriebene Schulung (30 Unterrichtseinheiten) bezahlen wir.",
-              "Feste Kundinnen zu festen Zeiten, so wohnortnah wie möglich.",
-              "Fahrzeit zwischen Einsätzen im Viertel ist Arbeitszeit.",
-              "Kein Springerdienst über eine App. Ihr Plan steht.",
+              "Selbstständige Zusammenarbeit auf Honorarbasis — Sie stellen die Rechnung, kein Arbeitsvertrag.",
+              "Die gesetzlich vorgeschriebene Schulung (30 Unterrichtseinheiten) vor dem ersten Einsatz — Details besprechen wir im Gespräch.",
+              "Sie wählen Ihre Kundinnen in Ihrem Viertel — feste Zeiten, sobald Sie zugesagt haben.",
+              "Wir planen Einsätze im selben Viertel, damit Wege kurz bleiben.",
+              "Kein Springerdienst von einer Börse. Sie entscheiden, welche Kundinnen und Zeiten zu Ihnen passen.",
               "Eine Nummer für Ärger, die nicht bei der Einsatzleitung klingelt.",
             ]}
           />
@@ -83,17 +84,16 @@ export default function BlattBewerber() {
           <ol className="blatt-schritte">
             <li>Anrufen und sagen, dass es um eine Stelle geht. Kein Anschreiben.</li>
             <li>Wir treffen uns eine Stunde. Dazu Lebenslauf und Führungszeugnis.</li>
-            <li>Arbeitsvertrag, dann die bezahlte Schulung.</li>
+            <li>Vereinbarung, dann die Schulung.</li>
             <li>Beim ersten Termin bei der Kundin ist jemand von uns dabei.</li>
           </ol>
         </BlattSpalte>
 
         <div className="blatt-breit">
           <div className="blatt-kasten">
-            <strong>Zum Lohn.</strong> Im ersten Telefonat nennen wir Ihnen eine konkrete
-            Zahl. Auf ein Blatt schreiben wir keine, solange die arbeitsrechtliche
-            Einordnung nicht geklärt ist. Fest steht: nach Stunden bezahlt, Schulung
-            bezahlt, Fahrzeit im Viertel bezahlt.
+            <strong>Zum Honorar.</strong> Im ersten Telefonat nennen wir Ihnen eine
+            konkrete Zahl pro Einsatz. Sie arbeiten selbstständig und stellen uns
+            dafür eine Rechnung — die genauen Konditionen besprechen wir gemeinsam.
           </div>
         </div>
       </div>

@@ -85,7 +85,7 @@ export default function BlattKunden() {
           <BlattListe
             zwei
             punkte={[
-              "Festangestellt bei uns — keine App, keine wechselnden Fremden",
+              "Sorgfältig ausgesucht — keine App, keine wechselnden Fremden",
               "Führungszeugnis bei der Einstellung und alle drei Jahre",
               "30 Stunden Schulung, bevor jemand allein kommt",
               "Passt es nicht, tauschen wir — ohne Diskussion, ohne Kosten",

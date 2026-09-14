@@ -1,17 +1,20 @@
 import Link from "next/link";
-import { Abschnitt, Hero, Kartenraster, Rueckrufblock } from "@/components/Bausteine";
+import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } from "@/components/Bausteine";
 
 /**
- * Startseite (Care-only, seit 14.9.2026).
+ * Startseite (Care-only, seit 14.9.2026 — überarbeitet 14.9.2026 abends).
  *
- * Privat und Enterprise sind für jetzt aus dem Kundenauftritt genommen — Code und
- * Routen bleiben (`/privat`, `/fuer-betriebe`, `lib/zweige.ts`), nur Navigation und
- * Querverweise sind weg. Architektur angelehnt an papa.com: Hero → Leistungen
- * (Value Props) → Vertrauen (Trust) → kurzer Ablauf-Teaser → Rückruf. Keine
- * Drei-Wege-Auswahl mehr, kein Modell-Finder — es gibt nur noch einen Weg.
+ * Zweite Überarbeitung: Hero auf einen Satz reduziert (keine separate Lead-Zeile
+ * mehr). Die Architektur war zu monoton — zwei optisch identische
+ * Sechser-Kartenraster hintereinander (Leistungen, Vertrauen) sahen nach
+ * derselben Vorlage zweimal aus, und der "So läuft es ab"-Absatz danach hatte
+ * kein visuelles Gewicht. Jetzt: Kartenraster (Leistungen) → Punkteliste
+ * (Vertrauen, andere Form als eine Bausteine-Wiederholung) → Schritte
+ * (kompakter Drei-Schritte-Ablauf, tatsächlich auf der Startseite wie bei
+ * papa.com, nicht nur als Textverweis) → Rückruf.
  *
- * Details, der Entlastungsbetrags-Rechner und die Fragen zur Abrechnung stehen auf
- * `/care`, die jetzt die Info-Seite ist.
+ * Privat und Enterprise bleiben aus Navigation und Querverweisen (siehe
+ * Abschnitt 5 im Projekt). Details, der Rechner und die volle FAQ stehen auf /care.
  */
 
 const LEISTUNGEN = [
@@ -41,30 +44,31 @@ const LEISTUNGEN = [
   },
 ];
 
+// Begleiterinnen arbeiten selbstständig auf Honorarbasis für Hi Lisa, nicht
+// angestellt. "Persönlich ausgesucht" ersetzt die frühere Formulierung
+// "Festangestellt" — derselbe Vertrauenspunkt (keine wechselnden Fremden über
+// eine App), ohne einen falschen Beschäftigungsstatus zu behaupten.
 const VERTRAUEN = [
+  "Persönlich ausgesucht — nicht wechselnde Fremde über eine App",
+  "Führungszeugnis bei der Einstellung und danach alle drei Jahre",
+  "30 Stunden Schulung, bevor jemand zum ersten Mal allein kommt",
+  "Wir schauen selbst vorbei — im ersten Monat und danach jedes Vierteljahr",
+  "Klare Grenzen schriftlich: kein Waschen, keine Medikamente, kein Bargeld",
+  "Eine Nummer für Beschwerden, die nicht bei der Einsatzleitung klingelt",
+];
+
+const ABLAUF_KURZ = [
   {
-    titel: "Festangestellt",
-    text: "Unsere Begleiterinnen sind bei uns angestellt. Keine App, keine wechselnden Fremden.",
+    titel: "Anrufen oder schreiben",
+    text: "Zwanzig Minuten am Telefon. Wir klären, was gebraucht wird.",
   },
   {
-    titel: "Jede legt ein Führungszeugnis vor",
-    text: "Bei der Einstellung und danach alle drei Jahre. Vorgeschrieben ist das nicht. Wir machen es trotzdem.",
+    titel: "Kostenlos kennenlernen",
+    text: "Bei euch zu Hause, zusammen mit der Begleiterin, die später kommt.",
   },
   {
-    titel: "Geschult, bevor sie kommt",
-    text: "30 Unterrichtseinheiten nach dem bayerischen Schulungskonzept, bevor jemand das erste Mal allein kommt.",
-  },
-  {
-    titel: "Wir schauen selbst vorbei",
-    text: "Im ersten Monat und danach jedes Vierteljahr. Bei euch, nicht am Telefon.",
-  },
-  {
-    titel: "Klare Grenzen, schriftlich",
-    text: "Kein Waschen, keine Medikamente, kein Bargeld, keine Vollmachten. Von beiden Seiten unterschrieben.",
-  },
-  {
-    titel: "Eine Nummer für Beschwerden",
-    text: "Sie klingelt nicht bei der Einsatzleitung. Für euch und für unsere Mitarbeiterinnen.",
+    titel: "Wir übernehmen den Papierkram",
+    text: "Direkt mit der Kasse abgerechnet. Feste Woche, feste Person.",
   },
 ];
 
@@ -74,9 +78,8 @@ export default function Home() {
       {/* -------------------------------------------------------------- Hero */}
       <Hero
         eyebrow="Begleitung in München"
-        title="Deine Pflegekasse zahlt 131 € im Monat. Die meisten holen sie sich nie."
-        titleWidth="19ch"
-        lead="Jede Woche dieselbe Begleiterin: Spaziergang, Einkauf, Arzttermin, oder einfach zwei Stunden reden. Nur 38 von 100 Familien mit Pflegegeld nutzen dieses Guthaben überhaupt — wir rechnen direkt mit der Kasse ab, du bekommst keine Rechnung."
+        title="Deine Pflegekasse zahlt 131 € im Monat — die meisten holen sich das Geld nie."
+        titleWidth="22ch"
         cta={
           <>
             <a className="btn btn-accent" href="#rueckruf">
@@ -107,23 +110,25 @@ export default function Home() {
       {/* --------------------------------------------------------- Vertrauen */}
       <Abschnitt
         id="vertrauen"
+        narrow
         label="Warum Angehörige uns die Wohnung anvertrauen"
         titel="Wir schicken keine Fremden. Wir schicken deine Begleiterin."
-        lead="Das Schwierigste an dieser Arbeit ist nicht die Wäsche. Es ist die Frage, wer da eigentlich in der Wohnung steht, wenn du nicht dabei bist."
       >
-        <Kartenraster eintraege={VERTRAUEN} />
+        <div style={{ marginTop: "var(--s6)" }}>
+          <Punkteliste punkte={VERTRAUEN} />
+        </div>
       </Abschnitt>
 
-      {/* ------------------------------------------------------ Ablauf-Teaser */}
+      {/* ------------------------------------------------------------ Ablauf */}
       <Abschnitt
-        narrow
+        id="ablauf"
         label="So läuft es ab"
         titel="Anrufen. Kennenlernen. Wir übernehmen den Papierkram."
-        lead="Vier Schritte, und du machst davon genau einen — den ersten Anruf. Den vollständigen Ablauf, den Rechner für dein Guthaben und Antworten auf die häufigsten Fragen zur Kassenabrechnung findest du auf einer eigenen Seite."
       >
+        <Schritte schritte={ABLAUF_KURZ} />
         <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
           <Link className="btn btn-primary" href="/care">
-            So funktioniert&apos;s im Detail
+            Alle Details, der Rechner und häufige Fragen
           </Link>
         </div>
       </Abschnitt>
