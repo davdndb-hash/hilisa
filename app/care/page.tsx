@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Rechner from "@/components/Rechner";
 import {
   Abschnitt,
-  AndereZweige,
   Fragenliste,
   Grenzhinweis,
   Hero,
@@ -12,10 +11,19 @@ import {
 } from "@/components/Bausteine";
 import { GRENZE, ZWEIGE } from "@/lib/zweige";
 
+/**
+ * Info-Seite (vormals Zweigseite, seit 14.9.2026 die Detailseite für die
+ * Care-only-Startseite). "Weg 1 von 3" und der Querverweis auf die beiden
+ * anderen Zweige sind raus — es gibt nur noch diesen einen Weg. Der Abschnitt
+ * "Was das für Begleiterinnen bedeutet" ist raus, weil das eine
+ * Bewerberinnen-Frage ist, keine Kundenfrage — die gehört auf /mitarbeiten,
+ * nicht hierher.
+ */
+
 const Z = ZWEIGE.care;
 
 export const metadata: Metadata = {
-  title: "Hi Lisa Care — die Pflegekasse zahlt",
+  title: "So funktioniert's — Hi Lisa Care",
   description:
     "Mit Pflegegrad zahlt die Pflegekasse 131 Euro im Monat für Begleitung und Hilfe im Haushalt. Wir rechnen direkt mit der Kasse ab — du bekommst keine Rechnung.",
 };
@@ -39,13 +47,6 @@ const ABLAUF = [
   },
 ];
 
-const FUER_BEGLEITER = [
-  "Der Einsatz ist geplant, nicht spontan: dieselbe Kundin, dieselbe Uhrzeit, jede Woche.",
-  "Die Dokumentation ist Pflicht, weil die Kasse sie sehen will — dafür ist sie kurz und wir haben ein Formular.",
-  "Die 30 Unterrichtseinheiten nach dem bayerischen Schulungskonzept sind gesetzlich vorgeschrieben. Wir bezahlen sie und du machst sie vor dem ersten Einsatz.",
-  "Die Grenze ist nicht verhandelbar: keine Körperpflege, keine Medikamente. Wenn eine Kundin darum bittet, sagst du nein und rufst die Einsatzleitung an.",
-];
-
 const FRAGEN = [
   {
     frage: "Woher kommen die 131 Euro?",
@@ -65,12 +66,12 @@ const FRAGEN = [
   {
     frage: "Zahlt die Kasse wirklich alles?",
     antwort:
-      "Sie zahlt bis zur Höhe deines Guthabens. Wer mehr Stunden will, als das Guthaben deckt, bucht den Rest über Hi Lisa Privat dazu — auf derselben Rechnung, mit derselben Begleiterin.",
+      "Sie zahlt bis zur Höhe deines Guthabens. Wer mehr Stunden braucht, als das Guthaben deckt, bespricht das mit uns im Erstgespräch — wir sagen dir ehrlich, ob und wie sich das für euch lohnt.",
   },
   {
     frage: "Muss meine Mutter dafür etwas beantragen?",
     antwort:
-      "Wenn ein Pflegegrad da ist: nein, nur eine Unterschrift auf der Abtretungserklärung. Wenn keiner da ist: dann braucht es einen Antrag bei der Pflegekasse und einen Termin mit dem Medizinischen Dienst. Wir sagen dir am Telefon, ob das Sinn ergibt, und du kannst in der Zwischenzeit privat starten.",
+      "Wenn ein Pflegegrad da ist: nein, nur eine Unterschrift auf der Abtretungserklärung. Wenn keiner da ist: dann braucht es einen Antrag bei der Pflegekasse und einen Termin mit dem Medizinischen Dienst. Wir sagen dir am Telefon, ob das Sinn ergibt.",
   },
 ];
 
@@ -78,8 +79,8 @@ export default function Care() {
   return (
     <>
       <Hero
-        eyebrow={`Weg 1 von 3 · Bezahlt wird von: ${Z.zahler}`}
-        title="Deine Pflegekasse zahlt 131 Euro im Monat. Die meisten holen sie sich nie."
+        eyebrow="So funktioniert's"
+        title="Alles zu Hi Lisa Care, an einem Ort."
         titleWidth="18ch"
         lead="Nur 38 von 100 Familien mit Pflegegeld nutzen dieses Geld überhaupt. Wir rechnen direkt mit der Kasse ab — du bekommst keine Rechnung und streckst nichts vor."
         cta={
@@ -110,29 +111,9 @@ export default function Care() {
         </div>
       </section>
 
-      <Abschnitt
-        id="ablauf"
-        label="So läuft es ab"
-        titel="Vier Schritte, und du machst davon einen."
-      >
+      <Abschnitt id="ablauf" label="So läuft es ab" titel="Vier Schritte, und du machst davon einen.">
         <Schritte schritte={ABLAUF} />
         <Grenzhinweis text={GRENZE} />
-      </Abschnitt>
-
-      <Abschnitt
-        id="begleiterinnen"
-        narrow
-        label="Was das für Begleiterinnen bedeutet"
-        titel="Care ist der planbarste Zweig"
-        lead="Wenn du bei uns arbeitest, merkst du den Unterschied zwischen den drei Zweigen an vier Stellen."
-      >
-        <div style={{ marginTop: "var(--s6)" }}>
-          <Punkteliste punkte={FUER_BEGLEITER} />
-        </div>
-        <p style={{ marginTop: "var(--s6)", color: "var(--ink-70)", fontSize: 18 }}>
-          Angestellt, nicht selbstständig. Nach Stunden bezahlt, Schulung bezahlt, Fahrzeit
-          innerhalb des Viertels bezahlt.
-        </p>
       </Abschnitt>
 
       <Abschnitt id="fragen" narrow label="Häufige Fragen" titel="Fragen zur Kassenabrechnung">
@@ -143,8 +124,6 @@ export default function Care() {
           große Schrift, Telefonnummer unten.
         </p>
       </Abschnitt>
-
-      <AndereZweige ausser="care" />
 
       <Rueckrufblock titel="Wir prüfen mit, wie viel bei der Kasse noch offen ist." />
     </>

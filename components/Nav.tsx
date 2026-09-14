@@ -4,25 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
-import { ZWEIG_LISTE } from "@/lib/zweige";
 
 /**
  * Kopfzeile.
  *
- * Auf dem Telefon war vorher nur Marke und Telefonnummer sichtbar — bei einer
- * Seite reichte das. Bei vier Seiten braucht es ein Menü, sonst kommt niemand
- * mit dem Handy auf die Zweigseiten.
+ * Seit 14.9.2026 Care-only: nur noch ein Link zur Info-Seite. Mitarbeiten steht
+ * bewusst nicht mehr hier — das ist keine Kundennavigation, sondern eine
+ * Bewerberinnen-Seite, und findet sich in der Fußzeile.
  *
  * Bedienregeln: Schaltfläche 52 px hoch, aria-expanded, Escape schließt,
  * Klick außerhalb schließt, der Fokus bleibt sichtbar. Kein Overlay über den
  * ganzen Bildschirm — das verwirrt mehr, als es hilft.
  */
 
-const LINKS = [
-  ...ZWEIG_LISTE.map((z) => ({ href: z.href, text: z.kurz })),
-  { href: "/#finder", text: "Passt das?" },
-  { href: "/mitarbeiten", text: "Mitarbeiten" },
-];
+const LINKS = [{ href: "/care", text: "So funktioniert's" }];
 
 export default function Nav() {
   const [offen, setOffen] = useState(false);

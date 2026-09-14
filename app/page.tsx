@@ -1,24 +1,17 @@
 import Link from "next/link";
-import ModellFinder from "@/components/ModellFinder";
-import {
-  Abschnitt,
-  Fragenliste,
-  Hero,
-  Kartenraster,
-  Rueckrufblock,
-  Zweigkarte,
-} from "@/components/Bausteine";
-import { GRENZE, ZWEIG_LISTE } from "@/lib/zweige";
+import { Abschnitt, Hero, Kartenraster, Rueckrufblock } from "@/components/Bausteine";
 
 /**
- * Startseite.
+ * Startseite (Care-only, seit 14.9.2026).
  *
- * Aufgabe: in dreißig Sekunden klarmachen, dass es drei Wege gibt und welcher
- * gemeint ist. Erst danach kommt, was wir eigentlich machen.
+ * Privat und Enterprise sind für jetzt aus dem Kundenauftritt genommen — Code und
+ * Routen bleiben (`/privat`, `/fuer-betriebe`, `lib/zweige.ts`), nur Navigation und
+ * Querverweise sind weg. Architektur angelehnt an papa.com: Hero → Leistungen
+ * (Value Props) → Vertrauen (Trust) → kurzer Ablauf-Teaser → Rückruf. Keine
+ * Drei-Wege-Auswahl mehr, kein Modell-Finder — es gibt nur noch einen Weg.
  *
- * Gelesen wird das von der Tochter, 50 bis 65, abends am Handy. Deshalb steht
- * die Telefonnummer ohne Scrollen in der Kopfzeile und der Finder direkt unter
- * den drei Karten.
+ * Details, der Entlastungsbetrags-Rechner und die Fragen zur Abrechnung stehen auf
+ * `/care`, die jetzt die Info-Seite ist.
  */
 
 const LEISTUNGEN = [
@@ -75,62 +68,19 @@ const VERTRAUEN = [
   },
 ];
 
-const FRAGEN = [
-  {
-    frage: "Was ist der Unterschied zwischen Care und Privat?",
-    antwort:
-      "Nur, wer bezahlt. Die Begleiterin, die Aufgaben und die Regeln sind identisch. Bei Care zahlt die Pflegekasse und wir rechnen dort direkt ab — du bekommst keine Rechnung, brauchst aber einen Pflegegrad. Bei Privat zahlst du selbst, brauchst dafür keinen Pflegegrad, keinen Antrag und keine Begutachtung. Viele nutzen beides: die Kassenstunden zuerst, den Rest privat dazu.",
-  },
-  {
-    frage: "Meine Mutter hat noch keinen Pflegegrad. Geht das trotzdem?",
-    antwort:
-      "Ja, über Hi Lisa Privat. Schon Pflegegrad 1 reicht aber für das Geld von der Kasse, und der wird öfter anerkannt, als die meisten denken. Wir sagen dir am Telefon, ob ein Antrag Sinn ergibt — und du kannst privat starten, während er läuft.",
-  },
-  {
-    frage: "Wir haben das Geld seit Jahren nicht genutzt. Ist es weg?",
-    antwort:
-      "Nicht alles. Was im laufenden Jahr übrig bleibt, kannst du noch bis zum 30. Juni des nächsten Jahres nutzen. Alles davor ist verfallen. Ruf also lieber heute an als im Juli.",
-  },
-  {
-    frage: "Bekommt sie wirklich immer dieselbe Person?",
-    antwort:
-      "Ja, das ist der Kern von Hi Lisa. Jede Kundin hat eine feste Begleiterin und eine Vertretung, die sie ebenfalls kennengelernt hat. Wir arbeiten nicht mit einer Börse, in der sich jede Woche jemand anderes den Termin schnappt.",
-  },
-  {
-    frage: "Was ist, wenn die beiden nicht miteinander können?",
-    antwort:
-      "Dann tauschen wir. Ohne Diskussion und ohne Kosten. Genau deshalb gibt es das Kennenlernen vor dem ersten richtigen Termin.",
-  },
-  {
-    frage: "Helft ihr auch beim Waschen und Anziehen?",
-    antwort:
-      "Nein. Das darf nur ein Pflegedienst. Wenn das gebraucht wird, nennen wir dir Dienste in eurem Viertel, mit denen wir gut zusammenarbeiten. Beides nebeneinander ist völlig normal.",
-  },
-  {
-    frage: "In welchen Stadtteilen seid ihr unterwegs?",
-    antwort:
-      "Wir bauen München Viertel für Viertel auf, damit unsere Begleiterinnen nicht im Verkehr stehen statt bei euch zu sitzen. Aktuell: Stadtteile eintragen. Wohnt ihr außerhalb, sag uns Bescheid — wir melden uns, sobald wir da sind.",
-  },
-  {
-    frage: "Ich würde gern bei Hi Lisa arbeiten. Wen rufe ich an?",
-    antwort:
-      "Dieselbe Nummer. Sag am Telefon, dass es um eine Stelle geht. Wir stellen fest an — Minijob oder Teilzeit, nach Stunden bezahlt, mit bezahlter Schulung vor dem ersten Einsatz. Keine Selbstständigkeit, keine Fahrten quer durch die Stadt.",
-  },
-];
-
 export default function Home() {
   return (
     <>
       {/* -------------------------------------------------------------- Hero */}
       <Hero
         eyebrow="Begleitung in München"
-        title="Jede Woche dieselbe Begleiterin. In den meisten Fällen zahlt die Kasse."
+        title="Deine Pflegekasse zahlt 131 € im Monat. Die meisten holen sie sich nie."
         titleWidth="19ch"
-        lead="Spaziergang, Einkauf, Arzttermin oder einfach zwei Stunden reden. Es gibt drei Wege zu uns — je nachdem, wer bezahlt. Wir sagen dir am Telefon, welcher deiner ist."
+        lead="Jede Woche dieselbe Begleiterin: Spaziergang, Einkauf, Arzttermin, oder einfach zwei Stunden reden. Nur 38 von 100 Familien mit Pflegegeld nutzen dieses Guthaben überhaupt — wir rechnen direkt mit der Kasse ab, du bekommst keine Rechnung."
         cta={
           <>
-            <a className="btn btn-accent" href="#zweige">
-              Die drei Wege ansehen
+            <a className="btn btn-accent" href="#rueckruf">
+              Rückruf anfordern
             </a>
             <a
               className="btn btn-outline"
@@ -143,37 +93,6 @@ export default function Home() {
         }
         fineprint="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch offen ist."
       />
-
-      {/* ------------------------------------------------------------ Zweige */}
-      <Abschnitt
-        id="zweige"
-        style={{ paddingTop: 0 }}
-        label="Die drei Wege"
-        titel="Dieselbe Begleiterin. Drei Wege, sie zu bezahlen."
-        lead="Was wir machen, ist in allen drei Fällen gleich. Der Unterschied ist, wer die Rechnung bekommt — und ob es dafür einen Pflegegrad braucht."
-      >
-        <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
-          {ZWEIG_LISTE.map((z) => (
-            <Zweigkarte key={z.id} zweig={z} />
-          ))}
-        </div>
-        <div className="card card-quiet" style={{ marginTop: "var(--s6)" }}>
-          <h3>Wo wir aufhören — in allen drei Fällen</h3>
-          <p style={{ marginBottom: 0, fontSize: 18 }}>{GRENZE}</p>
-        </div>
-      </Abschnitt>
-
-      {/* ------------------------------------------------------------ Finder */}
-      <Abschnitt
-        id="finder"
-        narrow
-        label="Zwei Fragen"
-        titel="Nicht sicher, welcher Weg gemeint ist?"
-      >
-        <div style={{ marginTop: "var(--s6)" }}>
-          <ModellFinder />
-        </div>
-      </Abschnitt>
 
       {/* -------------------------------------------------------- Leistungen */}
       <Abschnitt
@@ -195,55 +114,17 @@ export default function Home() {
         <Kartenraster eintraege={VERTRAUEN} />
       </Abschnitt>
 
-      {/* -------------------------------------------------------- Mitarbeiten */}
-      <Abschnitt id="mitarbeiten" narrow>
-        <div className="card card-rose">
-          <span className="badge" style={{ background: "var(--paper)" }}>
-            Mitarbeiten
-          </span>
-          <h2 style={{ marginTop: "var(--s4)", fontSize: "clamp(24px, 3.6vw, 30px)" }}>
-            Du willst diese Arbeit machen?
-          </h2>
-          <p style={{ fontSize: 18 }}>
-            Wir stellen fest an — Minijob oder Teilzeit, nach Stunden bezahlt, mit bezahlter
-            Schulung vor dem ersten Einsatz. Keine Selbstständigkeit, keine Rechnungen, die du
-            selbst schreiben musst. Feste Kundinnen in deinem Viertel statt Fahrten quer durch
-            die Stadt.
-          </p>
-          <p style={{ fontSize: 18 }}>
-            Was der Unterschied zwischen den drei Zweigen für dich bedeutet, steht auf jeder
-            Zweigseite unter <em>Was das für Begleiterinnen bedeutet</em>.
-          </p>
-          <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
-            <a className="btn btn-primary" href="tel:+4989000000">
-              089 — Nummer eintragen
-            </a>
-            <Link className="btn btn-outline" href="#rueckruf">
-              Rückruf anfordern
-            </Link>
-          </div>
-        </div>
-      </Abschnitt>
-
-      {/* ------------------------------------------------------------ Fragen */}
-      <Abschnitt id="fragen" narrow label="Häufige Fragen" titel="Was Angehörige uns zuerst fragen">
-        <Fragenliste fragen={FRAGEN} />
-
-        {/* Für die Hälfte des Marktes, die nicht online liest: ein Blatt zum Ausdrucken,
-            Hinlegen und Wochen später wieder in die Hand nehmen. Internetnutzung bei
-            78+ liegt bei 42 Prozent (D21-Digital-Index). */}
-        <div className="card card-quiet" style={{ marginTop: "var(--s9)" }}>
-          <h3>Zum Ausdrucken und Hinlegen</h3>
-          <p style={{ fontSize: 18 }}>
-            Eine Seite, große Schrift, Telefonnummer unten: was wir machen, was wir nicht
-            machen, was die Kasse zahlt und wie es anfängt. Zum Mitnehmen für jemanden, der
-            das nicht am Handy lesen will.
-          </p>
-          <div className="stack-cta">
-            <a className="btn btn-primary" href="/hi-lisa-blatt-kunden.pdf">
-              Ein-Blatt-Übersicht als PDF
-            </a>
-          </div>
+      {/* ------------------------------------------------------ Ablauf-Teaser */}
+      <Abschnitt
+        narrow
+        label="So läuft es ab"
+        titel="Anrufen. Kennenlernen. Wir übernehmen den Papierkram."
+        lead="Vier Schritte, und du machst davon genau einen — den ersten Anruf. Den vollständigen Ablauf, den Rechner für dein Guthaben und Antworten auf die häufigsten Fragen zur Kassenabrechnung findest du auf einer eigenen Seite."
+      >
+        <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
+          <Link className="btn btn-primary" href="/care">
+            So funktioniert&apos;s im Detail
+          </Link>
         </div>
       </Abschnitt>
 

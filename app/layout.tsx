@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Nav from "@/components/Nav";
-import { ZWEIG_LISTE } from "@/lib/zweige";
 
 /**
  * Die Schriften kommen als npm-Paket und werden von unserer eigenen Domain
@@ -85,17 +84,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p style={{ color: "rgba(252,251,247,0.78)" }}>Montag bis Freitag, 8 bis 18 Uhr</p>
               </div>
               <div>
-                <span className="label on-dark">Unsere drei Wege</span>
-                {ZWEIG_LISTE.map((z) => (
-                  <p key={z.id} style={{ margin: 0 }}>
-                    <Link href={z.href} className="footer-link">
-                      {z.name}
-                    </Link>
-                  </p>
-                ))}
+                <span className="label on-dark">Navigation</span>
                 <p style={{ margin: 0 }}>
-                  <Link href="/#finder" className="footer-link">
-                    Welches passt?
+                  <Link href="/care" className="footer-link">
+                    So funktioniert&apos;s
                   </Link>
                 </p>
                 <p style={{ margin: 0 }}>
