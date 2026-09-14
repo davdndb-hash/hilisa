@@ -140,7 +140,10 @@ export default function Privat() {
             {Z.zahl}
           </span>
           <p style={{ marginTop: "var(--s3)", fontSize: 18 }}>{Z.zahlText}</p>
-          <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>
+          <p style={{ marginTop: "var(--s2)", marginBottom: 0, fontSize: 17, fontWeight: 800, color: "var(--ink)" }}>
+            Bis zu 20 % als haushaltsnahe Dienstleistung von der Steuer absetzbar (§ 35a EStG) — mehr dazu unten bei den Fragen.
+          </p>
+          <p style={{ marginTop: "var(--s3)", marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>
             Anfahrt pauschal pro Einsatz. Keine Mitgliedsgebühr, keine Mindestlaufzeit.
           </p>
         </div>

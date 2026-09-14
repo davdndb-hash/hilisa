@@ -8,21 +8,31 @@
   /* Markenfarben */
   --olive: #7c8a2a;         /* Primärfarbe: große Flächen, Header, Primärbuttons */
 
-  /* Dunklere Ableitung derselben Farbe — gleicher Farbton, 12 Prozent dunkler.
+  /* Dunklere Ableitung derselben Farbe — gleicher Farbton, deutlich dunkler.
      Wird überall gebraucht, wo Text im Spiel ist: kleiner oliver Text auf Papier
      und Papiertext auf oliver Fläche kommen mit #7c8a2a nur auf 3,67 zu 1 und
      fallen damit unter die geforderten 4,5 zu 1 (WCAG 2.1 AA, 1.4.3).
-     Mit #6d7925 sind es 4,6 zu 1 — in beide Richtungen.
-     Das ist eine Abweichung vom Brand Guide und mit dem Markeninhaber abzustimmen. */
-  --olive-ink: #6d7925;     /* oliver Text und Linien auf hellem Grund */
-  --olive-deep: #6d7925;    /* olive Flächen, auf denen Text steht */
+     #6d7925 kam auf 4,6 zu 1 gegen Paper — das reichte, solange der Seitenhintergrund
+     Paper war. Seit dem blauen Wash (14.9.2026, --body-wash) liegt Labeltext auf einem
+     dunkleren Grund, und 4,6:1 gegen Paper wurde zu 4,4:1 gegen den Wash — unter AA.
+     #5c661f (dieselbe Farbe, die schon als Hover-Ton von .btn-primary im Einsatz war,
+     kein neuer Farbwert) kommt auf 5,8 zu 1 gegen den Wash und 6,0 zu 1 gegen Paper.
+     Das ist weiterhin eine Abweichung vom Brand Guide und mit dem Markeninhaber abzustimmen. */
+  --olive-ink: #5c661f;     /* oliver Text und Linien auf hellem Grund */
+  --olive-deep: #6d7925;    /* olive Flächen, auf denen Text steht — unverändert, eigene Fläche mit eigenem Kontrast */
   --lila: #d64fb0;          /* Akzentfarbe: Aktionen, Marker, Hervorhebungen */
 
   /* Hilfsfarben & Text */
   --rose: #f6c7e8;          /* Karten, Badges, ruhige Hervorhebung */
   --light-olive: #e2ebb4;   /* Text auf Olive, Flächen zweiter Ordnung */
   --ink: #191b0d;           /* Alle Texte auf hellem Grund */
-  --paper: #fcfbf7;         /* Standard-Hintergrund */
+  --paper: #fcfbf7;         /* Hintergrund von Karten, Feldern, Blättern — unverändert */
+  /* Seitenhintergrund (body). Ein sehr helles Blau statt Paper, auf Wunsch vom
+     14.9.2026 ("homely"). Bewusst hell gehalten: Karten, Felder und Blätter bleiben
+     auf --paper, nur die Fläche dahinter bekommt den Ton. Kontrast aller Textfarben
+     gegen diesen Wert ist geprüft (siehe --olive-ink oben); dunklerer Wash braucht
+     dieselbe Prüfung erneut. */
+  --body-wash: #e6eff7;
 
   /* Abgeleitete Töne — nur Transparenzen der Markenfarben, keine neuen Farben */
   --ink-70: rgba(25, 27, 13, 0.72);
@@ -65,7 +75,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--body-wash);
   color: var(--ink);
   font-family: var(--font-manrope), "Inter Tight", "Segoe UI", sans-serif;
   font-size: 19px;            /* Fließtext nie unter 18 px */

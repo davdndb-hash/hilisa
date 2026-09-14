@@ -319,13 +319,22 @@ export function Rueckrufblock({
               </span>
               <h2 style={{ color: "var(--paper)", fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2>
               <p style={{ color: "rgba(252,251,247,0.8)" }}>{text ?? standard}</p>
-              <a
-                className="btn btn-accent"
-                href="tel:+4989000000"
-                style={{ marginTop: "var(--s4)" }}
-              >
-                089 — Nummer eintragen
-              </a>
+              <div className="stack-cta" style={{ marginTop: "var(--s4)" }}>
+                <a className="btn btn-accent" href="tel:+4989000000">
+                  089 — Nummer eintragen
+                </a>
+                {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
+                    nicht über eine Festnetznummer wie die 089 oben. */}
+                <a
+                  className="btn btn-outline"
+                  href="https://wa.me/491700000000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
+                >
+                  WhatsApp — Nummer eintragen
+                </a>
+              </div>
             </div>
             <div className="card" style={{ background: "var(--paper)", borderColor: "transparent" }}>
               <Rueckruf />

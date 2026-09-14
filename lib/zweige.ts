@@ -58,7 +58,7 @@ export const ZWEIGE: Record<ZweigId, Zweig> = {
     zahler: "Du selbst",
     satz:
       "Dieselbe Begleitung, ohne Pflegegrad und ohne Antrag. Du buchst, wir kommen.",
-    zahl: "Preis eintragen",
+    zahl: "42 €",
     zahlText: "pro Stunde, ab zwei Stunden, monatlich kündbar",
     anrede: "du",
     fuerWen: [
