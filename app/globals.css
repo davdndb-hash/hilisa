@@ -320,10 +320,36 @@ html { scroll-behavior: smooth; }
    Fläche sprengen. h1.hero-title-display gilt nur, wo Hero explizit den
    "display"-Titel-Modus bekommt. */
 h1.hero-title-display {
-  font-size: clamp(56px, 12vw, 132px);
-  line-height: 0.94;
+  font-size: clamp(112px, 24vw, 264px);
+  line-height: 0.92;
   letter-spacing: -0.04em;
   margin-bottom: var(--s4);
+}
+
+/* Dauerhaftes Glühen hinter dem Titel — nach Vorbild tunerlink.vercel.app
+   (dort: ein per Keyframes pulsierender radialer Verlauf über der ganzen
+   Hero-Fläche, "mPulse"). Eigene Markenfarbe statt Rot/Orange: --lila, die
+   Akzentfarbe, die sonst schon bei CTAs und Markern steht. Läuft endlos, im
+   Gegensatz zu .hero-title-pop oben, das nur einmal auslöst — deshalb ist
+   hier immer Bewegung zu sehen, unabhängig vom Ladezeitpunkt. Liegt hinter
+   .hero-content (gleiche Reihenfolge wie .hero-texture), aria-hidden, ohne
+   Einfluss auf Textkontrast. Nur im "display"-Titel-Modus gerendert (siehe
+   Bausteine.tsx), damit die Zweigseiten-Heros unverändert bleiben. */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(45% 55% at 72% 28%, rgba(214, 79, 176, 0.4) 0%, transparent 62%),
+    radial-gradient(35% 45% at 18% 78%, rgba(252, 251, 247, 0.14) 0%, transparent 55%);
+  animation: heroGlowPulse 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes heroGlowPulse {
+  0% { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { animation: none; opacity: 0.75; }
 }
 
 /* Effekt beim Reinscrollen: kurzes Auftauchen (Fade + leichtes Hochgleiten +

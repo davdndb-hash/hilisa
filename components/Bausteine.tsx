@@ -85,6 +85,7 @@ export function Hero({
           style={{ padding: "clamp(28px, 5vw, 56px)" }}
         >
           <div className="hero-texture" aria-hidden="true" />
+          {gross ? <div className="hero-glow" aria-hidden="true" /> : null}
           <div className="hero-content">
             <span className={dunkel ? "label on-dark" : "label on-olive"}>{eyebrow}</span>
             <h1

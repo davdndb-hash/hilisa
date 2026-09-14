@@ -14,6 +14,11 @@ import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } f
  * Alltagshilfe für Dinge, die allein nicht mehr gehen, keine Einsamkeitskur.
  * Das Pflegekassen-Argument bleibt im Fineprint unter dem CTA, nicht im Hero.
  *
+ * "Hi Lisa!" läuft im Hero-Titel-Modus "display" (siehe Bausteine.tsx/Hero):
+ * viel größer als die Satz-Titel auf den anderen Seiten, mit einem einmaligen
+ * Auftauch-Effekt beim Reinscrollen (HeroTitlePop.tsx, per IntersectionObserver,
+ * respektiert prefers-reduced-motion).
+ *
  * Leistungen-Reihenfolge dementsprechend gedreht: Erledigungen (Begleitung,
  * Kochen/Einkauf, Post/Papierkram, Haushalt) vor den beiden rein sozialen
  * Punkten (Zeit zu zweit, Handy/Tablet) — spiegelt die neue Hero-Gewichtung.
@@ -87,6 +92,7 @@ export default function Home() {
       <Hero
         eyebrow="Begleitung in München"
         title="Hi Lisa!"
+        titleVariant="display"
         lead="Jemand, der vorbeikommt — für den Arzttermin, die Apotheke, den Wocheneinkauf. Und zwischendurch auch für einen Kaffee und ein offenes Ohr."
         cta={
           <>
