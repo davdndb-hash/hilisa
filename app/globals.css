@@ -724,3 +724,349 @@ body:has(.blatt) { background: #ffffff; }
 .blatt-kompakt .blatt-schritte li,
 .blatt-kompakt .blatt-spalte p { font-size: 10.5pt; }
 .blatt-kompakt .blatt-kasten { font-size: 9.5pt; line-height: 1.3; }
+
+/* ==========================================================================
+   Ask Lisa — Concierge-Schale (Routen unter /lisa/…)
+   Eigene App-artige Fläche statt Marketing-Seite: Kopf- und Fußzeile der
+   Website sind hier fehl am Platz, genau wie schon bei .blatt oben — gleiche
+   Technik, gleicher Grund.
+   ========================================================================== */
+
+body:has(.lisa-schale) > header,
+body:has(.lisa-schale) > footer { display: none !important; }
+body:has(.lisa-schale) main { margin: 0 !important; }
+
+.lisa-schale {
+  position: relative;
+  min-height: 100dvh;
+  background: var(--body-wash);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Runde Bedienelemente (Verlauf, Menü) — immer 52 px, wie jedes andere
+   Bedienelement auf der Seite. */
+.lisa-rund-btn {
+  position: fixed;
+  z-index: 30;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+}
+.lisa-rund-btn:hover { border-color: var(--ink); }
+.lisa-rund-btn[aria-disabled="true"] {
+  color: var(--ink-55);
+  cursor: not-allowed;
+}
+.lisa-rund-btn-menue { bottom: var(--s6); right: var(--s6); }
+
+/* ------------------------------------------------------------------ Bühne */
+
+.lisa-buehne {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s6);
+  /* Unten extra Luft, damit lange Antworttexte nicht unter dem fest
+     positionierten Menü-Knopf (52 px + Abstand) verschwinden. */
+  padding: var(--s18) var(--s6) calc(52px + var(--s12));
+  text-align: center;
+}
+
+.lisa-zustand {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--olive-ink);
+}
+
+.lisa-avatar-ring {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  width: clamp(160px, 34vw, 240px);
+  height: clamp(160px, 34vw, 240px);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.3s ease;
+}
+/* Ruhig: ein sehr leichtes Atmen, damit das Standbild nicht komplett
+   einfriert — keine Mimik, kein Lippensync (das braucht echte Sprachausgabe,
+   eine eigene, noch offene Entscheidung), nur ein kaum merkliches Skalieren. */
+.lisa-avatar-ring[data-zustand="ruhig"] {
+  animation: lisaAtem 6s ease-in-out infinite;
+}
+@keyframes lisaAtem {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.012) rotate(-0.6deg); }
+  75% { transform: scale(1.012) rotate(0.6deg); }
+}
+/* Hört zu: ruhiger Ring in der Akzentfarbe, kein Loop nötig — der Zustand
+   selbst ist schon der Hinweis, solange die Ansage per aria-live mitläuft. */
+.lisa-avatar-ring[data-zustand="hoert"] {
+  box-shadow: 0 0 0 6px rgba(214, 79, 176, 0.35), var(--shadow-card);
+}
+.lisa-avatar-ring[data-zustand="denkt"] {
+  animation: lisaDenktPuls 1.4s ease-in-out infinite;
+}
+@keyframes lisaDenktPuls {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(124, 138, 42, 0.25), var(--shadow-card); }
+  50% { box-shadow: 0 0 0 10px rgba(124, 138, 42, 0.1), var(--shadow-card); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lisa-avatar-ring { animation: none !important; }
+}
+
+.lisa-sprechblase {
+  background: var(--paper);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--s6);
+  max-width: 30rem;
+}
+
+.lisa-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  justify-content: center;
+  margin-top: var(--s4);
+}
+
+.lisa-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 52px;
+  padding: 10px var(--s4);
+  border-radius: var(--r-control);
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  text-align: left;
+}
+.lisa-chip:hover { border-color: var(--olive-ink); color: var(--ink); }
+.lisa-chip-titel { font-weight: 800; font-size: 17px; }
+.lisa-chip-hilfe { font-size: 14px; color: var(--ink-55); }
+
+.lisa-eingabe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.lisa-sprich-btn {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--olive-deep);
+  color: var(--on-olive);
+  border: none;
+  font-size: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lisa-sprich-btn:hover { background: #5c661f; }
+.lisa-sprich-btn[data-zustand="hoert"] { background: var(--lila); color: var(--ink); }
+
+.lisa-tippen-btn {
+  background: none;
+  border: none;
+  color: var(--olive-ink);
+  font-weight: 800;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 0 var(--s3);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lisa-textzeile {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  width: 100%;
+  max-width: 26rem;
+}
+.lisa-textzeile input[type="text"] { margin: 0; flex: 1; }
+.lisa-textzeile-senden {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--olive-deep);
+  color: var(--on-olive);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.lisa-textzeile-senden:hover { background: #5c661f; }
+
+.lisa-antwort {
+  background: var(--light-olive);
+  border-radius: var(--r-card);
+  padding: var(--s4) var(--s6);
+  max-width: 30rem;
+  font-size: 17px;
+}
+
+/* --------------------------------------------------------------- Schiebemenü */
+
+.lisa-menue-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 27, 13, 0.4);
+  z-index: 35;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.lisa-menue-overlay[data-offen="true"] { opacity: 1; pointer-events: auto; }
+
+.lisa-menue-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 36;
+  width: min(320px, 86vw);
+  background: var(--paper);
+  box-shadow: -12px 0 32px -20px rgba(25, 27, 13, 0.5);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  padding: var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.lisa-menue-panel[data-offen="true"] { transform: translateX(0); }
+@media (prefers-reduced-motion: reduce) {
+  .lisa-menue-overlay,
+  .lisa-menue-panel { transition: none; }
+}
+
+.lisa-menue-item {
+  display: flex;
+  flex-direction: column;
+  min-height: 56px;
+  justify-content: center;
+  padding: var(--s3) var(--s2);
+  border-radius: var(--r-control);
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 18px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.lisa-menue-item:hover { background: var(--olive-wash); color: var(--ink); }
+.lisa-menue-item[aria-disabled="true"] {
+  color: var(--ink-55);
+  cursor: not-allowed;
+}
+.lisa-menue-item-hinweis { font-size: 14px; font-weight: 500; color: var(--ink-55); margin-top: 2px; }
+
+@media (min-width: 700px) {
+  .lisa-buehne { padding: var(--s18) var(--s12); }
+}
+
+/* ----------------------------------------------- Inhaltsseiten (Find/Create/…) */
+
+.lisa-inhalt {
+  padding: var(--s9) var(--s6) calc(52px + var(--s12));
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.lisa-zurueck {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  color: var(--olive-ink);
+  font-weight: 800;
+  text-decoration: none;
+  margin-bottom: var(--s6);
+}
+.lisa-zurueck:hover { color: var(--ink); }
+
+.lisa-anlass-gruppe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  margin: 0 0 var(--s6);
+}
+.lisa-anlass-option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px var(--s4);
+  border-radius: var(--r-control);
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+}
+.lisa-anlass-option:has(input:checked) {
+  background: var(--light-olive);
+  border-color: var(--olive);
+}
+.lisa-anlass-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+.lisa-chat-liste {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  margin: var(--s6) 0;
+}
+.lisa-chat-blase {
+  max-width: 80%;
+  padding: 10px var(--s4);
+  border-radius: var(--r-card);
+  font-size: 17px;
+}
+.lisa-chat-blase-zeit {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-55);
+  margin-top: 4px;
+}
+.lisa-chat-begleiterin {
+  align-self: flex-start;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+.lisa-chat-kunde {
+  align-self: flex-end;
+  background: var(--light-olive);
+}
+
+.lisa-initialen {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--light-olive);
+  color: var(--olive-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-bricolage), Archivo, sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  flex-shrink: 0;
+}
