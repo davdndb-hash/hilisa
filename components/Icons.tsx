@@ -158,3 +158,88 @@ export function IconKosten({ size }: { size?: number }) {
     </IconBadge>
   );
 }
+
+/* ------------------------------------------------------- Zielgruppen ---- */
+/** Drei weitere Icons für den Zielgruppen-Teaser (siehe ZIELGRUPPEN in
+ * app/page.tsx) — dieselbe Badge-Sprache, damit die Karte nicht mehr nackt
+ * neben den Werteversprechen-Karten steht. */
+
+/** Für Angehörige: ein Herz, in zwei Händen gehalten. */
+export function IconAngehoerige({ size }: { size?: number }) {
+  return (
+    <IconBadge size={size}>
+      <path d="M8 22c0 4 3 7 7 8.5C19 29 22 26 22 22" />
+      <path d="M22 22c0 4 3 7 7 8.5c4-1.5 7-4.5 7-8.5" />
+      <path
+        d="M20 11.3c-1.6-2.1-4.6-1.4-4.6 1.1c0 2.3 4.6 4.8 4.6 4.8s4.6-2.5 4.6-4.8c0-2.5-3-3.2-4.6-1.1z"
+        fill="var(--lila)"
+        stroke="none"
+      />
+    </IconBadge>
+  );
+}
+
+/** Für Einrichtungen: ein Gebäude mit Fenstern. */
+export function IconEinrichtung({ size }: { size?: number }) {
+  return (
+    <IconBadge size={size}>
+      <path d="M11 31V11l9-3l9 3v20" />
+      <path d="M11 31h18" />
+      <path d="M17 16h1.4M21.6 16H23M17 21h1.4M21.6 21H23" />
+      <path d="M17.5 31v-6h5v6" />
+    </IconBadge>
+  );
+}
+
+/** Selbstständige:r Betreuer:in werden: ein Arbeitskoffer. */
+export function IconBetreuerWerden({ size }: { size?: number }) {
+  return (
+    <IconBadge size={size}>
+      <rect x="9" y="15" width="22" height="14.5" rx="2" />
+      <path d="M16 15v-2.5a2 2 0 012-2h4a2 2 0 012 2V15" />
+      <path d="M9 21h22" />
+      <path d="M18.5 21v2.2h3V21" />
+    </IconBadge>
+  );
+}
+
+/* ------------------------------------------------------- Hero-Illustration */
+/**
+ * Dekorative Strichzeichnung für die rechte untere Ecke der Hero-Fläche (siehe
+ * Hero in components/Bausteine.tsx) — auf Wunsch als Alternative zu echten
+ * Fotos erkundet, solange keine echten Fotos (Begleiterin/Kundin) verfügbar
+ * sind. Zwei Figuren nebeneinander, dieselbe Formensprache wie IconBegleitung,
+ * nur größer und in Papierton auf der olivenen Fläche statt oliv auf Lila-Kreis.
+ * aria-hidden, rein dekorativ, ohne Einfluss auf Textkontrast — nur ab
+ * Tablet-Breite sichtbar (siehe .hero-illustration in globals.css), damit sie
+ * auf dem Telefon nicht mit dem Titel/CTA konkurriert.
+ */
+export function HeroIllustration() {
+  return (
+    <svg
+      className="hero-illustration"
+      viewBox="0 0 160 160"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g
+        stroke="var(--paper)"
+        strokeOpacity="0.35"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      >
+        {/* Bank */}
+        <path d="M20 128h100M30 128v10M110 128v10" />
+        {/* Sitzende Begleiterin */}
+        <circle cx="60" cy="88" r="10" />
+        <path d="M60 99v22M45 112h30M60 121l-10 16M60 121l10 16" />
+        {/* Sitzende Person, etwas kleiner */}
+        <circle cx="95" cy="92" r="8.5" />
+        <path d="M95 101.5v18M83 116h24M95 119.5l-8 13M95 119.5l8 13" />
+      </g>
+    </svg>
+  );
+}

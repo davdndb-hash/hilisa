@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Bildmarke } from "@/components/Logo";
 import { HeroTitlePop } from "@/components/HeroTitlePop";
+import { HeroIllustration } from "@/components/Icons";
 import Rueckruf from "@/components/Rueckruf";
 import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
 
@@ -18,6 +19,10 @@ export function Abschnitt({
   titel,
   lead,
   narrow = false,
+  /** "rose" = zart lila-rosa Vollton hinter der ganzen Section (--rose-wash),
+   *  im Wechsel mit den unlackierten Sections darunter/darüber — reine
+   *  Zebra-Streifen fürs Scroll-Tempo, keine neue Bedeutung. */
+  tone,
   children,
   style,
 }: {
@@ -26,11 +31,15 @@ export function Abschnitt({
   titel?: string;
   lead?: string;
   narrow?: boolean;
+  tone?: "rose";
   children?: React.ReactNode;
   style?: React.CSSProperties;
 }) {
   return (
-    <section id={id} style={style}>
+    <section
+      id={id}
+      style={tone === "rose" ? { background: "var(--rose-wash)", ...style } : style}
+    >
       <div className={narrow ? "wrap narrow" : "wrap"}>
         {label ? <span className="label">{label}</span> : null}
         {titel ? <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2> : null}
@@ -38,6 +47,29 @@ export function Abschnitt({
         {children}
       </div>
     </section>
+  );
+}
+
+/* ------------------------------------------------------------ Abschnittsnav */
+
+/**
+ * Schmale Sprunglink-Leiste direkt unter dem Hero (siehe app/page.tsx) — die
+ * Startseite ist inzwischen sehr lang, das hilft beim Überspringen statt
+ * stumpf zu scrollen. Kein eigener Sticky-Header (der würde mit der Kopfzeile
+ * kollidieren) — nur eine ruhige Zeile, die auf dem Telefon seitlich
+ * scrollt statt umzubrechen.
+ */
+export function Abschnittsnav({ punkte }: { punkte: { href: string; text: string }[] }) {
+  return (
+    <nav aria-label="Abschnitte auf dieser Seite" className="abschnittsnav">
+      <div className="wrap abschnittsnav-scroll">
+        {punkte.map((p) => (
+          <a key={p.href} href={p.href} className="abschnittsnav-link">
+            {p.text}
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 }
 
@@ -86,6 +118,7 @@ export function Hero({
         >
           <div className="hero-texture" aria-hidden="true" />
           {gross ? <div className="hero-glow" aria-hidden="true" /> : null}
+          {gross ? <HeroIllustration /> : null}
           <div className="hero-content">
             <span className={dunkel ? "label on-dark" : "label on-olive"}>{eyebrow}</span>
             <h1
@@ -188,17 +221,18 @@ export function Merkmalkarten({
 export function Zielgruppenkarten({
   eintraege,
 }: {
-  eintraege: { titel: string; text: string; ctaText: string; href: string }[];
+  eintraege: { titel: string; text: string; ctaText: string; href: string; icon: React.ReactNode }[];
 }) {
   return (
     <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
       {eintraege.map((e) => (
         <div
           key={e.titel}
-          className="card"
+          className="card card-interactive"
           style={{ display: "flex", flexDirection: "column", gap: "var(--s3)" }}
         >
-          <h3 style={{ marginTop: 0 }}>{e.titel}</h3>
+          {e.icon}
+          <h3 style={{ marginTop: "var(--s2)" }}>{e.titel}</h3>
           <p style={{ margin: 0, flex: 1, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
           <Link
             className="btn btn-outline"

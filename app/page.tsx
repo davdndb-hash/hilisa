@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Abschnitt,
+  Abschnittsnav,
   Hero,
   Kartenraster,
   Merkmalkarten,
@@ -10,7 +11,10 @@ import {
   Zielgruppenkarten,
 } from "@/components/Bausteine";
 import {
+  IconAngehoerige,
   IconBegleitung,
+  IconBetreuerWerden,
+  IconEinrichtung,
   IconEinsamkeit,
   IconHandy,
   IconHaushalt,
@@ -82,6 +86,18 @@ import {
  * Privat bleibt aus Navigation und Querverweisen (siehe Abschnitt 5 im
  * Projekt) — nur Enterprise kommt mit diesem Entwurf zurück. Details, der
  * Rechner und die volle FAQ stehen auf /care.
+ *
+ * Fünfte Überarbeitung (15.9.2026, UI/UX-Politur): sechs gezielte Änderungen,
+ * einzeln abgestimmt (nicht alle Vorschläge übernommen):
+ * - Abschnittsnav unter dem Hero (Sprunglinks) — die Seite ist inzwischen lang.
+ * - Zebra-Streifen (tone="rose") auf Leistungen/Vertrauen/Ablauf, damit sich
+ *   die vielen Karten-Sections beim Scrollen unterscheiden.
+ * - Icons auf den Zielgruppenkarten, dieselbe Sprache wie Werteversprechen.
+ * - Hover-Anhebung nur auf Zielgruppenkarten (echtes Klickziel drin), nicht auf
+ *   Merkmalkarten (reiner Lesestoff, kein Ziel — siehe .card-interactive).
+ * - Rückrufformular: kleine Feld-Icons statt reiner Textfelder.
+ * - HeroIllustration (Icons.tsx) statt eines echten Fotos erkundet, solange
+ *   keine echten Fotos existieren — nur ab Tablet-Breite sichtbar.
  */
 
 // Nach Vorbild papa.com/companion-care, aus hilisa-startseite-stand.docx
@@ -170,19 +186,34 @@ const ZIELGRUPPEN = [
     text: "Wir wissen, was es bedeutet, sich um einen geliebten Menschen zu sorgen — und wie sehr das an die eigenen Grenzen gehen kann. Mit Hi Lisa holst du dir Unterstützung, die dich spürbar entlastet.",
     ctaText: "So funktioniert's",
     href: "/care",
+    icon: <IconAngehoerige size={44} />,
   },
   {
     titel: "Für Einrichtungen",
     text: "Pflegeeinrichtungen und Pflegedienste arbeiten mit Hi Lisa zusammen, um Bewohner:innen und Klient:innen ein besseres, selbstbestimmteres Leben zu ermöglichen.",
     ctaText: "Für Einrichtungen & Pflegedienste",
     href: "/fuer-betriebe",
+    icon: <IconEinrichtung size={44} />,
   },
   {
     titel: "Selbstständige:r Betreuer:in werden",
     text: "Flexible, sinnstiftende Arbeit, die zu deinem Leben passt. Hilf Menschen in deiner Umgebung, wann es dir passt.",
     ctaText: "Mehr erfahren",
     href: "/mitarbeiten",
+    icon: <IconBetreuerWerden size={44} />,
   },
+];
+
+// Sprunglinks unter dem Hero (siehe Abschnittsnav in Bausteine.tsx) — die
+// Seite hat mit Werteversprechen/Zielgruppen/Wusstest-du deutlich mehr
+// Sections als vorher, eine Kurzübersicht spart stumpfes Scrollen.
+const ABSCHNITTE = [
+  { href: "#werteversprechen", text: "Warum Hi Lisa" },
+  { href: "#leistungen", text: "Was wir machen" },
+  { href: "#zielgruppen", text: "Für wen" },
+  { href: "#vertrauen", text: "Vertrauen" },
+  { href: "#wusstest-du", text: "Wusstest du?" },
+  { href: "#ablauf", text: "Ablauf" },
 ];
 
 // Eigener Block statt Ersatz für VERTRAUEN (siehe Entscheidung 3 oben). Die
@@ -235,6 +266,8 @@ export default function Home() {
         fineprint="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch offen ist."
       />
 
+      <Abschnittsnav punkte={ABSCHNITTE} />
+
       {/* ------------------------------------------------------ Werteversprechen */}
       <Abschnitt
         id="werteversprechen"
@@ -247,6 +280,7 @@ export default function Home() {
       {/* -------------------------------------------------------- Leistungen */}
       <Abschnitt
         id="leistungen"
+        tone="rose"
         label="Was wir machen"
         titel="Alles, was allein nicht mehr so einfach geht."
         lead="Zwei Stunden, ein fester Termin, dieselbe Person. Keine Pflege im medizinischen Sinn — dafür genau das, wofür sonst niemand mehr Zeit hat."
@@ -267,6 +301,7 @@ export default function Home() {
       <Abschnitt
         id="vertrauen"
         narrow
+        tone="rose"
         label="Warum Angehörige uns die Wohnung anvertrauen"
         titel="Wir schicken keine Fremden. Wir schicken deine Begleiterin."
       >
@@ -294,6 +329,7 @@ export default function Home() {
       {/* ------------------------------------------------------------ Ablauf */}
       <Abschnitt
         id="ablauf"
+        tone="rose"
         label="So läuft es ab"
         titel="Anrufen. Kennenlernen. Wir übernehmen den Papierkram."
       >

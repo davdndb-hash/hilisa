@@ -40,6 +40,13 @@
   --rule: rgba(25, 27, 13, 0.14);
   --rule-soft: rgba(25, 27, 13, 0.08);
   --olive-wash: rgba(124, 138, 42, 0.08);
+  /* Zebra-Streifen für alternierende Sections (siehe Abschnitt-Prop "tone" in
+     Bausteine.tsx) — 35% --rose über --body-wash. Geprüft: der Mix kommt auf
+     rund L 0,77 (vs. 0,85 bei reinem body-wash), --ink darauf bleibt bei
+     13,6:1, --olive-ink fällt von 5,4:1 auf 4,9:1 — beides über den
+     geforderten 4,5:1 (WCAG 2.1 AA), aber mit weniger Reserve als vorher.
+     Bei einer dunkleren Randfarbe hier erneut prüfen. */
+  --rose-wash: rgba(246, 199, 232, 0.35);
   --on-olive: #fcfbf7;
   /* Auf oliver Fläche wird Text nicht abgeschwächt. Jede Transparenz drückt den
      Kontrast unter 4,5 zu 1 — und diese Seite wird von 60-Jährigen abends
@@ -153,6 +160,35 @@ section { padding: var(--s18) 0; }
 [id] { scroll-margin-top: 92px; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Sprunglink-Leiste unter dem Hero (siehe Abschnittsnav in Bausteine.tsx) —
+   die Startseite ist mit Werteversprechen/Zielgruppen/Wusstest-du lang
+   geworden. Auf dem Telefon seitlich scrollbar statt umzubrechen, damit die
+   Leiste schmal bleibt; kein Scrollbalken sichtbar, der Rand blendet aus. */
+.abschnittsnav { border-bottom: 1px solid var(--rule); background: var(--paper); }
+.abschnittsnav-scroll {
+  display: flex;
+  gap: var(--s6);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-top: var(--s3);
+  padding-bottom: var(--s3);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 24px, black calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, transparent, black 24px, black calc(100% - 24px), transparent);
+}
+.abschnittsnav-scroll::-webkit-scrollbar { display: none; }
+.abschnittsnav-link {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--olive-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.abschnittsnav-link:hover { text-decoration: underline; text-decoration-color: var(--olive); }
 
 /* Auf dem Telefon bleibt in der Kopfzeile nur Marke, Telefonnummer und das
    Menü. Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
@@ -283,6 +319,20 @@ html { scroll-behavior: smooth; }
 .card-quiet { background: var(--light-olive); border-color: transparent; box-shadow: none; }
 .card-rose { background: var(--rose); border-color: transparent; box-shadow: none; }
 
+/* Nur Karten mit echtem Klickziel drin (aktuell: Zielgruppenkarten) heben sich
+   beim Hover leicht an — Merkmalkarten daneben sind reiner Lesestoff ohne
+   eigenes Ziel und bleiben deshalb ruhig, sonst verspricht der Hover einen
+   Klick, den es dort nicht gibt. */
+.card-interactive { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(25, 27, 13, 0.06), 0 20px 34px -22px rgba(25, 27, 13, 0.55);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-interactive { transition: none; }
+  .card-interactive:hover { transform: none; }
+}
+
 .surface-olive {
   background: var(--olive-deep);
   color: var(--on-olive);
@@ -313,6 +363,24 @@ html { scroll-behavior: smooth; }
   pointer-events: none;
 }
 .hero-content { position: relative; }
+
+/* Dekorative Illustration statt eines Fotos (siehe HeroIllustration in
+   Icons.tsx) — erkundet als Alternative, solange es keine echten Fotos von
+   Begleiterinnen/Kund:innen gibt. Nur ab Tablet-Breite: bei "Hi Lisa!" auf
+   dem Telefon ist unter dem zweizeiligen Titel kein Platz, ohne mit Text oder
+   CTA zu kollidieren. */
+.hero-illustration {
+  display: none;
+  position: absolute;
+  right: clamp(16px, 4vw, 48px);
+  bottom: clamp(16px, 4vw, 40px);
+  width: clamp(90px, 12vw, 150px);
+  height: auto;
+  pointer-events: none;
+}
+@media (min-width: 900px) {
+  .hero-illustration { display: block; }
+}
 
 /* Übergroßer Marken-Titel im Hero (nur Startseite, "Hi Lisa!") — bewusst eigene
    Klasse statt einer Änderung an h1 selbst: die anderen Hero-Titel (Zweigseiten,
@@ -402,10 +470,25 @@ textarea {
   border: 2px solid var(--rule);
   border-radius: var(--r-control);
   margin: 0 0 var(--s6);
+  transition: border-color 0.15s ease;
 }
 textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
 
+input:hover, select:hover, textarea:hover { border-color: var(--ink-55); }
 input:focus, select:focus, textarea:focus { border-color: var(--olive-ink); }
+
+/* Kleines Icon links im Feld (siehe Rueckruf.tsx) — der Wrapper fasst nur das
+   Eingabeelement, nicht das <label> darüber, damit die Zentrierung unabhängig
+   von der Labelhöhe stimmt. Rein dekorativ, deshalb aria-hidden am svg. */
+.field-icon-wrap { position: relative; }
+.field-icon-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.field-icon-wrap input, .field-icon-wrap select { padding-left: 44px; }
 
 .hint { font-size: 16px; color: var(--ink-55); margin-top: calc(var(--s6) * -1 + var(--s2)); margin-bottom: var(--s6); }
 
