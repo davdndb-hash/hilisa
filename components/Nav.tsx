@@ -15,14 +15,27 @@ import Logo from "@/components/Logo";
  * Kundennavigation, sondern eine Bewerberinnen-Seite, und bleibt in der
  * Fußzeile (siehe layout.tsx).
  *
- * Bedienregeln: Schaltfläche 52 px hoch, aria-expanded, Escape schließt,
- * Klick außerhalb schließt, der Fokus bleibt sichtbar. Kein Overlay über den
- * ganzen Bildschirm — das verwirrt mehr, als es hilft.
+ * Auf der Startseite ersetzen die Abschnitts-Sprunglinks (ABSCHNITTE) die
+ * beiden LINKS oben im selben Platz — bewusst kein zweiter Zeile darunter
+ * (das sah wie zwei gestapelte Navigationsleisten aus). So funktioniert's/
+ * Für Einrichtungen bleiben trotzdem erreichbar, nur eben über die Fußzeile,
+ * solange man auf der Startseite ist. "Für wen" und "Wusstest du?" sind als
+ * Pille hervorgehoben (echte Klickziele: Zielgruppen-Karten bzw.
+ * Pflegekassen-Erklärung), die übrigen vier bleiben Textlinks.
  */
 
 const LINKS = [
   { href: "/care", text: "So funktioniert's" },
   { href: "/fuer-betriebe", text: "Für Einrichtungen" },
+];
+
+const ABSCHNITTE = [
+  { href: "#werteversprechen", text: "Warum Hi Lisa" },
+  { href: "#leistungen", text: "Leistungen" },
+  { href: "#zielgruppen", text: "Für wen", highlight: true },
+  { href: "#vertrauen", text: "Vertrauen" },
+  { href: "#wusstest-du", text: "Wusstest du?", highlight: true },
+  { href: "#ablauf", text: "Ablauf" },
 ];
 
 export default function Nav() {
@@ -50,6 +63,7 @@ export default function Nav() {
   }, [offen]);
 
   const aktiv = (href: string) => href !== "/" && pfad.startsWith(href);
+  const istStartseite = pfad === "/";
 
   return (
     <header
@@ -79,22 +93,32 @@ export default function Nav() {
 
         <nav aria-label="Hauptnavigation" style={{ display: "flex", gap: "var(--s4)", alignItems: "center" }}>
           <span className="nav-links">
-            {LINKS.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                aria-current={aktiv(n.href) ? "page" : undefined}
-                style={{
-                  fontSize: 17,
-                  fontWeight: aktiv(n.href) ? 800 : 500,
-                  textDecoration: aktiv(n.href) ? "underline" : "none",
-                  textDecorationColor: "var(--olive)",
-                  textDecorationThickness: 3,
-                }}
-              >
-                {n.text}
-              </Link>
-            ))}
+            {istStartseite
+              ? ABSCHNITTE.map((a) => (
+                  <a
+                    key={a.href}
+                    href={a.href}
+                    className={a.highlight ? "abschnittsnav-link is-highlight" : "abschnittsnav-link"}
+                  >
+                    {a.text}
+                  </a>
+                ))
+              : LINKS.map((n) => (
+                  <Link
+                    key={n.href}
+                    href={n.href}
+                    aria-current={aktiv(n.href) ? "page" : undefined}
+                    style={{
+                      fontSize: 17,
+                      fontWeight: aktiv(n.href) ? 800 : 500,
+                      textDecoration: aktiv(n.href) ? "underline" : "none",
+                      textDecorationColor: "var(--olive)",
+                      textDecorationThickness: 3,
+                    }}
+                  >
+                    {n.text}
+                  </Link>
+                ))}
           </span>
 
           {/* Bei 390 px Breite passen Marke, volle Nummer und Menütaste nicht in eine
@@ -157,24 +181,44 @@ export default function Nav() {
             </span>
             089 — Nummer eintragen
           </a>
-          {LINKS.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              aria-current={aktiv(n.href) ? "page" : undefined}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                minHeight: 56,
-                fontSize: 20,
-                fontWeight: 700,
-                textDecoration: "none",
-                borderBottom: "1px solid var(--rule-soft)",
-              }}
-            >
-              {n.text}
-            </Link>
-          ))}
+          {istStartseite
+            ? ABSCHNITTE.map((a) => (
+                <a
+                  key={a.href}
+                  href={a.href}
+                  onClick={() => setOffen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    minHeight: 56,
+                    fontSize: 20,
+                    fontWeight: a.highlight ? 800 : 700,
+                    color: a.highlight ? "var(--olive-ink)" : undefined,
+                    textDecoration: "none",
+                    borderBottom: "1px solid var(--rule-soft)",
+                  }}
+                >
+                  {a.text}
+                </a>
+              ))
+            : LINKS.map((n) => (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  aria-current={aktiv(n.href) ? "page" : undefined}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    minHeight: 56,
+                    fontSize: 20,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    borderBottom: "1px solid var(--rule-soft)",
+                  }}
+                >
+                  {n.text}
+                </Link>
+              ))}
         </div>
       </div>
     </header>

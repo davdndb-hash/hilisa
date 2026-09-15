@@ -50,29 +50,6 @@ export function Abschnitt({
   );
 }
 
-/* ------------------------------------------------------------ Abschnittsnav */
-
-/**
- * Schmale Sprunglink-Leiste direkt unter dem Hero (siehe app/page.tsx) — die
- * Startseite ist inzwischen sehr lang, das hilft beim Überspringen statt
- * stumpf zu scrollen. Kein eigener Sticky-Header (der würde mit der Kopfzeile
- * kollidieren) — nur eine ruhige Zeile, die auf dem Telefon seitlich
- * scrollt statt umzubrechen.
- */
-export function Abschnittsnav({ punkte }: { punkte: { href: string; text: string }[] }) {
-  return (
-    <nav aria-label="Abschnitte auf dieser Seite" className="abschnittsnav">
-      <div className="wrap abschnittsnav-scroll">
-        {punkte.map((p) => (
-          <a key={p.href} href={p.href} className="abschnittsnav-link">
-            {p.text}
-          </a>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 /* --------------------------------------------------------------------- Hero */
 
 /**

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Abschnitt,
-  Abschnittsnav,
   Hero,
   Kartenraster,
   Merkmalkarten,
@@ -89,7 +88,12 @@ import {
  *
  * Fünfte Überarbeitung (15.9.2026, UI/UX-Politur): sechs gezielte Änderungen,
  * einzeln abgestimmt (nicht alle Vorschläge übernommen):
- * - Abschnittsnav unter dem Hero (Sprunglinks) — die Seite ist inzwischen lang.
+ * - Abschnitts-Sprunglinks — die Seite ist inzwischen lang. Zogen von einer
+ *   eigenen Zeile unter dem Hero in die Kopfzeile (siehe Nav.tsx, ABSCHNITTE):
+ *   bleiben dadurch beim Scrollen oben sichtbar. Ersetzen dort auf der
+ *   Startseite die normalen Kopfzeilen-Links im selben Platz statt als
+ *   zweite Zeile daneben zu stehen — zwei gestapelte Navigationsleisten sahen
+ *   nach zwei Headern aus.
  * - Zebra-Streifen (tone="rose") auf Leistungen/Vertrauen/Ablauf, damit sich
  *   die vielen Karten-Sections beim Scrollen unterscheiden.
  * - Icons auf den Zielgruppenkarten, dieselbe Sprache wie Werteversprechen.
@@ -204,18 +208,6 @@ const ZIELGRUPPEN = [
   },
 ];
 
-// Sprunglinks unter dem Hero (siehe Abschnittsnav in Bausteine.tsx) — die
-// Seite hat mit Werteversprechen/Zielgruppen/Wusstest-du deutlich mehr
-// Sections als vorher, eine Kurzübersicht spart stumpfes Scrollen.
-const ABSCHNITTE = [
-  { href: "#werteversprechen", text: "Warum Hi Lisa" },
-  { href: "#leistungen", text: "Was wir machen" },
-  { href: "#zielgruppen", text: "Für wen" },
-  { href: "#vertrauen", text: "Vertrauen" },
-  { href: "#wusstest-du", text: "Wusstest du?" },
-  { href: "#ablauf", text: "Ablauf" },
-];
-
 // Eigener Block statt Ersatz für VERTRAUEN (siehe Entscheidung 3 oben). Die
 // drei Punkte stehen inhaltlich schon geprüft auf /care (Fragenliste FRAGEN,
 // § 45b SGB XI) — hier nur kurz zusammengefasst, nichts Neues behauptet.
@@ -265,8 +257,6 @@ export default function Home() {
         }
         fineprint="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch offen ist."
       />
-
-      <Abschnittsnav punkte={ABSCHNITTE} />
 
       {/* ------------------------------------------------------ Werteversprechen */}
       <Abschnitt

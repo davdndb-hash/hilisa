@@ -161,22 +161,12 @@ section { padding: var(--s18) 0; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* Sprunglink-Leiste unter dem Hero (siehe Abschnittsnav in Bausteine.tsx) —
-   die Startseite ist mit Werteversprechen/Zielgruppen/Wusstest-du lang
-   geworden. Auf dem Telefon seitlich scrollbar statt umzubrechen, damit die
-   Leiste schmal bleibt; kein Scrollbalken sichtbar, der Rand blendet aus. */
-.abschnittsnav { border-bottom: 1px solid var(--rule); background: var(--paper); }
-.abschnittsnav-scroll {
-  display: flex;
-  gap: var(--s6);
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-top: var(--s3);
-  padding-bottom: var(--s3);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 24px, black calc(100% - 24px), transparent);
-  mask-image: linear-gradient(90deg, transparent, black 24px, black calc(100% - 24px), transparent);
-}
-.abschnittsnav-scroll::-webkit-scrollbar { display: none; }
+/* Startseite: die Abschnitts-Sprunglinks stehen anstelle der normalen
+   Kopfzeilen-Links im selben .nav-links-Slot (siehe ABSCHNITTE/istStartseite
+   in Nav.tsx) — eine eigene zweite Zeile sah wie zwei gestapelte
+   Navigationsleisten aus. Am Rechner also inline in der bestehenden Zeile,
+   auf dem Telefon in der aufklappbaren Kopfzeilen-Klapptafel wie die anderen
+   Links auch. */
 .abschnittsnav-link {
   flex: none;
   display: inline-flex;
@@ -190,6 +180,17 @@ html { scroll-behavior: smooth; }
 }
 .abschnittsnav-link:hover { text-decoration: underline; text-decoration-color: var(--olive); }
 
+/* Zwei der sechs Sprungziele sind eher ein Klickziel als eine Lesestation
+   (Für wen, Wusstest du?) — als Pille statt reinem Textlink, damit sie in der
+   Zeile auffallen. Kontrast geprüft: --ink auf --rose kommt auf 13,9:1. */
+.abschnittsnav-link.is-highlight {
+  padding: 0 var(--s4);
+  background: var(--rose);
+  border-radius: 999px;
+  color: var(--ink);
+}
+.abschnittsnav-link.is-highlight:hover { background: #f0aedb; text-decoration: none; }
+
 /* Auf dem Telefon bleibt in der Kopfzeile nur Marke, Telefonnummer und das
    Menü. Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
 .nav-links { display: none; }
@@ -197,7 +198,7 @@ html { scroll-behavior: smooth; }
 .tel-lang { display: none; }
 .tel-kurz { display: inline; }
 @media (min-width: 900px) {
-  .nav-links { display: flex; gap: var(--s6); flex-wrap: wrap; align-items: center; }
+  .nav-links { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: center; }
   /* Am Rechner stehen die Links offen da — Menü und Klapptafel sind dort überflüssig. */
   .nav-toggle { display: none !important; }
   .tel-lang { display: inline; }
