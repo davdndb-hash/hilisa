@@ -8,16 +8,22 @@ import Logo from "@/components/Logo";
 /**
  * Kopfzeile.
  *
- * Seit 14.9.2026 Care-only: nur noch ein Link zur Info-Seite. Mitarbeiten steht
- * bewusst nicht mehr hier — das ist keine Kundennavigation, sondern eine
- * Bewerberinnen-Seite, und findet sich in der Fußzeile.
+ * Seit 15.9.2026 (Abgleich mit hilisa-startseite-stand.docx) wieder zwei
+ * Links: die Info-Seite und Für Einrichtungen — Enterprise kommt mit dem
+ * neuen Zielgruppen-Teaser auf der Startseite zurück in die Hauptnavigation.
+ * Mitarbeiten steht weiterhin bewusst nicht hier — das ist keine
+ * Kundennavigation, sondern eine Bewerberinnen-Seite, und bleibt in der
+ * Fußzeile (siehe layout.tsx).
  *
  * Bedienregeln: Schaltfläche 52 px hoch, aria-expanded, Escape schließt,
  * Klick außerhalb schließt, der Fokus bleibt sichtbar. Kein Overlay über den
  * ganzen Bildschirm — das verwirrt mehr, als es hilft.
  */
 
-const LINKS = [{ href: "/care", text: "So funktioniert's" }];
+const LINKS = [
+  { href: "/care", text: "So funktioniert's" },
+  { href: "/fuer-betriebe", text: "Für Einrichtungen" },
+];
 
 export default function Nav() {
   const [offen, setOffen] = useState(false);

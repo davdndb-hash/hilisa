@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: "var(--paper)",
               }}
             >
-              Begleitung, die sich anfühlt wie ein Hallo — nicht wie ein Formular.
+              Selbstständig bleiben, mit Begleitung an der Seite.
             </p>
 
             <div className="grid grid-3" style={{ marginBottom: "var(--s9)" }}>
@@ -81,18 +81,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p style={{ color: "rgba(252,251,247,0.78)", marginBottom: 4 }}>
                   hallo@ — Adresse eintragen
                 </p>
-                <p style={{ color: "rgba(252,251,247,0.78)" }}>Montag bis Freitag, 8 bis 18 Uhr</p>
+                <p style={{ color: "rgba(252,251,247,0.78)", marginBottom: 4 }}>
+                  Montag bis Freitag, 8 bis 18 Uhr
+                </p>
+                <p style={{ color: "rgba(252,251,247,0.78)" }}>Instagram — Profil eintragen</p>
               </div>
               <div>
                 <span className="label on-dark">Navigation</span>
                 <p style={{ margin: 0 }}>
                   <Link href="/care" className="footer-link">
-                    So funktioniert&apos;s
+                    Was wir machen
+                  </Link>
+                </p>
+                <p style={{ margin: 0 }}>
+                  <Link href="/fuer-betriebe" className="footer-link">
+                    Für Einrichtungen
                   </Link>
                 </p>
                 <p style={{ margin: 0 }}>
                   <Link href="/mitarbeiten" className="footer-link">
-                    Mitarbeiten
+                    Werde Begleiter:in
                   </Link>
                 </p>
               </div>
@@ -113,9 +121,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     Ein-Blatt-Übersicht (PDF)
                   </a>
                 </p>
+                {/* Der alte Satz ("Wir machen keine Pflege im medizinischen Sinn...")
+                    bleibt stehen — er setzt eine Erwartung/Grenze, keinen reinen Ton,
+                    und dafür gab es kein Signoff, ihn zu streichen (siehe Kommentar in
+                    app/page.tsx). Der wärmere Satz aus dem Entwurf ergänzt ihn nur. */}
                 <p style={{ color: "rgba(252,251,247,0.78)", fontSize: 17, marginTop: "var(--s4)" }}>
                   Wir machen keine Pflege im medizinischen Sinn. Kein Waschen, keine
-                  Medikamente. Dafür alles, was den Tag leichter macht.
+                  Medikamente. Dafür alles, was den Alltag leichter macht — mit derselben
+                  vertrauten Person, jede Woche.
                 </p>
               </div>
             </div>
