@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ZurueckLink } from "@/components/concierge/ZurueckLink";
-import { CURRENT_CUSTOMER_ID, getAssignedCompanion, getCustomer } from "@/lib/concierge-data";
+import { Abmelden } from "@/components/concierge/Abmelden";
+import { getAssignedCompanion, getCustomer } from "@/lib/concierge-data";
+import { serverClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Profil" };
 
@@ -9,12 +11,17 @@ export const metadata: Metadata = { title: "Profil" };
  * Konto der Familie — nicht der betreuten Person. Bewusst ohne
  * Pflegekasse-Status oder Budget: diese Baustelle (inkl. was passiert, wenn
  * das Kassenbudget im Monat aufgebraucht ist) ist noch offen, siehe
- * lib/concierge-data.ts. Rein lesend — Bearbeiten ergibt ohne Backend noch
- * keinen Sinn.
+ * lib/concierge-data.ts.
  */
-export default function ProfilSeite() {
-  const kunde = getCustomer(CURRENT_CUSTOMER_ID);
-  const begleiterin = getAssignedCompanion(CURRENT_CUSTOMER_ID);
+export default async function ProfilSeite() {
+  const supabase = await serverClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const kunde = await getCustomer(supabase, user.id);
+  const begleiterin = await getAssignedCompanion(supabase, user.id);
 
   return (
     <div className="lisa-inhalt">
@@ -24,21 +31,27 @@ export default function ProfilSeite() {
       <div className="card" style={{ display: "flex", flexDirection: "column", gap: "var(--s4)" }}>
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
+            E-Mail
+          </span>
+          <p style={{ margin: 0, fontSize: 19 }}>{user.email}</p>
+        </div>
+        <div>
+          <span className="label" style={{ marginBottom: 2 }}>
             Name
           </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.name ?? "—"}</p>
+          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.name || "Noch nicht eingetragen"}</p>
         </div>
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
             Telefon
           </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.telefon ?? "—"}</p>
+          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.telefon || "Noch nicht eingetragen"}</p>
         </div>
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
             Betreute Person
           </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.betreutePerson ?? "—"}</p>
+          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.betreute_person || "Noch nicht eingetragen"}</p>
         </div>
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
@@ -60,6 +73,10 @@ export default function ProfilSeite() {
           Kommt in einem späteren Schritt — inklusive der Frage, was passiert, wenn das
           Kassenbudget im Monat aufgebraucht ist.
         </p>
+      </div>
+
+      <div style={{ marginTop: "var(--s6)" }}>
+        <Abmelden />
       </div>
     </div>
   );

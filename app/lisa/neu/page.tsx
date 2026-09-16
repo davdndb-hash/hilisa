@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import { ZurueckLink } from "@/components/concierge/ZurueckLink";
 import { Anfrageformular } from "@/components/concierge/Anfrageformular";
-import { CURRENT_CUSTOMER_ID, getCustomer } from "@/lib/concierge-data";
+import { getCustomer } from "@/lib/concierge-data";
+import { serverClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Neue Anfrage" };
 
-export default function NeueAnfrageSeite() {
-  const kunde = getCustomer(CURRENT_CUSTOMER_ID);
+export default async function NeueAnfrageSeite() {
+  const supabase = await serverClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const kunde = await getCustomer(supabase, user.id);
 
   return (
     <div className="lisa-inhalt">
@@ -15,7 +22,7 @@ export default function NeueAnfrageSeite() {
       <p className="lead" style={{ fontSize: 18 }}>
         Ein Termin, ein Anlass, eine Uhrzeit — mehr braucht Lisa erstmal.
       </p>
-      <Anfrageformular betreutePerson={kunde?.betreutePerson ?? "—"} />
+      <Anfrageformular customerId={user.id} betreutePerson={kunde?.betreute_person || "—"} />
     </div>
   );
 }

@@ -40,6 +40,10 @@ export function Schiebemenue() {
 
   const aktiv = (href: string) => pfad.startsWith(href);
 
+  // Auf der Anmeldeseite gibt es noch kein Konto, für das Profil/Chats/
+  // Neue Anfrage einen Sinn ergäben.
+  if (pfad === "/lisa/anmelden") return null;
+
   return (
     <div ref={box}>
       <button
@@ -59,13 +63,13 @@ export function Schiebemenue() {
 
       <nav
         id="lisa-menue"
-        aria-label="Ask Lisa Navigation"
+        aria-label="Hi Lisa Navigation"
         className="lisa-menue-panel"
         data-offen={offen}
         hidden={!offen}
       >
         <span className="label" style={{ marginTop: "var(--s3)" }}>
-          Ask Lisa
+          Hi Lisa
         </span>
 
         <Link

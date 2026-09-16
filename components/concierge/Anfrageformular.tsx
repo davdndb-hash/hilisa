@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import { CURRENT_CUSTOMER_ID, createRequest, type Appointment } from "@/lib/concierge-data";
+import { createRequest, type Appointment } from "@/lib/concierge-data";
+import { browserClient } from "@/lib/supabase/client";
 
 const ANLAESSE = ["Arzttermin", "Einkauf", "Spaziergang", "Sonstiges"] as const;
 
@@ -11,13 +12,18 @@ const ANLAESSE = ["Arzttermin", "Einkauf", "Spaziergang", "Sonstiges"] as const;
  * deckt das "sich unterhalten"-Gefühl schon ab, hier soll es schnell und
  * eindeutig gehen.
  *
- * Es gibt noch kein Backend — createRequest() legt die Anfrage nur für diese
- * Sitzung im Fixture ab (siehe lib/concierge-data.ts). Die Bestätigung ist
- * trotzdem ehrlich gemeint: das Formular tut, was es sagt, nur bleibt es
- * nicht über einen Neustart hinaus erhalten. Gleicher Ton wie
- * components/Rueckruf.tsx.
+ * Speichert jetzt echt in Supabase — die Anfrage erscheint danach auch bei
+ * „Begleiterin finden". Was noch fehlt: eine automatische Nachricht an die
+ * Begleiterin selbst (E-Mail/SMS/App) — das ist ein eigener, noch offener
+ * Ausbauschritt, kein Bug hier.
  */
-export function Anfrageformular({ betreutePerson }: { betreutePerson: string }) {
+export function Anfrageformular({
+  customerId,
+  betreutePerson,
+}: {
+  customerId: string;
+  betreutePerson: string;
+}) {
   const gruppenName = useId();
   const [wann, setWann] = useState("");
   const [uhrzeit, setUhrzeit] = useState("");
@@ -25,9 +31,10 @@ export function Anfrageformular({ betreutePerson }: { betreutePerson: string }) 
   const [anlassSonstiges, setAnlassSonstiges] = useState("");
   const [notiz, setNotiz] = useState("");
   const [fehler, setFehler] = useState("");
+  const [sendet, setSendet] = useState(false);
   const [angelegt, setAngelegt] = useState<Appointment | null>(null);
 
-  function absenden(e: React.FormEvent) {
+  async function absenden(e: React.FormEvent) {
     e.preventDefault();
     if (wann.trim().length === 0) {
       setFehler("Bitte trag ein, an welchem Tag es sein soll.");
@@ -46,13 +53,20 @@ export function Anfrageformular({ betreutePerson }: { betreutePerson: string }) 
       return;
     }
     setFehler("");
-    const termin = createRequest(CURRENT_CUSTOMER_ID, {
-      datum: wann.trim(),
-      uhrzeit,
-      anlass: anlass === "Sonstiges" ? anlassSonstiges.trim() : anlass,
-      notiz: notiz.trim() || undefined,
-    });
-    setAngelegt(termin);
+    setSendet(true);
+    try {
+      const supabase = browserClient();
+      const termin = await createRequest(supabase, customerId, {
+        datum: wann.trim(),
+        uhrzeit,
+        anlass: anlass === "Sonstiges" ? anlassSonstiges.trim() : anlass,
+        notiz: notiz.trim() || undefined,
+      });
+      setAngelegt(termin);
+    } catch {
+      setFehler("Das hat gerade nicht geklappt. Bitte nochmal versuchen.");
+      setSendet(false);
+    }
   }
 
   if (angelegt) {
@@ -63,9 +77,9 @@ export function Anfrageformular({ betreutePerson }: { betreutePerson: string }) 
           {angelegt.datum}, {angelegt.anlass}, {angelegt.uhrzeit} Uhr — für {betreutePerson}.
         </p>
         <p style={{ marginBottom: 0, fontSize: 16, color: "var(--ink-70)" }}>
-          Entwurfsseite — diese Bestätigung siehst nur du hier, sie erscheint noch nicht
-          bei „Begleiterin finden" oder sonst irgendwo. Mit echtem Backend bekommt eure
-          Begleiterin automatisch Bescheid und der Termin taucht überall auf.
+          Gespeichert — der Termin erscheint jetzt auch bei „Begleiterin finden". Eure
+          Begleiterin bekommt davon noch keine automatische Nachricht, das kommt mit
+          einem späteren Ausbauschritt.
         </p>
       </div>
     );
@@ -148,8 +162,8 @@ export function Anfrageformular({ betreutePerson }: { betreutePerson: string }) 
         </p>
       )}
 
-      <button className="btn btn-primary" type="submit">
-        Anfrage senden
+      <button className="btn btn-primary" type="submit" disabled={sendet}>
+        {sendet ? "Wird gesendet …" : "Anfrage senden"}
       </button>
     </form>
   );

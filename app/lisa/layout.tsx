@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Schiebemenue } from "@/components/concierge/Schiebemenue";
 
 export const metadata: Metadata = {
-  title: "Ask Lisa",
+  title: "Hi Lisa",
 };
 
 /**

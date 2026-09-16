@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { ZurueckLink } from "@/components/concierge/ZurueckLink";
 import { Begleiterinkarte, BegleiterinGesucht } from "@/components/concierge/Begleiterinkarte";
-import {
-  CURRENT_CUSTOMER_ID,
-  getAssignedCompanion,
-  getNextAppointment,
-} from "@/lib/concierge-data";
+import { getAssignedCompanion, getNextAppointment } from "@/lib/concierge-data";
+import { serverClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Begleiterin finden" };
 
-export default function BegleiterinSeite() {
-  const begleiterin = getAssignedCompanion(CURRENT_CUSTOMER_ID);
-  const termin = getNextAppointment(CURRENT_CUSTOMER_ID);
+export default async function BegleiterinSeite() {
+  const supabase = await serverClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const begleiterin = await getAssignedCompanion(supabase, user.id);
+  const termin = begleiterin ? await getNextAppointment(supabase, user.id) : null;
 
   return (
     <div className="lisa-inhalt">
