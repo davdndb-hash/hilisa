@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } from "@/components/Bausteine";
-import { IconBegleitung, IconKochen, IconPost, IconHaushalt, IconZeitZuZweit, IconHandy } from "@/components/Icons";
+import { IconBegleitungTile, IconKochen, IconPost, IconHaushalt, IconZeitZuZweit, IconHandy } from "@/components/Icons";
 
 /**
  * Startseite (Care-only, seit 14.9.2026 — dritte Überarbeitung 14.9.2026 abends).
@@ -35,7 +35,7 @@ const LEISTUNGEN = [
   {
     titel: "Begleitung",
     text: "Zum Arzt, zur Bank, zum Friedhof, zum Einkaufen. Mit dem Auto oder zu Fuß, wie es gerade geht.",
-    icon: <IconBegleitung />,
+    icon: <IconBegleitungTile />,
   },
   {
     titel: "Kochen und Einkauf",

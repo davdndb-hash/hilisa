@@ -31,6 +31,88 @@ export function IconBegleitung() {
   );
 }
 
+/**
+ * Begleitung, als eigene Kachel statt Kreis-Badge: zwei vollere Figuren
+ * (Rumpf, Arme, Beine statt Strichmännchen) an den Händen, auf einem
+ * Oliv-Verlauf mit Bodenschatten. Ersetzt IconBegleitung nur auf der
+ * Begleitung-Karte in LEISTUNGEN (app/page.tsx) — die übrigen fünf Karten
+ * bleiben beim kleinen Kreis-Badge.
+ */
+export function IconBegleitungTile({ size = 44 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="begleitung-olive" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8b9a3a" />
+          <stop offset="55%" stopColor="#6d7925" />
+          <stop offset="100%" stopColor="#545e1c" />
+        </linearGradient>
+        <radialGradient id="begleitung-sheen" cx="28%" cy="20%" r="65%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="begleitung-figure" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#e7e4d6" />
+        </linearGradient>
+        <radialGradient id="begleitung-ground" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#191b0d" stopOpacity="0.32" />
+          <stop offset="100%" stopColor="#191b0d" stopOpacity="0" />
+        </radialGradient>
+        <filter id="begleitung-shadow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="blur" />
+          <feOffset in="blur" dx="0" dy="2.5" result="offsetBlur" />
+          <feComponentTransfer in="offsetBlur" result="shadow">
+            <feFuncA type="linear" slope="0.35" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="shadow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <rect width="200" height="200" rx="20" fill="url(#begleitung-olive)" />
+      <rect width="200" height="200" rx="20" fill="url(#begleitung-sheen)" />
+
+      <ellipse cx="65" cy="156" rx="30" ry="6" fill="url(#begleitung-ground)" />
+      <ellipse cx="133" cy="156" rx="28" ry="6" fill="url(#begleitung-ground)" />
+
+      <g filter="url(#begleitung-shadow)">
+        <g
+          stroke="var(--olive-ink)"
+          strokeOpacity="0.16"
+          strokeWidth="1"
+          fill="url(#begleitung-figure)"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        >
+          <path d="M60 82 L50 108" strokeWidth="9" />
+          <path d="M80 84 L98 98" strokeWidth="8" />
+          <path d="M65 108 L54 150" strokeWidth="10" />
+          <path d="M75 108 L86 150" strokeWidth="10" />
+          <rect x="57" y="70" width="26" height="40" rx="12" />
+          <circle cx="70" cy="56" r="14" />
+
+          <path d="M121 86 L102 99" strokeWidth="7" />
+          <path d="M141 84 L150 106" strokeWidth="7" />
+          <path d="M125 110 L116 150" strokeWidth="9" />
+          <path d="M135 110 L146 150" strokeWidth="9" />
+          <rect x="119" y="74" width="23" height="37" rx="11" />
+          <circle cx="130" cy="62" r="12" />
+
+          <circle cx="100" cy="98.5" r="4.4" />
+        </g>
+
+        <g stroke="#fffef9" strokeOpacity="0.6" strokeWidth="1.6" strokeLinecap="round" fill="none">
+          <circle cx="70" cy="56" r="14" transform="translate(-0.9 -0.9)" />
+          <circle cx="130" cy="62" r="12" transform="translate(-0.8 -0.8)" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
 /** Kochen und Einkauf: Topf mit Deckelgriffen und Dampf. */
 export function IconKochen() {
   return (
