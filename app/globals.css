@@ -27,12 +27,15 @@
   --light-olive: #e2ebb4;   /* Text auf Olive, Flächen zweiter Ordnung */
   --ink: #191b0d;           /* Alle Texte auf hellem Grund */
   --paper: #fcfbf7;         /* Hintergrund von Karten, Feldern, Blättern — unverändert */
-  /* Seitenhintergrund (body). Ein sehr helles Blau statt Paper, auf Wunsch vom
-     14.9.2026 ("homely"). Bewusst hell gehalten: Karten, Felder und Blätter bleiben
-     auf --paper, nur die Fläche dahinter bekommt den Ton. Kontrast aller Textfarben
-     gegen diesen Wert ist geprüft (siehe --olive-ink oben); dunklerer Wash braucht
-     dieselbe Prüfung erneut. */
-  --body-wash: #e6eff7;
+  /* Seitenhintergrund (body). Helles Oliv-Grün statt des Blau-Washs, auf Wunsch
+     vom 17.9.2026 (Referenzbild), zurück zur Markenfarbe statt eines fremden
+     Blautons. Derselbe Wert wie --light-olive, damit nicht zwei nahezu gleiche
+     Grüntöne im System stehen. Bewusst hell gehalten: Karten, Felder und Blätter
+     bleiben auf --paper, nur die Fläche dahinter bekommt den Ton. Heller als der
+     vorige Blau-Wash war (Luminanz 0,79 statt 0,85), Kontrast aller Textfarben
+     gegen diesen Wert bleibt daher über den vorher geprüften Werten (siehe
+     --olive-ink oben). */
+  --body-wash: #e2ebb4;
 
   /* Abgeleitete Töne — nur Transparenzen der Markenfarben, keine neuen Farben */
   --ink-70: rgba(25, 27, 13, 0.72);
@@ -1054,6 +1057,39 @@ body:has(.lisa-schale) main { margin: 0 !important; }
 .lisa-chat-kunde {
   align-self: flex-end;
   background: var(--light-olive);
+}
+
+.lisa-anmelde-karte {
+  width: 100%;
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lisa-anmelde-karte form { width: 100%; }
+.lisa-anmelde-avatar {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--s4);
+}
+.lisa-anmelde-wechsel {
+  background: none;
+  border: none;
+  color: var(--olive-ink);
+  font-weight: 800;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 0 var(--s3);
+  margin-top: var(--s3);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .lisa-initialen {
