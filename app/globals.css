@@ -27,12 +27,15 @@
   --light-olive: #e2ebb4;   /* Text auf Olive, Flächen zweiter Ordnung */
   --ink: #191b0d;           /* Alle Texte auf hellem Grund */
   --paper: #fcfbf7;         /* Hintergrund von Karten, Feldern, Blättern — unverändert */
-  /* Seitenhintergrund (body). Ein sehr helles Blau statt Paper, auf Wunsch vom
-     14.9.2026 ("homely"). Bewusst hell gehalten: Karten, Felder und Blätter bleiben
-     auf --paper, nur die Fläche dahinter bekommt den Ton. Kontrast aller Textfarben
-     gegen diesen Wert ist geprüft (siehe --olive-ink oben); dunklerer Wash braucht
-     dieselbe Prüfung erneut. */
-  --body-wash: #e6eff7;
+  /* Seitenhintergrund (body). Helles Oliv-Grün statt des Blau-Washs, auf Wunsch
+     vom 17.9.2026 (Referenzbild), zurück zur Markenfarbe statt eines fremden
+     Blautons. Derselbe Wert wie --light-olive, damit nicht zwei nahezu gleiche
+     Grüntöne im System stehen. Bewusst hell gehalten: Karten, Felder und Blätter
+     bleiben auf --paper, nur die Fläche dahinter bekommt den Ton. Heller als der
+     vorige Blau-Wash war (Luminanz 0,79 statt 0,85), Kontrast aller Textfarben
+     gegen diesen Wert bleibt daher über den vorher geprüften Werten (siehe
+     --olive-ink oben). */
+  --body-wash: #e2ebb4;
 
   /* Abgeleitete Töne — nur Transparenzen der Markenfarben, keine neuen Farben */
   --ink-70: rgba(25, 27, 13, 0.72);
