@@ -11,7 +11,7 @@ import {
 } from "@/components/Bausteine";
 import {
   IconAngehoerige,
-  IconBegleitung,
+  IconBegleitungTile,
   IconBetreuerWerden,
   IconEinrichtung,
   IconEinsamkeit,
@@ -139,7 +139,7 @@ const LEISTUNGEN = [
   {
     titel: "Begleitung",
     text: "Zum Arzt, zur Bank, zum Friedhof, zum Einkaufen. Mit dem Auto oder zu Fuß, wie es gerade geht.",
-    icon: <IconBegleitung />,
+    icon: <IconBegleitungTile />,
   },
   {
     titel: "Kochen und Einkauf",
