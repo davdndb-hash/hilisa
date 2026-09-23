@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s · Hi Lisa",
   },
   description:
-    "Deine Pflegekasse zahlt 131 Euro im Monat für Begleitung und Hilfe im Haushalt. Wir schicken jede Woche dieselbe Begleiterin und rechnen direkt mit der Kasse ab.",
+    "Begleitung für ältere Menschen in München — dieselbe Begleiterin, jede Woche. Du buchst direkt, ohne Antrag und ohne Wartezeit.",
   metadataBase: new URL("https://hilisa.example"),
   openGraph: {
     title: "Hi Lisa — Begleitung für ältere Menschen in München",
@@ -89,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <span className="label on-dark">Navigation</span>
                 <p style={{ margin: 0 }}>
-                  <Link href="/care" className="footer-link">
+                  <Link href="/privat" className="footer-link">
                     Was wir machen
                   </Link>
                 </p>

@@ -361,16 +361,22 @@ export function Zweigkarte({ zweig, aktiv = false }: { zweig: Zweig; aktiv?: boo
   );
 }
 
-/** Querverweis am Fuß einer Zweigseite auf die beiden anderen Zweige. */
+/**
+ * Querverweis am Fuß einer Zweigseite auf die übrigen Zweige — passt sich der
+ * Anzahl an (Singular/Grid-1 mit nur noch Enterprise übrig, seit Care mit dem
+ * Pivot auf ausschließlich privat bezahlte Begleitung raus ist).
+ */
 export function AndereZweige({ ausser }: { ausser: ZweigId }) {
   const andere = ZWEIG_LISTE.filter((z) => z.id !== ausser);
+  const einzeln = andere.length === 1;
   return (
     <Abschnitt
+      narrow={einzeln}
       label="Passt das nicht?"
-      titel="Es gibt zwei andere Wege"
+      titel={einzeln ? "Es gibt einen anderen Weg" : "Es gibt andere Wege"}
       lead={ZWEIGE[ausser].nichtFuer}
     >
-      <div className="grid grid-2" style={{ marginTop: "var(--s9)" }}>
+      <div className={einzeln ? undefined : "grid grid-2"} style={{ marginTop: "var(--s9)" }}>
         {andere.map((z) => (
           <Zweigkarte key={z.id} zweig={z} />
         ))}

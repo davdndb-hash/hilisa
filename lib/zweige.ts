@@ -1,12 +1,15 @@
 /**
- * Die drei Zweige an einer Stelle.
+ * Die verbleibenden Zweige an einer Stelle.
  *
- * Alles, was Übersichtskarten, Modell-Finder, Navigation und die Fußzeile über
- * Care, Privat und Enterprise sagen, kommt aus dieser Datei. Wenn sich ein Preis
- * oder eine Bezeichnung ändert, ändert sie sich hier — nicht an sieben Stellen.
+ * Seit dem Pivot auf ausschließlich privat bezahlte Begleitung (23.9.2026, wie
+ * papa.com) ist Care raus — die Pflegekasse spielt für Kundinnen keine Rolle
+ * mehr. Enterprise bleibt vorerst unangetastet (eigene Entscheidung, nicht Teil
+ * dieses Pivots) und braucht die Pflegekasse für sein eigenes Modell weiterhin.
+ * Was Übersichtskarten, Navigation und Fußzeile über Privat und Enterprise
+ * sagen, kommt aus dieser Datei — nicht an sieben Stellen einzeln.
  */
 
-export type ZweigId = "care" | "privat" | "enterprise";
+export type ZweigId = "privat" | "enterprise";
 
 export type Zweig = {
   id: ZweigId;
@@ -31,25 +34,6 @@ export type Zweig = {
 };
 
 export const ZWEIGE: Record<ZweigId, Zweig> = {
-  care: {
-    id: "care",
-    name: "Hi Lisa Care",
-    kurz: "Care",
-    href: "/care",
-    zahler: "Die Pflegekasse",
-    satz:
-      "Begleitung, die die Pflegekasse bezahlt. Du bekommst keine Rechnung — wir rechnen direkt ab.",
-    zahl: "131 €",
-    zahlText: "im Monat von der Kasse, ab Pflegegrad 1",
-    anrede: "du",
-    fuerWen: [
-      "Es gibt einen Pflegegrad — oder er ist beantragt",
-      "Der Entlastungsbetrag wird bisher nicht genutzt",
-      "Zwei Stunden in der Woche, fester Termin, feste Person",
-    ],
-    nichtFuer:
-      "Kein Pflegegrad und keiner in Aussicht? Dann ist Hi Lisa Privat der richtige Weg.",
-  },
   privat: {
     id: "privat",
     name: "Hi Lisa Privat",
@@ -57,17 +41,17 @@ export const ZWEIGE: Record<ZweigId, Zweig> = {
     href: "/privat",
     zahler: "Du selbst",
     satz:
-      "Dieselbe Begleitung, ohne Pflegegrad und ohne Antrag. Du buchst, wir kommen.",
+      "Begleitung, die du direkt buchst und bezahlst. Du buchst, wir kommen — kein Antrag, keine Wartezeit.",
     zahl: "42 €",
     zahlText: "pro Stunde, ab zwei Stunden, monatlich kündbar",
     anrede: "du",
     fuerWen: [
-      "Kein Pflegegrad — oder er soll gar nicht beantragt werden",
-      "Mehr Stunden als die Kasse zahlt",
+      "Ihr wollt Unterstützung im Alltag, ohne Anträge oder Bürokratie",
+      "Ihr braucht flexible oder kurzfristige Stunden",
       "Kurzfristig: Urlaub, Krankheit, Umzug, ein schwerer Monat",
     ],
     nichtFuer:
-      "Es gibt einen Pflegegrad? Dann fang mit Hi Lisa Care an — das kostet dich nichts.",
+      "Du suchst Begleitung für eine ganze Einrichtung, nicht für eine einzelne Person? Dann ist Hi Lisa für Betriebe der richtige Weg.",
   },
   enterprise: {
     id: "enterprise",
@@ -86,11 +70,11 @@ export const ZWEIGE: Record<ZweigId, Zweig> = {
       "Eigenes Personal, das Sie selbst einstellen und führen",
     ],
     nichtFuer:
-      "Sie suchen Begleitung für einen einzelnen Menschen? Dann sind Care oder Privat richtig.",
+      "Sie suchen Begleitung für einen einzelnen Menschen? Dann ist Hi Lisa Privat richtig.",
   },
 };
 
-export const ZWEIG_LISTE: Zweig[] = [ZWEIGE.care, ZWEIGE.privat, ZWEIGE.enterprise];
+export const ZWEIG_LISTE: Zweig[] = [ZWEIGE.privat, ZWEIGE.enterprise];
 
 /** Was in jedem Zweig gilt — die Grenze, die rechtlich tragend ist. */
 export const GRENZE =

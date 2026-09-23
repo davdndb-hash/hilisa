@@ -184,13 +184,13 @@ export function IconHandy({ size }: { size?: number }) {
  * damit sich der Abschnitt trotz gleicher Bauweise nicht wiederholt anfühlt.
  */
 
-/** Unabhängigkeit fördern: eine Figur, die selbstständig eine Stufe hoch geht. */
+/** Unabhängigkeit fördern: das eigene Zuhause. */
 export function IconUnabhaengigkeit({ size }: { size?: number }) {
   return (
     <IconBadge size={size}>
-      <path d="M9 30h6v-5h6v-5h6" />
-      <circle cx="27" cy="15" r="3" />
-      <path d="M27 18v7M24 21h6M27 25l-3 5M27 25l3 5" />
+      <path d="M9 19l11-10 11 10" />
+      <path d="M12.5 17v13h15V17" />
+      <path d="M16.5 30v-8h7v8" />
     </IconBadge>
   );
 }
@@ -246,14 +246,12 @@ export function IconKosten({ size }: { size?: number }) {
  * app/page.tsx) — dieselbe Badge-Sprache, damit die Karte nicht mehr nackt
  * neben den Werteversprechen-Karten steht. */
 
-/** Für Angehörige: ein Herz, in zwei Händen gehalten. */
+/** Für Angehörige: ein Herz. */
 export function IconAngehoerige({ size }: { size?: number }) {
   return (
     <IconBadge size={size}>
-      <path d="M8 22c0 4 3 7 7 8.5C19 29 22 26 22 22" />
-      <path d="M22 22c0 4 3 7 7 8.5c4-1.5 7-4.5 7-8.5" />
       <path
-        d="M20 11.3c-1.6-2.1-4.6-1.4-4.6 1.1c0 2.3 4.6 4.8 4.6 4.8s4.6-2.5 4.6-4.8c0-2.5-3-3.2-4.6-1.1z"
+        d="M20 29.5c-5.8-3.9-10.2-7.8-10.2-12.6 0-3.1 2.4-5.5 5.4-5.5 1.9 0 3.6 1 4.8 2.6 1.2-1.6 2.9-2.6 4.8-2.6 3 0 5.4 2.4 5.4 5.5 0 4.8-4.4 8.7-10.2 12.6z"
         fill="var(--lila)"
         stroke="none"
       />
@@ -290,11 +288,13 @@ export function IconBetreuerWerden({ size }: { size?: number }) {
  * Dekorative Strichzeichnung für die rechte untere Ecke der Hero-Fläche (siehe
  * Hero in components/Bausteine.tsx) — auf Wunsch als Alternative zu echten
  * Fotos erkundet, solange keine echten Fotos (Begleiterin/Kundin) verfügbar
- * sind. Zwei Figuren nebeneinander, dieselbe Formensprache wie IconBegleitung,
- * nur größer und in Papierton auf der olivenen Fläche statt oliv auf Lila-Kreis.
- * aria-hidden, rein dekorativ, ohne Einfluss auf Textkontrast — nur ab
- * Tablet-Breite sichtbar (siehe .hero-illustration in globals.css), damit sie
- * auf dem Telefon nicht mit dem Titel/CTA konkurriert.
+ * sind. Zwei Figuren nebeneinander, in Papierton auf der olivenen Fläche.
+ * Gefüllte, runde Silhouetten (Kopfkreis + Kapsel-Torso) statt Strichmännchen
+ * — dieselbe Korrektur im Prinzip wie bei IconBegleitungTile (vollere statt
+ * dünne Strich-Figuren), hier aber als einfache flächige Form statt Farbverlauf,
+ * da rein dekorativ und halbtransparent. aria-hidden, ohne Einfluss auf
+ * Textkontrast — nur ab Tablet-Breite sichtbar (siehe .hero-illustration in
+ * globals.css), damit sie auf dem Telefon nicht mit dem Titel/CTA konkurriert.
  */
 export function HeroIllustration() {
   return (
@@ -305,22 +305,21 @@ export function HeroIllustration() {
       aria-hidden="true"
       focusable="false"
     >
-      <g
+      {/* Bank */}
+      <path
+        d="M20 128h100M30 128v10M110 128v10"
         stroke="var(--paper)"
         strokeOpacity="0.35"
         strokeWidth="3"
         strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      >
-        {/* Bank */}
-        <path d="M20 128h100M30 128v10M110 128v10" />
+      />
+      <g fill="var(--paper)" fillOpacity="0.35">
         {/* Sitzende Begleiterin */}
-        <circle cx="60" cy="88" r="10" />
-        <path d="M60 99v22M45 112h30M60 121l-10 16M60 121l10 16" />
+        <circle cx="60" cy="83" r="11.5" />
+        <rect x="45.5" y="97" width="29" height="31" rx="14.5" />
         {/* Sitzende Person, etwas kleiner */}
-        <circle cx="95" cy="92" r="8.5" />
-        <path d="M95 101.5v18M83 116h24M95 119.5l-8 13M95 119.5l8 13" />
+        <circle cx="97" cy="87" r="10" />
+        <rect x="84" y="99.5" width="26" height="28" rx="13" />
       </g>
     </svg>
   );

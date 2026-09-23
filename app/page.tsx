@@ -224,7 +224,7 @@ const BEGLEITER_FINDEN = {
   titel: "Begleiter finden",
   text: "Wir wissen, was es bedeutet, sich um einen geliebten Menschen zu sorgen — und wie sehr das an die eigenen Grenzen gehen kann. Mit Hi Lisa holst du dir Unterstützung, die dich spürbar entlastet.",
   ctaText: "So funktioniert's",
-  href: "/care",
+  href: "/privat",
   icon: <IconAngehoerige size={44} />,
 };
 
@@ -238,21 +238,14 @@ const BEGLEITER_WERDEN = {
   icon: <IconBetreuerWerden size={44} />,
 };
 
-// Eigener Block statt Ersatz für VERTRAUEN (siehe Entscheidung 3 oben). Die
-// drei Punkte stehen inhaltlich schon geprüft auf /care (Fragenliste FRAGEN,
-// § 45b SGB XI) — hier nur kurz zusammengefasst, nichts Neues behauptet.
-const WUSSTEST_DU = [
-  "Bis zu 131 € im Monat, ohne Vorleistung — der Entlastungsbetrag nach § 45b SGB XI steht jedem mit Pflegegrad 1–5 zu, unabhängig vom Einkommen.",
-  "Ungenutztes Guthaben verfällt — was im laufenden Jahr nicht abgerufen wird, ist nur noch bis zum 30. Juni des Folgejahres nutzbar.",
-  "Wir rechnen direkt mit der Kasse ab — keine Rechnung, nichts musst du vorstrecken.",
-];
-
-// Neufassung aus dem Dokument, angelehnt an papa.com/how-it-works, aber
-// eigenständig auf Hi Lisa formuliert — wörtlich übernommen.
+// Siebte Überarbeitung (23.9.2026): Pivot auf ausschließlich privat bezahlte
+// Begleitung (wie papa.com) — Pflegekasse/Pflegegrad werden sitework sunset.
+// WUSSTEST_DU (Pflegekassen-Erklärblock) ist damit komplett hinfällig, nicht
+// nur umformuliert — die ganze Section ist raus (siehe Rendering unten).
 const ABLAUF_KURZ = [
   {
-    titel: "Klär deinen Anspruch, dann geht's los.",
-    text: "Wir schauen gemeinsam nach, wie viel euch über die Pflegekasse zusteht — online oder am Telefon — und begleiten dich Schritt für Schritt durch die Anmeldung.",
+    titel: "Ruf uns an oder schreib uns, dann geht's los.",
+    text: "Zwanzig Minuten am Telefon — wir klären, was gebraucht wird und ab wann es losgehen soll. Kein Antrag, keine Begutachtung.",
   },
   {
     titel: "Vereinbare ein Kennenlernen mit der Begleiterin.",
@@ -361,36 +354,22 @@ export default function Home() {
         </div>
       </Abschnitt>
 
-      {/* ------------------------------------------------------- Wusstest du */}
-      <Abschnitt
-        id="wusstest-du"
-        narrow
-        label="Gut zu wissen"
-        titel="Wusstest du schon?"
-        lead="Hi Lisa fördert die Abrechnung über die Pflegekasse — mit Pflegegrad 1–5 könnt ihr Alltagsbegleitung über den monatlichen Entlastungsbetrag finanzieren."
-      >
-        <div style={{ marginTop: "var(--s6)" }}>
-          <Punkteliste punkte={WUSSTEST_DU} />
-        </div>
-        <p style={{ marginTop: "var(--s6)", marginBottom: 0, fontSize: 18 }}>
-          <Link href="/care#rechner">Rechnen, was genau euch zusteht</Link>
-        </p>
-      </Abschnitt>
-
       {/* ------------------------------------------------------------ Ablauf */}
+      {/* Kein tone="rose" mehr — seit "Wusstest du" (Pflegekassen-Erklärblock)
+          entfallen ist, steht Vertrauen (rose) direkt davor; zwei rosane
+          Sections nacheinander würden ohne Trennung verschwimmen. */}
       <Abschnitt
         id="ablauf"
-        tone="rose"
         label="Ablauf"
         titel="So läuft es ab"
         lead="In München, bei euch zu Hause oder am Telefon — deine Begleiterin ist da, um zu helfen, zuzuhören und einfach da zu sein."
       >
         <Schritte schritte={ABLAUF_KURZ} />
         {/* Offene Frage aus dem Dokument, nicht entschieden: ob hier ein
-            direkter Rückruf-CTA stehen soll statt nur des Links zu /care. */}
+            direkter Rückruf-CTA stehen soll statt nur des Links zu /privat. */}
         <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
-          <Link className="btn btn-primary" href="/care">
-            Alle Details, der Rechner und häufige Fragen
+          <Link className="btn btn-primary" href="/privat">
+            Alle Details und häufige Fragen
           </Link>
         </div>
       </Abschnitt>
