@@ -7,17 +7,14 @@ import {
   Punkteliste,
   Rueckrufblock,
   Schritte,
-  Zielgruppenkarten,
 } from "@/components/Bausteine";
 import {
   IconAngehoerige,
-  IconBegleitungTile,
+  IconBegleitung,
   IconBetreuerWerden,
-  IconEinrichtung,
   IconEinsamkeit,
   IconHandy,
   IconHaushalt,
-  IconKochen,
   IconKosten,
   IconPost,
   IconUnabhaengigkeit,
@@ -102,6 +99,37 @@ import {
  * - Rückrufformular: kleine Feld-Icons statt reiner Textfelder.
  * - HeroIllustration (Icons.tsx) statt eines echten Fotos erkundet, solange
  *   keine echten Fotos existieren — nur ab Tablet-Breite sichtbar.
+ *
+ * Sechste Überarbeitung (23.9.2026, HiLisa_Startseite und Navigation.docx):
+ * Die Abschnitts-Sprunglinks in der Kopfzeile (siehe Nav.tsx) sind auf vier
+ * feste Ziele reduziert: Leistungen, Begleiter finden, Über uns, Begleiter
+ * werden. Damit ändert sich einiges hier:
+ * - Hero: Fineprint-Zeile unter dem CTA entfällt (Dokument, wörtlich).
+ * - Werteversprechen: nur neu sortiert (Einsamkeit → Unabhängigkeit →
+ *   Wohlbefinden → Zugang → Kosten), Inhalt unverändert.
+ * - Leistungen: neue Kopfzeile, sechs neue Karten (Dokument, wörtlich) statt
+ *   der bisherigen Erledigungen-zuerst-Reihenfolge — der Untertext ist im
+ *   Dokument als "(offen)" markiert und bleibt deshalb vorerst weg statt
+ *   einen zur neuen Kopfzeile unpassenden alten Text stehen zu lassen.
+ * - Zielgruppen wird zu zwei eigenständigen Blöcken (Begleiter finden /
+ *   Begleiter werden) statt einem Dreier-Raster — Für Einrichtungen fällt
+ *   damit von der Startseite weg (bleibt auf /fuer-betriebe und in der
+ *   Fußzeile erreichbar, siehe layout.tsx). Das dreht Entscheidung 2 der
+ *   vierten Überarbeitung oben bewusst zurück.
+ * - Neu: #ueber-uns als Platzhalter-Section kurz vor dem Rückruf, als Ziel für
+ *   den gleichnamigen Nav-Punkt. Das Dokument nennt weder Copy noch den
+ *   endgültigen Anker dafür ("Ziel-Anker der Nav-Links klären") — Struktur
+ *   jetzt, Wording folgt laut Dokument separat.
+ * - Ablauf: neue Kopfzeile/Unterzeile/Schritte (Dokument, wörtlich, angelehnt
+ *   an papa.com/how-it-works). Der im Dokument gemeldete Nummerierungs-Fehler
+ *   ("1. 1", "2. 2") tritt in diesem Code nicht auf — Schritte rendert schon
+ *   `list-style: none` auf dem <ol>; vermutlich ein Caching-Stand auf der
+ *   Live-Domain, nicht im Quellcode.
+ * - Bewusst NICHT übernommen: die Neuformulierung von VERTRAUEN — das
+ *   Dokument markiert das ausdrücklich als "nicht final, bitte noch nicht
+ *   umsetzen".
+ * - Offene Frage aus dem Dokument, nicht entschieden: ob am Ende von Ablauf
+ *   ein direkter Rückruf-CTA stehen soll statt nur des Links zu /care.
  */
 
 // Nach Vorbild papa.com/companion-care, aus hilisa-startseite-stand.docx
@@ -109,24 +137,24 @@ import {
 // Grammatikfehler: doppeltes "ermöglichen").
 const WERTEVERSPRECHEN = [
   {
-    titel: "Unabhängigkeit fördern",
-    text: "Damit ältere Menschen in den eigenen vier Wänden selbstbestimmt leben können — mit so viel Eigenständigkeit und Lebensqualität wie möglich.",
-    icon: <IconUnabhaengigkeit size={44} />,
-  },
-  {
-    titel: "Zugang für alle schaffen",
-    text: "Unterstützung, die zum Alltag, zur Lebenssituation und zum Wohnort passt — unabhängig vom Geldbeutel.",
-    icon: <IconZugang size={44} />,
-  },
-  {
     titel: "Einsamkeit heilen",
     text: "Menschliche Nähe, die trägt: jemand an der Seite, der beim Alltag hilft und einfach da ist.",
     icon: <IconEinsamkeit size={44} />,
   },
   {
+    titel: "Unabhängigkeit fördern",
+    text: "Damit ältere Menschen in den eigenen vier Wänden selbstbestimmt leben können — mit so viel Eigenständigkeit und Lebensqualität wie möglich.",
+    icon: <IconUnabhaengigkeit size={44} />,
+  },
+  {
     titel: "Wohlbefinden stärken",
     text: "Ein Leben nach den eigenen Wünschen, mit so wenig Einschränkungen wie möglich — durch Unterstützung, auf die Verlass ist.",
     icon: <IconWohlbefinden size={44} />,
+  },
+  {
+    titel: "Zugang für alle schaffen",
+    text: "Unterstützung, die zum Alltag, zur Lebenssituation und zum Wohnort passt — unabhängig vom Geldbeutel.",
+    icon: <IconZugang size={44} />,
   },
   {
     titel: "Kosten senken und Angehörige entlasten",
@@ -135,35 +163,41 @@ const WERTEVERSPRECHEN = [
   },
 ];
 
+// Sechste Überarbeitung: komplett aus dem Dokument übernommen, wörtlich.
+// Icon-Zuordnung ist unsere eigene Wahl (das Dokument nennt keine Icons) —
+// bestehende Icons wiederverwendet, wo das Motiv passt. Für "Alltagsbegleitung"
+// gibt es kein eigenes Icon; IconEinsamkeit (zwei sich überlappende Kreise,
+// schon für "Einsamkeit heilen" oben im Einsatz) steht hier als Platzhalter für
+// "verlässliche Nähe", bis es ein eigenes Motiv gibt.
 const LEISTUNGEN = [
   {
-    titel: "Begleitung",
-    text: "Zum Arzt, zur Bank, zum Friedhof, zum Einkaufen. Mit dem Auto oder zu Fuß, wie es gerade geht.",
-    icon: <IconBegleitungTile />,
-  },
-  {
-    titel: "Kochen und Einkauf",
-    text: "Gemeinsam kochen oder vorkochen, Vorräte auffüllen, Rezepte in der Apotheke holen.",
-    icon: <IconKochen />,
-  },
-  {
-    titel: "Post und Papierkram",
-    text: "Briefe sortieren, Formulare verstehen, Termine notieren, Anträge vorbereiten.",
-    icon: <IconPost />,
-  },
-  {
-    titel: "Haushalt",
-    text: "Wäsche, Küche, aufräumen, Betten frisch beziehen, auch mal nach dem Haustier schauen. Keine Handwerksarbeiten.",
-    icon: <IconHaushalt />,
-  },
-  {
-    titel: "Zeit zu zweit",
-    text: "Kaffee, Spaziergang, Karten, Fotoalben, erzählen. Der Teil, den Angehörige am meisten vermissen.",
+    titel: "Gesellschaft und Aktivitäten",
+    text: "Ob Kartenspiel, ein Spaziergang durch alte Erinnerungen oder ein neues Rezept zum Ausprobieren — unsere Begleiter:innen bringen echte Gesellschaft mit, mit Herzlichkeit.",
     icon: <IconZeitZuZweit />,
   },
   {
-    titel: "Handy und Tablet",
-    text: "Videoanruf mit den Enkeln, Fotos anschauen, Termine eintragen, Apps erklären.",
+    titel: "Besorgungen und Fahrten",
+    text: "Ein Termin beim Arzt, Besorgungen, der Wocheneinkauf? Unsere Begleiter:innen bringen dich sicher dorthin, wo du hinmusst.",
+    icon: <IconBegleitung />,
+  },
+  {
+    titel: "Post und Papierkram",
+    text: "Briefe stapeln sich, Formulare wollen verstanden werden, ein Antrag muss noch raus. Wir sortieren mit dir durch, erklären, was drinsteht, und helfen beim Schriftverkehr mit Behörden, Versicherungen und Banken.",
+    icon: <IconPost />,
+  },
+  {
+    titel: "Haushalt und tägliche Aufgaben",
+    text: "Der Haushalt kann schnell zu viel werden. Unsere Begleiter:innen übernehmen leichte Reinigungsarbeiten, kümmern sich um die Wäsche, bereiten Mahlzeiten vor, schaffen Ordnung, kümmern sich um dein Haustier und mehr.",
+    icon: <IconHaushalt />,
+  },
+  {
+    titel: "Alltagsbegleitung",
+    text: "Unsere Begleiter:innen sind zuverlässige Ansprechpartner:innen — für praktische Hilfe und für das tägliche Miteinander.",
+    icon: <IconEinsamkeit />,
+  },
+  {
+    titel: "Technikhilfe",
+    text: "Unsere Begleiter:innen helfen dir dabei, Geräte und Apps einzurichten und zu bedienen — damit du mit deinen Liebsten in Kontakt bleibst, Spiele entdeckst und noch vieles mehr.",
     icon: <IconHandy />,
   },
 ];
@@ -181,32 +215,28 @@ const VERTRAUEN = [
   "Eine Nummer für Beschwerden, die nicht bei der Einsatzleitung klingelt",
 ];
 
-// Aus hilisa-startseite-stand.docx, Abschnitt "Zielgruppen-Teaser (neu)".
-// Verlinkt bewusst wieder /fuer-betriebe und /mitarbeiten — siehe
-// Entscheidung 2 im Kommentar oben.
-const ZIELGRUPPEN = [
-  {
-    titel: "Für Angehörige",
-    text: "Wir wissen, was es bedeutet, sich um einen geliebten Menschen zu sorgen — und wie sehr das an die eigenen Grenzen gehen kann. Mit Hi Lisa holst du dir Unterstützung, die dich spürbar entlastet.",
-    ctaText: "So funktioniert's",
-    href: "/care",
-    icon: <IconAngehoerige size={44} />,
-  },
-  {
-    titel: "Für Einrichtungen",
-    text: "Pflegeeinrichtungen und Pflegedienste arbeiten mit Hi Lisa zusammen, um Bewohner:innen und Klient:innen ein besseres, selbstbestimmteres Leben zu ermöglichen.",
-    ctaText: "Für Einrichtungen & Pflegedienste",
-    href: "/fuer-betriebe",
-    icon: <IconEinrichtung size={44} />,
-  },
-  {
-    titel: "Selbstständige:r Betreuer:in werden",
-    text: "Flexible, sinnstiftende Arbeit, die zu deinem Leben passt. Hilf Menschen in deiner Umgebung, wann es dir passt.",
-    ctaText: "Mehr erfahren",
-    href: "/mitarbeiten",
-    icon: <IconBetreuerWerden size={44} />,
-  },
-];
+// Sechste Überarbeitung: aus dem bisherigen Dreier-Raster (Angehörige,
+// Einrichtungen, Betreuer:in werden) werden zwei eigenständige Blöcke, weil
+// "Hilfe suchen" und "als Begleiter:in arbeiten" zwei unterschiedliche
+// Absichten sind (Dokument, wörtlich). Für Einrichtungen fällt damit von der
+// Startseite weg — bleibt auf /fuer-betriebe und in der Fußzeile erreichbar.
+const BEGLEITER_FINDEN = {
+  titel: "Begleiter finden",
+  text: "Wir wissen, was es bedeutet, sich um einen geliebten Menschen zu sorgen — und wie sehr das an die eigenen Grenzen gehen kann. Mit Hi Lisa holst du dir Unterstützung, die dich spürbar entlastet.",
+  ctaText: "So funktioniert's",
+  href: "/care",
+  icon: <IconAngehoerige size={44} />,
+};
+
+// "Kurzintro folgt" laut Dokument — der Fließtext ist wörtlich übernommen,
+// eine eigene Überschrift jenseits von "Begleiter werden" gibt es noch nicht.
+const BEGLEITER_WERDEN = {
+  titel: "Begleiter werden",
+  text: "Flexible, sinnstiftende Arbeit, die zu deinem Leben passt. Hilf Menschen in deiner Umgebung, wann es dir passt.",
+  ctaText: "Mehr erfahren",
+  href: "/mitarbeiten",
+  icon: <IconBetreuerWerden size={44} />,
+};
 
 // Eigener Block statt Ersatz für VERTRAUEN (siehe Entscheidung 3 oben). Die
 // drei Punkte stehen inhaltlich schon geprüft auf /care (Fragenliste FRAGEN,
@@ -217,18 +247,20 @@ const WUSSTEST_DU = [
   "Wir rechnen direkt mit der Kasse ab — keine Rechnung, nichts musst du vorstrecken.",
 ];
 
+// Neufassung aus dem Dokument, angelehnt an papa.com/how-it-works, aber
+// eigenständig auf Hi Lisa formuliert — wörtlich übernommen.
 const ABLAUF_KURZ = [
   {
-    titel: "Anrufen oder schreiben",
-    text: "Zwanzig Minuten am Telefon. Wir klären, was gebraucht wird.",
+    titel: "Klär deinen Anspruch, dann geht's los.",
+    text: "Wir schauen gemeinsam nach, wie viel euch über die Pflegekasse zusteht — online oder am Telefon — und begleiten dich Schritt für Schritt durch die Anmeldung.",
   },
   {
-    titel: "Kostenlos kennenlernen",
-    text: "Bei euch zu Hause, zusammen mit der Begleiterin, die später kommt.",
+    titel: "Vereinbare ein Kennenlernen mit der Begleiterin.",
+    text: "Ob persönlich bei euch zu Hause oder erstmal am Telefon — ihr entscheidet, wie ihr euch kennenlernen wollt, direkt mit der Begleiterin, die danach regelmäßig kommt.",
   },
   {
-    titel: "Wir übernehmen den Papierkram",
-    text: "Direkt mit der Kasse abgerechnet. Feste Woche, feste Person.",
+    titel: "Genießt die gemeinsame Zeit — und gebt uns Rückmeldung.",
+    text: "Ob Gesellschaft, ein Erledigungsgang oder Hilfe im Alltag: eure Begleiterin richtet sich danach, was gerade gebraucht wird. Nach jedem Besuch fragen wir kurz nach, damit die Chemie wirklich stimmt.",
   },
 ];
 
@@ -255,7 +287,6 @@ export default function Home() {
             </a>
           </>
         }
-        fineprint="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei der Kasse noch offen ist."
       />
 
       {/* ------------------------------------------------------ Werteversprechen */}
@@ -268,23 +299,53 @@ export default function Home() {
       </Abschnitt>
 
       {/* -------------------------------------------------------- Leistungen */}
+      {/* Untertext laut Dokument "(offen)" — bleibt bewusst weg, statt einen zur
+          neuen Kopfzeile unpassenden alten Text stehen zu lassen. */}
       <Abschnitt
         id="leistungen"
         tone="rose"
         label="Was wir machen"
-        titel="Alles, was allein nicht mehr so einfach geht."
-        lead="Zwei Stunden, ein fester Termin, dieselbe Person. Keine Pflege im medizinischen Sinn — dafür genau das, wofür sonst niemand mehr Zeit hat."
+        titel="Eigenständig zu Hause bleiben — mit der richtigen Unterstützung an deiner Seite."
       >
         <Kartenraster eintraege={LEISTUNGEN} />
       </Abschnitt>
 
-      {/* ------------------------------------------------------- Zielgruppen */}
-      <Abschnitt
-        id="zielgruppen"
-        label="Für wen wir da sind"
-        titel="Ob als Angehörige, Einrichtung oder Begleiter:in — Hi Lisa passt sich an."
-      >
-        <Zielgruppenkarten eintraege={ZIELGRUPPEN} />
+      {/* --------------------------------------------------- Begleiter finden */}
+      <Abschnitt id="begleiter-finden" narrow titel={BEGLEITER_FINDEN.titel}>
+        <div
+          className="card card-interactive"
+          style={{ marginTop: "var(--s9)", display: "flex", flexDirection: "column", gap: "var(--s3)" }}
+        >
+          {BEGLEITER_FINDEN.icon}
+          <p style={{ margin: 0, fontSize: 18 }}>{BEGLEITER_FINDEN.text}</p>
+          <Link
+            className="btn btn-outline"
+            href={BEGLEITER_FINDEN.href}
+            style={{ marginTop: "var(--s3)", alignSelf: "flex-start" }}
+          >
+            {BEGLEITER_FINDEN.ctaText}
+          </Link>
+        </div>
+      </Abschnitt>
+
+      {/* --------------------------------------------------- Begleiter werden */}
+      {/* Kein tone="rose" hier — Vertrauen direkt danach ist schon rose, zwei
+          rosane Sections nacheinander würden ohne Trennung verschwimmen. */}
+      <Abschnitt id="begleiter-werden" narrow titel={BEGLEITER_WERDEN.titel}>
+        <div
+          className="card card-interactive"
+          style={{ marginTop: "var(--s9)", display: "flex", flexDirection: "column", gap: "var(--s3)" }}
+        >
+          {BEGLEITER_WERDEN.icon}
+          <p style={{ margin: 0, fontSize: 18 }}>{BEGLEITER_WERDEN.text}</p>
+          <Link
+            className="btn btn-outline"
+            href={BEGLEITER_WERDEN.href}
+            style={{ marginTop: "var(--s3)", alignSelf: "flex-start" }}
+          >
+            {BEGLEITER_WERDEN.ctaText}
+          </Link>
+        </div>
       </Abschnitt>
 
       {/* --------------------------------------------------------- Vertrauen */}
@@ -320,15 +381,27 @@ export default function Home() {
       <Abschnitt
         id="ablauf"
         tone="rose"
-        label="So läuft es ab"
-        titel="Anrufen. Kennenlernen. Wir übernehmen den Papierkram."
+        label="Ablauf"
+        titel="So läuft es ab"
+        lead="In München, bei euch zu Hause oder am Telefon — deine Begleiterin ist da, um zu helfen, zuzuhören und einfach da zu sein."
       >
         <Schritte schritte={ABLAUF_KURZ} />
+        {/* Offene Frage aus dem Dokument, nicht entschieden: ob hier ein
+            direkter Rückruf-CTA stehen soll statt nur des Links zu /care. */}
         <div className="stack-cta" style={{ marginTop: "var(--s6)" }}>
           <Link className="btn btn-primary" href="/care">
             Alle Details, der Rechner und häufige Fragen
           </Link>
         </div>
+      </Abschnitt>
+
+      {/* ---------------------------------------------------------- Über uns */}
+      {/* Platzhalter-Section für den gleichnamigen Nav-Punkt — das Dokument
+          nennt weder Copy noch den endgültigen Anker dafür ("Ziel-Anker der
+          Nav-Links klären"). Struktur jetzt, Wording folgt laut Dokument
+          separat ("Struktur zuerst, Wording danach"). */}
+      <Abschnitt id="ueber-uns" narrow label="Über uns" titel="Über uns">
+        <p className="lead">Text folgt.</p>
       </Abschnitt>
 
       {/* ----------------------------------------------------------- Rückruf */}

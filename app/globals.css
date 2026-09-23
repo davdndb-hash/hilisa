@@ -164,42 +164,15 @@ section { padding: var(--s18) 0; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* Startseite: die Abschnitts-Sprunglinks stehen anstelle der normalen
-   Kopfzeilen-Links im selben .nav-links-Slot (siehe ABSCHNITTE/istStartseite
-   in Nav.tsx) — eine eigene zweite Zeile sah wie zwei gestapelte
-   Navigationsleisten aus. Am Rechner also inline in der bestehenden Zeile,
-   auf dem Telefon in der aufklappbaren Kopfzeilen-Klapptafel wie die anderen
-   Links auch. */
-.abschnittsnav-link {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--olive-ink);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.abschnittsnav-link:hover { text-decoration: underline; text-decoration-color: var(--olive); }
-
-/* Zwei der sechs Sprungziele sind eher ein Klickziel als eine Lesestation
-   (Für wen, Wusstest du?) — als Pille statt reinem Textlink, damit sie in der
-   Zeile auffallen. Kontrast geprüft: --ink auf --rose kommt auf 13,9:1. */
-.abschnittsnav-link.is-highlight {
-  padding: 0 var(--s4);
-  background: var(--rose);
-  border-radius: 999px;
-  color: var(--ink);
-}
-.abschnittsnav-link.is-highlight:hover { background: #f0aedb; text-decoration: none; }
-
-/* Auf dem Telefon bleibt in der Kopfzeile nur Marke, Telefonnummer und das
-   Menü. Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen. */
+/* Auf dem Telefon bleibt in der Kopfzeile nur Marke, der Rückruf-Button und das
+   Menü. Die Textlinks würden dort die halbe erste Bildschirmhöhe fressen, und
+   für die Telefonnummer als Zweitoption ist bei 390 px ohnehin kein Platz mehr
+   (siehe Kommentar in Nav.tsx). */
 .nav-links { display: none; }
 .nav-toggle { display: inline-flex; }
 .tel-lang { display: none; }
 .tel-kurz { display: inline; }
+.nav-tel-sekundaer { display: none; }
 @media (min-width: 900px) {
   .nav-links { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: center; }
   /* Am Rechner stehen die Links offen da — Menü und Klapptafel sind dort überflüssig. */
@@ -207,6 +180,18 @@ html { scroll-behavior: smooth; }
   .tel-lang { display: inline; }
   .tel-kurz { display: none; }
   .nav-panel { display: none !important; }
+  /* Dezente Zweitoption neben dem Rückruf-Button (Dokument: "beide zeigen"). */
+  .nav-tel-sekundaer {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ink-70);
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-tel-sekundaer:hover { color: var(--ink); text-decoration: underline; }
 }
 
 /* Der Sprunglink ist unsichtbar, bis er den Fokus hat. Dann muss man ihn sehen. */

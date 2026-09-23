@@ -8,34 +8,33 @@ import Logo from "@/components/Logo";
 /**
  * Kopfzeile.
  *
- * Seit 15.9.2026 (Abgleich mit hilisa-startseite-stand.docx) wieder zwei
- * Links: die Info-Seite und Für Einrichtungen — Enterprise kommt mit dem
- * neuen Zielgruppen-Teaser auf der Startseite zurück in die Hauptnavigation.
- * Mitarbeiten steht weiterhin bewusst nicht hier — das ist keine
- * Kundennavigation, sondern eine Bewerberinnen-Seite, und bleibt in der
- * Fußzeile (siehe layout.tsx).
+ * Neuplanung 22.9.2026 (HiLisa_Startseite und Navigation.docx): Reihenfolge
+ * und Auswahl kommen jetzt komplett aus dem Dokument statt aus einer eigenen
+ * Abwägung — Leistungen (was bieten wir an?) → Begleiter finden (Hauptpfad,
+ * führt zu Umsatz) → Über uns (Vertrauensanker kurz vor der Entscheidung) →
+ * Begleiter werden (andere Zielgruppe, konkurriert nicht mit dem CTA, bleibt
+ * aber auffindbar). Für Einrichtungen ist damit aus der Hauptnavigation raus
+ * (weiterhin über die Fußzeile erreichbar, siehe layout.tsx) — das Dokument
+ * nennt keinen Enterprise-Punkt mehr.
  *
- * Auf der Startseite ersetzen die Abschnitts-Sprunglinks (ABSCHNITTE) die
- * beiden LINKS oben im selben Platz — bewusst kein zweiter Zeile darunter
- * (das sah wie zwei gestapelte Navigationsleisten aus). So funktioniert's/
- * Für Einrichtungen bleiben trotzdem erreichbar, nur eben über die Fußzeile,
- * solange man auf der Startseite ist. "Für wen" und "Wusstest du?" sind als
- * Pille hervorgehoben (echte Klickziele: Zielgruppen-Karten bzw.
- * Pflegekassen-Erklärung), die übrigen vier bleiben Textlinks.
+ * Alle vier Ziele sind mit führendem "/" verlinkt (auch die Anker), damit
+ * dieselbe Nav auf jeder Seite funktioniert: von der Startseite aus ein
+ * normaler Sprung, von einer Unterseite aus Navigation zur Startseite plus
+ * Sprung zum Anker. Das ersetzt den früheren Umschalter zwischen ABSCHNITTE
+ * (nur Startseite) und LINKS (nur Unterseiten) — eine Struktur für beide
+ * Fälle statt zwei parallele.
+ *
+ * "Über uns" zeigt vorerst auf eine Platzhalter-Section (siehe app/page.tsx,
+ * #ueber-uns) — das Dokument selbst nennt den Ziel-Anker als offenen Punkt
+ * ("Ziel-Anker der Nav-Links klären") und verschiebt Wording auf später
+ * ("Struktur zuerst, Wording danach").
  */
 
-const LINKS = [
-  { href: "/care", text: "So funktioniert's" },
-  { href: "/fuer-betriebe", text: "Für Einrichtungen" },
-];
-
-const ABSCHNITTE = [
-  { href: "#werteversprechen", text: "Warum Hi Lisa" },
-  { href: "#leistungen", text: "Leistungen" },
-  { href: "#zielgruppen", text: "Für wen", highlight: true },
-  { href: "#vertrauen", text: "Vertrauen" },
-  { href: "#wusstest-du", text: "Wusstest du?", highlight: true },
-  { href: "#ablauf", text: "Ablauf" },
+const NAV_LINKS = [
+  { href: "/#leistungen", text: "Leistungen" },
+  { href: "/#rueckruf", text: "Begleiter finden" },
+  { href: "/#ueber-uns", text: "Über uns" },
+  { href: "/mitarbeiten", text: "Begleiter werden" },
 ];
 
 export default function Nav() {
@@ -62,8 +61,7 @@ export default function Nav() {
     };
   }, [offen]);
 
-  const aktiv = (href: string) => href !== "/" && pfad.startsWith(href);
-  const istStartseite = pfad === "/";
+  const aktiv = (href: string) => !href.includes("#") && href !== "/" && pfad.startsWith(href);
 
   return (
     <header
@@ -93,50 +91,43 @@ export default function Nav() {
 
         <nav aria-label="Hauptnavigation" style={{ display: "flex", gap: "var(--s4)", alignItems: "center" }}>
           <span className="nav-links">
-            {istStartseite
-              ? ABSCHNITTE.map((a) => (
-                  <a
-                    key={a.href}
-                    href={a.href}
-                    className={a.highlight ? "abschnittsnav-link is-highlight" : "abschnittsnav-link"}
-                  >
-                    {a.text}
-                  </a>
-                ))
-              : LINKS.map((n) => (
-                  <Link
-                    key={n.href}
-                    href={n.href}
-                    aria-current={aktiv(n.href) ? "page" : undefined}
-                    style={{
-                      fontSize: 17,
-                      fontWeight: aktiv(n.href) ? 800 : 500,
-                      textDecoration: aktiv(n.href) ? "underline" : "none",
-                      textDecorationColor: "var(--olive)",
-                      textDecorationThickness: 3,
-                    }}
-                  >
-                    {n.text}
-                  </Link>
-                ))}
+            {NAV_LINKS.map((n) => (
+              <Link
+                key={n.href}
+                href={n.href}
+                aria-current={aktiv(n.href) ? "page" : undefined}
+                style={{
+                  fontSize: 17,
+                  fontWeight: aktiv(n.href) ? 800 : 500,
+                  textDecoration: aktiv(n.href) ? "underline" : "none",
+                  textDecorationColor: "var(--olive)",
+                  textDecorationThickness: 3,
+                }}
+              >
+                {n.text}
+              </Link>
+            ))}
           </span>
 
-          {/* Bei 390 px Breite passen Marke, volle Nummer und Menütaste nicht in eine
-              Zeile — die Menütaste rutschte aus dem Bild. Auf dem Telefon steht daher
-              „Anrufen" auf der Taste; die Nummer selbst steht im Menü und gleich
-              darunter im ersten Block, also ohne Scrollen. Der Anruf löst in beiden
-              Fällen dieselbe tel:-Verknüpfung aus. */}
+          {/* CTA in der Nav (Dokument: "beide zeigen") — Rückruf anfordern ist jetzt
+              der primäre, auffällige Button; die Nummer daneben eine dezentere
+              Zweitoption für alle, die lieber direkt anrufen. Auf dem Telefon bleibt
+              aus Platzgründen nur der Rückruf-Button in der Kopfzeile (bei 390 px passen
+              Marke, zwei Buttons und Menütaste nicht in eine Zeile) — die Nummer steht
+              dort weiterhin oben im aufklappbaren Menü, einen Tap entfernt. */}
+          <a className="btn btn-accent" href="/#rueckruf" style={{ whiteSpace: "nowrap" }}>
+            <span className="tel-lang">Rückruf anfordern</span>
+            <span className="tel-kurz">Rückruf</span>
+          </a>
           <a
-            className="btn btn-accent"
             href="tel:+4989000000"
             aria-label="Anrufen: 089 — Nummer eintragen"
-            style={{ whiteSpace: "nowrap" }}
+            className="nav-tel-sekundaer"
           >
-            <span aria-hidden="true" style={{ marginRight: 8, fontSize: 18 }}>
+            <span aria-hidden="true" style={{ marginRight: 6 }}>
               ✆
             </span>
-            <span className="tel-lang">089 — Nummer</span>
-            <span className="tel-kurz">Anrufen</span>
+            089 — Nummer
           </a>
 
           {/* Nur auf dem Telefon: das Menü. Am Rechner stehen die Links offen da. */}
@@ -181,44 +172,25 @@ export default function Nav() {
             </span>
             089 — Nummer eintragen
           </a>
-          {istStartseite
-            ? ABSCHNITTE.map((a) => (
-                <a
-                  key={a.href}
-                  href={a.href}
-                  onClick={() => setOffen(false)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    minHeight: 56,
-                    fontSize: 20,
-                    fontWeight: a.highlight ? 800 : 700,
-                    color: a.highlight ? "var(--olive-ink)" : undefined,
-                    textDecoration: "none",
-                    borderBottom: "1px solid var(--rule-soft)",
-                  }}
-                >
-                  {a.text}
-                </a>
-              ))
-            : LINKS.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  aria-current={aktiv(n.href) ? "page" : undefined}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    minHeight: 56,
-                    fontSize: 20,
-                    fontWeight: 700,
-                    textDecoration: "none",
-                    borderBottom: "1px solid var(--rule-soft)",
-                  }}
-                >
-                  {n.text}
-                </Link>
-              ))}
+          {NAV_LINKS.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              aria-current={aktiv(n.href) ? "page" : undefined}
+              onClick={() => setOffen(false)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                minHeight: 56,
+                fontSize: 20,
+                fontWeight: 700,
+                textDecoration: "none",
+                borderBottom: "1px solid var(--rule-soft)",
+              }}
+            >
+              {n.text}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
