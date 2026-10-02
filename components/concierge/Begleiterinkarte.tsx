@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Appointment, Companion } from "@/lib/concierge-data";
+import { STATUS_TEXT, dauerText, terminLang } from "@/lib/termine";
 
 function Initialen({ name }: { name: string }) {
   const buchstabe = name.trim().charAt(0).toUpperCase() || "?";
@@ -39,7 +40,18 @@ export function Begleiterinkarte({
             Nächster Termin
           </span>
           <p style={{ margin: 0, fontWeight: 700, fontSize: 19 }}>
-            {naechsterTermin.datum}, {naechsterTermin.anlass}, {naechsterTermin.uhrzeit} Uhr
+            {/* Altzeilen von vor der Umstellung auf einen echten Zeitpunkt
+                haben nur den früheren Freitext, siehe Migration
+                "termine_echter_zeitpunkt_und_status". */}
+            {naechsterTermin.starts_at
+              ? terminLang(naechsterTermin.starts_at)
+              : naechsterTermin.datum + ", " + naechsterTermin.uhrzeit + " Uhr"}
+          </p>
+          <p style={{ margin: "var(--s2) 0 0", fontSize: 17 }}>
+            {naechsterTermin.anlass} · {dauerText(naechsterTermin.dauer_minuten)}
+          </p>
+          <p style={{ margin: "var(--s2) 0 0", fontSize: 16, color: "var(--ink-70)" }}>
+            {STATUS_TEXT[naechsterTermin.status].lang}
           </p>
           {naechsterTermin.notiz ? (
             <p style={{ margin: "var(--s2) 0 0", fontSize: 16, color: "var(--ink-70)" }}>

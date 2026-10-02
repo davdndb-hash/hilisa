@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ZurueckLink } from "@/components/concierge/ZurueckLink";
 import { Abmelden } from "@/components/concierge/Abmelden";
+import { Profilformular } from "@/components/concierge/Profilformular";
 import { getAssignedCompanion, getCustomer } from "@/lib/concierge-data";
 import { serverClient } from "@/lib/supabase/server";
 
@@ -31,30 +32,27 @@ export default async function ProfilSeite() {
       <ZurueckLink />
       <h1 style={{ fontSize: "clamp(24px, 4vw, 30px)" }}>Profil</h1>
 
-      <div className="card" style={{ display: "flex", flexDirection: "column", gap: "var(--s4)" }}>
+      <div className="card" style={{ marginBottom: "var(--s6)" }}>
+        {kunde ? (
+          <Profilformular kunde={kunde} />
+        ) : (
+          <p style={{ margin: 0 }}>
+            Dein Konto wird gerade angelegt. Lad die Seite in einem Moment noch einmal.
+          </p>
+        )}
+      </div>
+
+      {/* Zwei Angaben, die die Familie nicht selbst ändern kann: die E-Mail
+          gehört zur Anmeldung, die Begleiterin weist Hi Lisa zu. */}
+      <div
+        className="card card-quiet"
+        style={{ boxShadow: "none", display: "flex", flexDirection: "column", gap: "var(--s4)" }}
+      >
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
             E-Mail
           </span>
           <p style={{ margin: 0, fontSize: 19 }}>{user.email}</p>
-        </div>
-        <div>
-          <span className="label" style={{ marginBottom: 2 }}>
-            Name
-          </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.name || "Noch nicht eingetragen"}</p>
-        </div>
-        <div>
-          <span className="label" style={{ marginBottom: 2 }}>
-            Telefon
-          </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.telefon || "Noch nicht eingetragen"}</p>
-        </div>
-        <div>
-          <span className="label" style={{ marginBottom: 2 }}>
-            Betreute Person
-          </span>
-          <p style={{ margin: 0, fontSize: 19 }}>{kunde?.betreute_person || "Noch nicht eingetragen"}</p>
         </div>
         <div>
           <span className="label" style={{ marginBottom: 2 }}>
@@ -65,7 +63,9 @@ export default async function ProfilSeite() {
               {begleiterin.name} — <Link href="/lisa/begleiterin">Details ansehen</Link>
             </p>
           ) : (
-            <p style={{ margin: 0, fontSize: 19, color: "var(--ink-55)" }}>Noch keine zugewiesen</p>
+            <p style={{ margin: 0, fontSize: 19, color: "var(--ink-55)" }}>
+              Noch keine zugewiesen
+            </p>
           )}
         </div>
       </div>

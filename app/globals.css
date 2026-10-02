@@ -1106,9 +1106,14 @@ body:has(.lisa-schale) main { margin: 0 !important; }
   font-weight: 700;
   font-size: 16px;
 }
+/* Dieselbe Falle wie bei den Chatblasen: --light-olive ist derselbe Hexwert
+   wie --body-wash, die gewählte Option war also nur am Rahmen zu erkennen —
+   und damit allein an der Farbe (WCAG 1.4.1). Jetzt gefüllt, wie der
+   Primärknopf. */
 .lisa-anlass-option:has(input:checked) {
-  background: var(--light-olive);
-  border-color: var(--olive);
+  background: var(--olive-deep);
+  border-color: var(--olive-deep);
+  color: var(--on-olive);
 }
 .lisa-anlass-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 
@@ -1343,4 +1348,64 @@ label,
    einzige Rückwärtsnavigation und darf nicht knapp bemessen sein. */
 @media (display-mode: standalone) {
   .lisa-zurueck { min-height: 48px; }
+}
+
+/* ------------------------------------------------------------- Terminliste */
+
+.lisa-terminliste {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+.lisa-termin[data-vergangen] {
+  /* Abgesagt oder vorbei: noch lesbar, aber nicht mehr im Vordergrund.
+     Keine reine Ausgrauung des Textes — das fiele unter den Kontrastwert. */
+  background: var(--light-olive);
+  box-shadow: none;
+}
+
+.lisa-termin-kopf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.lisa-termin-fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+
+/* Der Status steht als Wort da, nicht als farbiger Punkt: Farbe allein darf
+   keine Information tragen (WCAG 1.4.1). Die Farbe verstärkt nur. */
+.lisa-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.lisa-status[data-ton="wartet"] { background: var(--light-olive); color: var(--olive-ink); }
+.lisa-status[data-ton="gut"] { background: var(--olive-deep); color: var(--on-olive); }
+.lisa-status[data-ton="achtung"] { background: var(--rose); color: var(--ink); }
+.lisa-status[data-ton="ruhig"] { background: var(--rule-soft); color: var(--ink-70); }
+
+/* Unter dem Mikrofonknopf auf /lisa: dass Sprechen noch nicht eingebaut ist,
+   steht sichtbar da und nicht nur im aria-label. */
+.lisa-vorschau-hinweis {
+  margin: 0;
+  max-width: 24rem;
+  font-size: 16px;
+  color: var(--ink-70);
+  text-align: center;
 }

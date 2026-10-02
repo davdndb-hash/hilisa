@@ -21,8 +21,11 @@ export type Database = {
           created_at: string
           customer_id: string
           datum: string
+          dauer_minuten: number
           id: string
           notiz: string | null
+          starts_at: string | null
+          status: Database["public"]["Enums"]["terminstatus"]
           uhrzeit: string
         }
         Insert: {
@@ -31,8 +34,11 @@ export type Database = {
           created_at?: string
           customer_id: string
           datum: string
+          dauer_minuten?: number
           id?: string
           notiz?: string | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["terminstatus"]
           uhrzeit: string
         }
         Update: {
@@ -41,8 +47,11 @@ export type Database = {
           created_at?: string
           customer_id?: string
           datum?: string
+          dauer_minuten?: number
           id?: string
           notiz?: string | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["terminstatus"]
           uhrzeit?: string
         }
         Relationships: [
@@ -182,10 +191,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_staff: { Args: never; Returns: boolean }
+      termin_stornieren: {
+        Args: { p_termin: string }
+        Returns: Database["public"]["Tables"]["appointments"]["Row"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      terminstatus:
+        | "angefragt"
+        | "angeboten"
+        | "angenommen"
+        | "abgelehnt"
+        | "laeuft"
+        | "erledigt"
+        | "storniert"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -312,6 +331,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      terminstatus: [
+        "angefragt",
+        "angeboten",
+        "angenommen",
+        "abgelehnt",
+        "laeuft",
+        "erledigt",
+        "storniert",
+      ],
+    },
   },
 } as const

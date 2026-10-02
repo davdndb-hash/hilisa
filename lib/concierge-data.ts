@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types";
+import { tagLang, uhrzeitKurz, wanduhrNachIso } from "@/lib/termine";
 
 /**
  * Hi Lisa — Datenzugriff auf die echte Supabase-Datenbank.
@@ -26,8 +27,11 @@ export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
 export type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 export type RequestInput = {
+  /** Wanduhr-Datum aus dem Formular, "2026-10-07" */
   datum: string;
+  /** Wanduhr-Zeit aus dem Formular, "14:00" */
   uhrzeit: string;
+  dauerMinuten: number;
   anlass: string;
   notiz?: string;
 };
@@ -60,17 +64,37 @@ export async function listAppointments(supabase: Client, customerId: string): Pr
     .from("appointments")
     .select("*")
     .eq("customer_id", customerId)
+    // Nach Zeitpunkt, nicht nach Anlagedatum. Altzeilen ohne starts_at
+    // (siehe Migration "termine_echter_zeitpunkt_und_status") landen hinten.
+    .order("starts_at", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data ?? [];
+}
+
+/** Termine, die noch bevorstehen und nicht abgesagt sind. */
+export async function listKommendeTermine(
+  supabase: Client,
+  customerId: string
+): Promise<Appointment[]> {
+  const alle = await listAppointments(supabase, customerId);
+  const jetzt = Date.now();
+  return alle.filter(
+    (t) =>
+      t.status !== "storniert" &&
+      t.status !== "erledigt" &&
+      (t.starts_at === null || new Date(t.starts_at).getTime() >= jetzt)
+  );
 }
 
 export async function getNextAppointment(
   supabase: Client,
   customerId: string
 ): Promise<Appointment | null> {
-  const termine = await listAppointments(supabase, customerId);
-  return termine[0] ?? null;
+  // Vorher war das schlicht der zuletzt angelegte Termin — auch wenn er
+  // längst vorbei oder abgesagt war. Jetzt der nächste, der wirklich kommt.
+  const kommende = await listKommendeTermine(supabase, customerId);
+  return kommende[0] ?? null;
 }
 
 export async function listMessages(supabase: Client, customerId: string): Promise<Message[]> {
@@ -89,16 +113,64 @@ export async function createRequest(
   input: RequestInput
 ): Promise<Appointment> {
   const customer = await getCustomer(supabase, customerId);
+  const startsAt = wanduhrNachIso(input.datum, input.uhrzeit);
+
   const { data, error } = await supabase
     .from("appointments")
     .insert({
       customer_id: customerId,
       companion_id: customer?.assigned_companion_id ?? null,
-      datum: input.datum,
-      uhrzeit: input.uhrzeit,
+      starts_at: startsAt,
+      dauer_minuten: input.dauerMinuten,
+      // datum und uhrzeit sind noch not null und werden mitgeschrieben,
+      // solange es Altzeilen ohne starts_at gibt. Abgeleitet, nicht
+      // eingegeben — die beiden Spalten können nicht mehr auseinanderlaufen.
+      datum: tagLang(startsAt),
+      uhrzeit: uhrzeitKurz(startsAt),
       anlass: input.anlass,
       notiz: input.notiz,
     })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Absagen. Geht über eine Datenbankfunktion statt über ein UPDATE, weil ein
+ * allgemeines Schreibrecht auf appointments der Kundin auch erlauben würde,
+ * den Status selbst auf „angenommen" zu setzen und sich eine Zusage
+ * vorzutäuschen, die es nicht gibt.
+ */
+export async function termenStornieren(
+  supabase: Client,
+  terminId: string
+): Promise<Appointment> {
+  const { data, error } = await supabase.rpc("termin_stornieren", { p_termin: terminId });
+  if (error) throw error;
+  return data as Appointment;
+}
+
+/** Was die Familie selbst an ihrem Konto ändern darf. */
+export type KundenAngaben = {
+  name: string;
+  telefon: string;
+  betreute_person: string;
+};
+
+export async function updateCustomer(
+  supabase: Client,
+  customerId: string,
+  angaben: KundenAngaben
+): Promise<Customer> {
+  // assigned_companion_id steht bewusst nicht in KundenAngaben: ein Trigger
+  // in der Datenbank lässt diese Spalte nur von Personal ändern (Migration
+  // "security_hardening_…"). Hier gar nicht erst anzubieten erspart einen
+  // Fehler, den niemand versteht.
+  const { data, error } = await supabase
+    .from("customers")
+    .update(angaben)
+    .eq("id", customerId)
     .select()
     .single();
   if (error) throw error;

@@ -47,8 +47,8 @@ export function Eingabeleiste({
     setBeschaeftigt(true);
     const antwortText =
       quelle.trim().length > 0
-        ? `Danke, angekommen: „${quelle.trim()}“. So fühlt sich Sprechen mit Lisa an — für eine echte Anfrage oben „Neue Anfrage“ antippen.`
-        : `So fühlt sich Sprechen mit Lisa an — für eine echte Anfrage oben „Neue Anfrage“ antippen.`;
+        ? `Angekommen: „${quelle.trim()}“. Beantworten kann Lisa das noch nicht — für eine echte Anfrage unten „Neue Anfrage“ antippen.`
+        : `So soll sich Sprechen mit Lisa später anfühlen. Für eine echte Anfrage unten „Neue Anfrage“ antippen.`;
 
     if (nachHoeren) {
       melden("hoert");
@@ -91,12 +91,22 @@ export function Eingabeleiste({
             type="button"
             className="lisa-sprich-btn"
             data-zustand={zustand}
-            aria-label="Antippen zum Sprechen"
+            aria-label="Vorschau antippen — Sprechen ist noch nicht eingebaut"
             disabled={beschaeftigt}
             onClick={() => ablaufStarten(true, "")}
           >
             <span aria-hidden="true">🎙️</span>
           </button>
+          {/* Der Knopf sah bis zum 2.10.2026 aus wie ein funktionierendes
+              Mikrofon und hieß auch so. Er nimmt aber nichts auf: es gibt
+              keinen Mikrofonzugriff, keine Spracherkennung und kein Modell
+              dahinter, nur eine zeitgesteuerte Abfolge. Dass das eine
+              Vorschau ist, muss sichtbar dastehen und nicht nur im
+              aria-label — sonst wartet jemand darauf, dass Lisa antwortet. */}
+          <p className="lisa-vorschau-hinweis">
+            Sprechen ist noch nicht eingebaut — das hier zeigt nur, wie es
+            später aussehen soll.
+          </p>
           <button
             type="button"
             className="lisa-tippen-btn"
