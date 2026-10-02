@@ -3,6 +3,7 @@ import { Bildmarke } from "@/components/Logo";
 import { HeroTitlePop } from "@/components/HeroTitlePop";
 import Rueckruf from "@/components/Rueckruf";
 import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Wiederverwendbare Blöcke. Jede Zweigseite ist aus diesen Bausteinen gebaut,
@@ -290,16 +291,23 @@ export function Zweigkarte({ zweig, aktiv = false }: { zweig: Zweig; aktiv?: boo
   );
 }
 
-/** Querverweis am Fuß einer Zweigseite auf die beiden anderen Zweige. */
-export function AndereZweige({ ausser }: { ausser: ZweigId }) {
-  const andere = ZWEIG_LISTE.filter((z) => z.id !== ausser);
+/**
+ * Querverweis am Fuß einer Zweigseite auf die anderen Zweige. Standardmäßig
+ * beide übrigen — mit `nur` lässt sich das auf einen einschränken, für Seiten,
+ * die (wie /privat seit dem Care-und-Privat-Fokus) nicht mehr auf Enterprise
+ * verweisen sollen.
+ */
+export function AndereZweige({ ausser, nur }: { ausser: ZweigId; nur?: ZweigId[] }) {
+  const andere = ZWEIG_LISTE.filter((z) => z.id !== ausser && (!nur || nur.includes(z.id)));
+  const einzeln = andere.length === 1;
   return (
     <Abschnitt
+      narrow={einzeln}
       label="Passt das nicht?"
-      titel="Es gibt zwei andere Wege"
+      titel={einzeln ? "Es gibt einen anderen Weg" : "Es gibt zwei andere Wege"}
       lead={ZWEIGE[ausser].nichtFuer}
     >
-      <div className="grid grid-2" style={{ marginTop: "var(--s9)" }}>
+      <div className={einzeln ? undefined : "grid grid-2"} style={{ marginTop: "var(--s9)" }}>
         {andere.map((z) => (
           <Zweigkarte key={z.id} zweig={z} />
         ))}
@@ -321,8 +329,8 @@ export function Rueckrufblock({
 }) {
   const standard =
     anrede === "sie"
-      ? "Rufen Sie uns an unter 089 — Nummer eintragen, Montag bis Freitag von 8 bis 18 Uhr. Oder lassen Sie uns Ihre Nummer da — wir melden uns am selben Werktag zurück."
-      : "Ruf uns an unter 089 — Nummer eintragen, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine Nummer da — wir melden uns am selben Werktag zurück.";
+      ? `Rufen Sie uns an unter ${KONTAKT.telefonAnzeige}, Montag bis Freitag von 8 bis 18 Uhr. Oder lassen Sie uns Ihre Nummer da — wir melden uns am selben Werktag zurück.`
+      : `Ruf uns an unter ${KONTAKT.telefonAnzeige}, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine Nummer da — wir melden uns am selben Werktag zurück.`;
 
   return (
     <section id="rueckruf" style={{ paddingBottom: 0 }}>
@@ -336,22 +344,26 @@ export function Rueckrufblock({
               </span>
               <h2 style={{ color: "var(--paper)", fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2>
               <p style={{ color: "rgba(252,251,247,0.8)" }}>{text ?? standard}</p>
+              {/* Anruf ist die primäre Handlung (accent-Button); die Rückrufkarte rechts
+                  ist der zweite, gleichwertige Weg. WhatsApp ist ein dritter Kanal für
+                  dieselbe Handlung — als großer zweiter Button konkurrierte er unnötig
+                  mit beiden. Jetzt ein schlanker Textlink direkt unter dem Anruf-Button. */}
               <div className="stack-cta" style={{ marginTop: "var(--s4)" }}>
-                <a className="btn btn-accent" href="tel:+4989000000">
-                  089 — Nummer eintragen
-                </a>
-                {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
-                    nicht über eine Festnetznummer wie die 089 oben. */}
-                <a
-                  className="btn btn-outline"
-                  href="https://wa.me/491700000000"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
-                >
-                  WhatsApp — Nummer eintragen
+                <a className="btn btn-accent" href={KONTAKT.telefonHref}>
+                  {KONTAKT.telefonAnzeige}
                 </a>
               </div>
+              {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
+                  nicht über eine Festnetznummer wie die 089 oben. */}
+              <a
+                href={KONTAKT.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+                style={{ marginTop: "var(--s2)", textDecoration: "underline", textUnderlineOffset: 3 }}
+              >
+                Lieber per WhatsApp? {KONTAKT.whatsappAnzeige}
+              </a>
             </div>
             <div className="card" style={{ background: "var(--paper)", borderColor: "transparent" }}>
               <Rueckruf />

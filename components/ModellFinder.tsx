@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ZWEIGE, type ZweigId } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Modell-Finder.
@@ -201,7 +202,7 @@ export default function ModellFinder() {
               </Link>
               <a
                 className="btn btn-outline"
-                href="tel:+4989000000"
+                href={KONTAKT.telefonHref}
                 style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
               >
                 Lieber anrufen

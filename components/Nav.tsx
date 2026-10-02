@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Kopfzeile.
@@ -17,7 +18,10 @@ import Logo from "@/components/Logo";
  * ganzen Bildschirm — das verwirrt mehr, als es hilft.
  */
 
-const LINKS = [{ href: "/care", text: "So funktioniert's" }];
+const LINKS = [
+  { href: "/care", text: "So funktioniert's" },
+  { href: "/privat", text: "Privat" },
+];
 
 export default function Nav() {
   const [offen, setOffen] = useState(false);
@@ -98,8 +102,8 @@ export default function Nav() {
               Fällen dieselbe tel:-Verknüpfung aus. */}
           <a
             className="btn btn-accent"
-            href="tel:+4989000000"
-            aria-label="Anrufen: 089 — Nummer eintragen"
+            href={KONTAKT.telefonHref}
+            aria-label={`Anrufen: ${KONTAKT.telefonAnzeige}`}
             style={{ whiteSpace: "nowrap" }}
           >
             <span aria-hidden="true" style={{ marginRight: 8, fontSize: 18 }}>
@@ -135,7 +139,7 @@ export default function Nav() {
       >
         <div className="wrap" style={{ paddingTop: "var(--s3)", paddingBottom: "var(--s6)" }}>
           <a
-            href="tel:+4989000000"
+            href={KONTAKT.telefonHref}
             style={{
               display: "flex",
               alignItems: "center",
@@ -149,7 +153,7 @@ export default function Nav() {
             <span aria-hidden="true" style={{ marginRight: 10 }}>
               ✆
             </span>
-            089 — Nummer eintragen
+            {KONTAKT.telefonAnzeige}
           </a>
           {LINKS.map((n) => (
             <Link

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Abschnitt, Hero, Kartenraster, Punkteliste, Rueckrufblock, Schritte } from "@/components/Bausteine";
 import { IconBegleitungTile, IconKochen, IconPost, IconHaushalt, IconZeitZuZweit, IconHandy } from "@/components/Icons";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Startseite (Care-only, seit 14.9.2026 — dritte Überarbeitung 14.9.2026 abends).
@@ -108,10 +109,10 @@ export default function Home() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }

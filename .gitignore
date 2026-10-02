@@ -6,3 +6,6 @@ out
 *.tsbuildinfo
 next-env.d.ts
 .DS_Store
+
+# Arbeitsordner dieser Sitzung (Screenshots, Übergabenotizen) — nicht Teil des Projekts
+Claude outputs/

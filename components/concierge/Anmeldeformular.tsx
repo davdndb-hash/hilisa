@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { browserClient } from "@/lib/supabase/client";
 
@@ -54,51 +55,68 @@ export function Anmeldeformular() {
   }
 
   return (
-    <form onSubmit={absenden} noValidate style={{ width: "100%", maxWidth: "26rem" }}>
-      <label className="field" htmlFor="lisa-email">
-        E-Mail
-      </label>
-      <input
-        id="lisa-email"
-        type="email"
-        autoComplete="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+    <div className="lisa-anmelde-karte card">
+      <div className="lisa-anmelde-avatar">
+        <Image src="/marke/lisa-avatar.jpg" alt="" fill sizes="72px" style={{ objectFit: "cover" }} priority />
+      </div>
 
-      <label className="field" htmlFor="lisa-passwort">
-        Passwort
-      </label>
-      <input
-        id="lisa-passwort"
-        type="password"
-        autoComplete={modus === "anmelden" ? "current-password" : "new-password"}
-        required
-        minLength={6}
-        value={passwort}
-        onChange={(e) => setPasswort(e.target.value)}
-      />
+      <span className="label center" style={{ display: "block" }}>
+        Hi Lisa
+      </span>
+      <h1 style={{ fontSize: "clamp(22px, 4vw, 28px)", textAlign: "center", marginBottom: "var(--s2)" }}>
+        {modus === "anmelden" ? "Schön, dass du wieder da bist" : "Willkommen bei Hi Lisa"}
+      </h1>
+      <p className="lead center" style={{ fontSize: 17, marginBottom: "var(--s6)" }}>
+        {modus === "anmelden"
+          ? "Melde dich an, um Begleiterin, Termine und Nachrichten zu sehen."
+          : "Ein Konto reicht, um Anfragen zu stellen und mit eurer Begleiterin in Kontakt zu bleiben."}
+      </p>
 
-      {fehler && (
-        <p role="alert" className="card card-rose" style={{ marginBottom: "var(--s6)", fontWeight: 500 }}>
-          {fehler}
-        </p>
-      )}
-      {hinweis && (
-        <p role="status" className="card card-quiet" style={{ marginBottom: "var(--s6)" }}>
-          {hinweis}
-        </p>
-      )}
+      <form onSubmit={absenden} noValidate>
+        <label className="field" htmlFor="lisa-email">
+          E-Mail
+        </label>
+        <input
+          id="lisa-email"
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <button className="btn btn-primary" type="submit" disabled={laedt} style={{ width: "100%" }}>
-        {modus === "anmelden" ? "Anmelden" : "Konto erstellen"}
-      </button>
+        <label className="field" htmlFor="lisa-passwort">
+          Passwort
+        </label>
+        <input
+          id="lisa-passwort"
+          type="password"
+          autoComplete={modus === "anmelden" ? "current-password" : "new-password"}
+          required
+          minLength={6}
+          value={passwort}
+          onChange={(e) => setPasswort(e.target.value)}
+        />
+
+        {fehler && (
+          <p role="alert" className="card card-rose" style={{ marginBottom: "var(--s6)", fontWeight: 500 }}>
+            {fehler}
+          </p>
+        )}
+        {hinweis && (
+          <p role="status" className="card card-quiet" style={{ marginBottom: "var(--s6)" }}>
+            {hinweis}
+          </p>
+        )}
+
+        <button className="btn btn-primary" type="submit" disabled={laedt} style={{ width: "100%" }}>
+          {laedt ? "Einen Moment …" : modus === "anmelden" ? "Anmelden" : "Konto erstellen"}
+        </button>
+      </form>
 
       <button
         type="button"
-        className="lisa-tippen-btn"
-        style={{ marginTop: "var(--s4)" }}
+        className="lisa-anmelde-wechsel"
         onClick={() => {
           setModus((m) => (m === "anmelden" ? "registrieren" : "anmelden"));
           setFehler("");
@@ -107,6 +125,6 @@ export function Anmeldeformular() {
       >
         {modus === "anmelden" ? "Noch kein Konto? Registrieren" : "Schon ein Konto? Anmelden"}
       </button>
-    </form>
+    </div>
   );
 }

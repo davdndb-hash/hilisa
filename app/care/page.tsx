@@ -10,6 +10,7 @@ import {
   Schritte,
 } from "@/components/Bausteine";
 import { GRENZE, ZWEIGE } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Info-Seite (vormals Zweigseite, seit 14.9.2026 die Detailseite für die
@@ -90,10 +91,10 @@ export default function Care() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }

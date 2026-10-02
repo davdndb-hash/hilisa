@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Der Rechner ist der wichtigste Baustein der Seite: Er macht aus einem
@@ -150,8 +151,8 @@ export default function Rechner() {
           <a className="btn btn-primary" href="#rueckruf">
             Rückruf anfordern
           </a>
-          <a className="btn btn-outline" href="tel:+4989000000">
-            089 — Nummer eintragen
+          <a className="btn btn-outline" href={KONTAKT.telefonHref}>
+            {KONTAKT.telefonAnzeige}
           </a>
         </div>
       )}

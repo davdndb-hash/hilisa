@@ -10,6 +10,7 @@ import {
   Schritte,
 } from "@/components/Bausteine";
 import { GRENZE, ZWEIG_LISTE } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Mitarbeiten — die Seite für Bewerberinnen.
@@ -172,8 +173,8 @@ export default function Mitarbeiten() {
         lead="Wir suchen Alltagsbegleiterinnen und Alltagsbegleiter in München. Selbstständig auf Honorarbasis, deine Zeiten, feste Kundinnen in deinem Viertel. Keine Körperpflege, kein Springerdienst über eine App."
         cta={
           <>
-            <a className="btn btn-accent" href="tel:+4989000000">
-              089 — Nummer eintragen
+            <a className="btn btn-accent" href={KONTAKT.telefonHref}>
+              {KONTAKT.telefonAnzeige}
             </a>
             <a
               className="btn btn-outline"
@@ -282,7 +283,7 @@ export default function Mitarbeiten() {
       <Rueckrufblock
         titel="Ruf an und sag, dass es um eine Stelle geht."
         text={
-          "089 — Nummer eintragen, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine " +
+          `${KONTAKT.telefonAnzeige}, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine ` +
           "Nummer da — wir melden uns am selben Werktag zurück. Schreib ins Feld " +
           "„Wann passt es dir?“ gern dazu, dass es um eine Bewerbung geht."
         }

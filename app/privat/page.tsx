@@ -11,6 +11,7 @@ import {
   Schritte,
 } from "@/components/Bausteine";
 import { GRENZE, ZWEIGE } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 const Z = ZWEIGE.privat;
 
@@ -111,7 +112,7 @@ export default function Privat() {
     <>
       <Hero
         variant="ink"
-        eyebrow={`Weg 2 von 3 · Bezahlt wird von: ${Z.zahler}`}
+        eyebrow={`Bezahlt wird von: ${Z.zahler}`}
         title="Kein Pflegegrad, kein Antrag, keine Begutachtung."
         lead="Dieselbe Begleiterin, dieselben Aufgaben, dieselben Regeln wie bei Care — nur ohne die Pflegekasse dazwischen. Du buchst, wir kommen. Ab zwei Stunden, monatlich kündbar."
         cta={
@@ -121,10 +122,10 @@ export default function Privat() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }
@@ -187,7 +188,7 @@ export default function Privat() {
         </p>
       </Abschnitt>
 
-      <AndereZweige ausser="privat" />
+      <AndereZweige ausser="privat" nur={["care"]} />
 
       <Rueckrufblock titel="Sag uns, was gebraucht wird. Wir sagen dir, was es kostet." />
     </>

@@ -20,7 +20,7 @@ export function LisaAvatar({ zustand = "ruhig" }: { zustand?: LisaZustand }) {
       <span className="lisa-zustand">{ZUSTAND_TEXT[zustand]}</span>
       <div className="lisa-avatar-ring" data-zustand={zustand}>
         <Image
-          src="/lisa/avatar.jpg"
+          src="/marke/lisa-avatar.jpg"
           alt="Lisa"
           fill
           sizes="(min-width: 700px) 240px, 34vw"
