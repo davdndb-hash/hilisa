@@ -11,6 +11,9 @@ import { BlattFuss, BlattKopf, BlattListe, BlattSpalte, BlattZahl } from "@/comp
  *
  * Deshalb: eine Seite, Telefonnummer groß am Fuß, keine Verweise auf
  * Website-Abschnitte, keine QR-Codes als einziger Weg.
+ *
+ * Seit dem Pivot auf ausschließlich privat bezahlte Begleitung (23.9.2026, wie
+ * papa.com): kein Pflegekassen-Rahmen mehr, direkte Buchung und Bezahlung.
  */
 
 export const metadata: Metadata = {
@@ -22,8 +25,8 @@ export default function BlattKunden() {
     <>
       <BlattKopf
         marker="Zum Mitnehmen"
-        titel="Ihre Pflegekasse zahlt 131 Euro im Monat für Begleitung."
-        unterzeile="Für Spaziergänge, Einkäufe, Arzttermine oder einfach zwei Stunden Gesellschaft. Jede Woche dieselbe Begleiterin — den Papierkram mit der Kasse machen wir."
+        titel="Begleitung, die Sie direkt buchen — ohne Antrag, ohne Wartezeit."
+        unterzeile="Für Spaziergänge, Einkäufe, Arzttermine oder einfach zwei Stunden Gesellschaft. Jede Woche dieselbe Begleiterin — Sie buchen direkt bei uns."
       />
 
       <div className="blatt-koerper">
@@ -57,17 +60,17 @@ export default function BlattKunden() {
         </BlattSpalte>
 
         <BlattSpalte titel="Was es kostet">
-          <BlattZahl zahl="131 €" text="im Monat von der Pflegekasse, ab Pflegegrad 1 — 1.572 € im Jahr" />
+          <BlattZahl zahl="42 €" text="pro Stunde, ab zwei Stunden pro Einsatz" />
           <BlattListe
             punkte={[
-              "Wir rechnen direkt mit der Kasse ab — Sie bekommen keine Rechnung.",
-              "Ab Pflegegrad 2 kommt oft deutlich mehr dazu.",
-              "Ohne Pflegegrad zahlen Sie selbst, ab zwei Stunden, monatlich kündbar.",
+              "Keine Mitgliedsgebühr, keine Mindestlaufzeit.",
+              "Anfahrt pauschal pro Einsatz.",
+              "Monatlich kündbar, eine Rechnung am Monatsende.",
             ]}
           />
           <p style={{ marginTop: "2mm" }}>
-            <strong>Wichtig:</strong> Nur 38 von 100 Familien nutzen dieses Geld überhaupt.
-            Was Sie dieses Jahr nicht abrufen, verfällt am 30. Juni des nächsten Jahres.
+            <strong>Gut zu wissen:</strong> Bis zu 20 Prozent als haushaltsnahe Dienstleistung
+            von der Steuer absetzbar (§ 35a EStG).
           </p>
         </BlattSpalte>
 
@@ -75,7 +78,7 @@ export default function BlattKunden() {
           <ol className="blatt-schritte">
             <li>Sie rufen an. Zwanzig Minuten am Telefon.</li>
             <li>Wir kommen zum Kennenlernen — kostenlos, mit Ihrer künftigen Begleiterin.</li>
-            <li>Sie unterschreiben einmal, den Rest mit der Kasse machen wir.</li>
+            <li>Sie buchen die Stunden, die Sie brauchen.</li>
             <li>Fester Termin, feste Person. Etwa jeden Dienstag, zehn bis zwölf.</li>
           </ol>
         </BlattSpalte>
@@ -96,7 +99,7 @@ export default function BlattKunden() {
 
       <BlattFuss
         anrede="sie"
-        zeile="Kostenloses Erstgespräch. Wir prüfen mit, wie viel Guthaben bei Ihrer Pflegekasse noch offen ist — auch wenn Sie sich danach gegen uns entscheiden."
+        zeile="Kostenloses Erstgespräch — auch wenn Sie sich danach gegen uns entscheiden."
       />
     </>
   );

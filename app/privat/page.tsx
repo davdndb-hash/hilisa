@@ -10,8 +10,8 @@ import {
   Rueckrufblock,
   Schritte,
 } from "@/components/Bausteine";
-import { GRENZE, ZWEIGE } from "@/lib/zweige";
 import { KONTAKT } from "@/lib/kontakt";
+import { GRENZE, ZWEIGE } from "@/lib/zweige";
 
 const Z = ZWEIGE.privat;
 
@@ -42,20 +42,20 @@ const ABLAUF = [
 
 const ANLAESSE = [
   {
-    titel: "Kein Pflegegrad — und soll auch keiner werden",
-    text: "Manche wollen keine Begutachtung und keine Akte bei der Kasse. Völlig legitim. Privat läuft ohne beides.",
+    titel: "Keine Anträge, keine Begutachtung",
+    text: "Du willst einfach Unterstützung buchen, ohne Formulare oder Wartezeit. Völlig legitim — genau dafür ist Privat da.",
   },
   {
-    titel: "Mehr Stunden, als die Kasse zahlt",
-    text: "Das Kassenguthaben ist bei zwei Stunden pro Woche schnell aufgebraucht. Was darüber hinaus gebraucht wird, läuft privat weiter — dieselbe Begleiterin, dieselbe Uhrzeit.",
+    titel: "Mehr Stunden, als eine feste Regelung hergibt",
+    text: "Zwei Stunden pro Woche reichen manchmal nicht. Was darüber hinaus gebraucht wird, läuft einfach weiter — dieselbe Begleiterin, dieselbe Uhrzeit.",
   },
   {
     titel: "Ein schwerer Monat",
     text: "Nach einem Krankenhausaufenthalt, während eurem Urlaub, nach einem Sturz, bei einem Umzug. Vorübergehend mehr Hilfe, ohne dass sich dauerhaft etwas ändert.",
   },
   {
-    titel: "Der Antrag läuft noch",
-    text: "Zwischen Antrag und Bescheid liegen oft Wochen. Du kannst sofort privat starten und später auf Care wechseln — ohne die Begleiterin zu wechseln.",
+    titel: "Es soll einfach schnell gehen",
+    text: "Du willst nicht erst wochenlang etwas beantragen und abwarten. Du kannst sofort starten — ein Anruf, ein Kennenlernen, dann geht's los.",
   },
   {
     titel: "Ihr wohnt weit auseinander",
@@ -81,16 +81,6 @@ const FRAGEN = [
       "Preis eintragen. Es gibt keine Mitgliedsgebühr und keine Mindestlaufzeit. Anfahrt kommt pauschal pro Einsatz dazu, zwei Stunden sind die kleinste Buchung.",
   },
   {
-    frage: "Warum ist Privat teurer als Care?",
-    antwort:
-      "Bei Care ist der Stundensatz gesetzlich gedeckelt, weil die Kasse zahlt. Bei Privat gibt es diesen Deckel nicht — dafür fallen Antrag, Begutachtung und Nachweispflichten weg. Das ist derselbe Dienst mit einer anderen Rechnung, nicht ein besserer.",
-  },
-  {
-    frage: "Können wir Care und Privat kombinieren?",
-    antwort:
-      "Ja, und das ist der häufigste Fall. Zuerst wird das Kassenguthaben abgerufen, der Rest läuft privat. Du bekommst eine Rechnung nur über den privaten Teil.",
-  },
-  {
     frage: "Kann ich das von der Steuer absetzen?",
     antwort:
       "In vielen Fällen ja — haushaltsnahe Dienstleistungen nach § 35a EStG, 20 Prozent der Kosten bis zu einer Höchstgrenze. Wir stellen die Rechnung so aus, dass sie das Finanzamt akzeptiert: Leistung aufgeschlüsselt, per Überweisung bezahlt, kein Bargeld. Ob es in eurem Fall greift, sagt euer Steuerberater.",
@@ -112,9 +102,9 @@ export default function Privat() {
     <>
       <Hero
         variant="ink"
-        eyebrow={`Bezahlt wird von: ${Z.zahler}`}
+        eyebrow="Begleitung in München"
         title="Kein Pflegegrad, kein Antrag, keine Begutachtung."
-        lead="Dieselbe Begleiterin, dieselben Aufgaben, dieselben Regeln wie bei Care — nur ohne die Pflegekasse dazwischen. Du buchst, wir kommen. Ab zwei Stunden, monatlich kündbar."
+        lead="Dieselbe Begleiterin, jede Woche. Du buchst, wir kommen. Ab zwei Stunden, monatlich kündbar."
         cta={
           <>
             <a className="btn btn-accent" href="#rueckruf">
@@ -167,16 +157,12 @@ export default function Privat() {
         id="begleiterinnen"
         narrow
         label="Was das für Begleiterinnen bedeutet"
-        titel="Privat ist der abwechslungsreichste Zweig"
-        lead="Wenn du bei uns arbeitest, merkst du den Unterschied zwischen den drei Zweigen an vier Stellen."
+        titel="Der abwechslungsreichste Zweig"
+        lead="Wenn du bei uns arbeitest, merkst du den Unterschied zu einem Einsatz im Partnerhaus (Enterprise) an ein paar Stellen."
       >
         <div style={{ marginTop: "var(--s6)" }}>
           <Punkteliste punkte={FUER_BEGLEITER} />
         </div>
-        <p style={{ marginTop: "var(--s6)", color: "var(--ink-70)", fontSize: 18 }}>
-          Der Stundenlohn ist derselbe wie bei Care. Wer bezahlt, ist eine Frage der
-          Abrechnung — nicht deines Gehalts.
-        </p>
       </Abschnitt>
 
       <Abschnitt id="fragen" narrow label="Häufige Fragen" titel="Fragen zu Preis und Abrechnung">
@@ -188,7 +174,7 @@ export default function Privat() {
         </p>
       </Abschnitt>
 
-      <AndereZweige ausser="privat" nur={["care"]} />
+      <AndereZweige ausser="privat" />
 
       <Rueckrufblock titel="Sag uns, was gebraucht wird. Wir sagen dir, was es kostet." />
     </>

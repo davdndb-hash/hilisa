@@ -158,9 +158,9 @@ const FRAGEN = [
       "Du sagst nein und rufst uns an. Diese Grenze trägt unsere Anerkennung bei der Pflegekasse und deine Absicherung — sie ist nicht verhandelbar, auch nicht, wenn es lieb gemeint ist. Wenn Körperpflege gebraucht wird, vermitteln wir einen Pflegedienst dazu.",
   },
   {
-    frage: "Arbeite ich bei allen drei Modellen?",
+    frage: "Arbeite ich bei beiden Modellen?",
     antwort:
-      "Bei Care und Privat ja, oft bei denselben Menschen — der Unterschied ist nur, wer die Rechnung bekommt, nicht dein Honorar. In einem Partnerhaus (Enterprise) bist du beim Partnerbetrieb angestellt, nicht bei uns; die Schulung machen trotzdem wir.",
+      "Bei Privat ja. In einem Partnerhaus (Enterprise) bist du beim Partnerbetrieb angestellt, nicht bei uns; die Schulung machen trotzdem wir.",
   },
 ];
 
@@ -241,13 +241,14 @@ export default function Mitarbeiten() {
         <Schritte schritte={WEG} />
       </Abschnitt>
 
-      {/* Die drei Zweige aus Sicht der Mitarbeiterin — kurz, mit Verweis in die Tiefe. */}
+      {/* Die zwei verbleibenden Zweige aus Sicht der Mitarbeiterin — Care ist mit
+          dem Pivot auf ausschließlich privat bezahlte Begleitung raus (23.9.2026). */}
       <Abschnitt
         id="zweige"
         narrow
-        label="Die drei Zweige"
-        titel="Was die drei Modelle für dich bedeuten"
-        lead="Für Kundinnen unterscheiden sich die drei Wege darin, wer bezahlt. Für dich unterscheiden sie sich in der Art der Einsätze."
+        label="Die zwei Wege"
+        titel="Was die zwei Modelle für dich bedeuten"
+        lead="Für Kundinnen unterscheiden sich die zwei Wege darin, wer bezahlt. Für dich unterscheiden sie sich in der Art der Einsätze."
       >
         <div style={{ marginTop: "var(--s6)" }}>
           {ZWEIG_LISTE.map((z) => (
@@ -257,11 +258,9 @@ export default function Mitarbeiten() {
             >
               <h3>{z.name}</h3>
               <p style={{ color: "var(--ink-70)", fontSize: 18, marginBottom: "var(--s3)" }}>
-                {z.id === "care"
-                  ? "Der planbarste Zweig: feste Termine, dieselbe Kundin, kurze Dokumentation für die Pflegekasse."
-                  : z.id === "privat"
-                    ? "Der abwechslungsreichste Zweig: manche Einsätze wöchentlich, manche einmalig, Schwerpunkt Gesellschaft und Unternehmungen."
-                    : "Im Partnerhaus bist du beim Partnerbetrieb angestellt, nicht bei uns. Fast keine Fahrzeit, weil die Wege Treppen sind. Die Schulung machen trotzdem wir."}
+                {z.id === "privat"
+                  ? "Der abwechslungsreichste Zweig: manche Einsätze wöchentlich, manche einmalig, Schwerpunkt Gesellschaft und Unternehmungen."
+                  : "Im Partnerhaus bist du beim Partnerbetrieb angestellt, nicht bei uns. Fast keine Fahrzeit, weil die Wege Treppen sind. Die Schulung machen trotzdem wir."}
               </p>
               <Link href={`${z.href}#begleiterinnen`} style={{ fontSize: 18, fontWeight: 700 }}>
                 Ausführlich auf der Seite {z.name}

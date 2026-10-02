@@ -8,10 +8,13 @@ import { serverClient } from "@/lib/supabase/server";
 export const metadata: Metadata = { title: "Profil" };
 
 /**
- * Konto der Familie — nicht der betreuten Person. Bewusst ohne
- * Pflegekasse-Status oder Budget: diese Baustelle (inkl. was passiert, wenn
- * das Kassenbudget im Monat aufgebraucht ist) ist noch offen, siehe
- * lib/concierge-data.ts.
+ * Konto der Familie — nicht der betreuten Person.
+ *
+ * Seit dem Pivot vom 23.09.2026 ist Hi Lisa für Kundinnen reiner
+ * Selbstzahler-Dienst. Pflegekasse, Pflegegrad und Budget kommen hier
+ * deshalb gar nicht mehr vor — nicht „später", sondern nicht mehr.
+ * Enterprise (/fuer-betriebe) rechnet weiter mit der Kasse ab, das ist ein
+ * eigener Zweig und nicht Teil dieser App.
  */
 export default async function ProfilSeite() {
   const supabase = await serverClient();
@@ -65,14 +68,6 @@ export default async function ProfilSeite() {
             <p style={{ margin: 0, fontSize: 19, color: "var(--ink-55)" }}>Noch keine zugewiesen</p>
           )}
         </div>
-      </div>
-
-      <div className="card card-quiet" style={{ boxShadow: "none", marginTop: "var(--s6)" }}>
-        <h3>Pflegekasse</h3>
-        <p style={{ marginBottom: 0, fontSize: 17 }}>
-          Kommt in einem späteren Schritt — inklusive der Frage, was passiert, wenn das
-          Kassenbudget im Monat aufgebraucht ist.
-        </p>
       </div>
 
       <div style={{ marginTop: "var(--s6)" }}>

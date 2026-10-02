@@ -13,13 +13,11 @@ import type { Database } from "@/lib/supabase/types";
  * "concierge_schema" im Supabase-Projekt) — es gibt also keine eigene
  * "welcher Kunde bin ich"-Logik mehr, das übernimmt die Anmeldung.
  *
- * Bewusst nicht enthalten: Pflegekasse-Status, Budget, Zahler. Dieser
- * Bereich baut vorerst nur für Hi Lisa Care/Privat als Selbstzahler-Fall.
- * Die Kassen-Anbindung — inklusive der Frage, was passiert, wenn das
- * Kassenbudget im Monat aufgebraucht ist und der Rest privat weiterläuft —
- * ist eine eigene, noch offene Entscheidung. Wenn sie fällt, ist der Ort
- * dafür ein weiteres Feld an customers plus eine eigene
- * getBillingStatus(...)-Funktion — nicht ein Umbau der bestehenden Tabellen.
+ * Kein Pflegekassen-Modell: seit dem Pivot vom 23.09.2026 zahlen Kundinnen
+ * privat, 42 Euro die Stunde, ab zwei Stunden. Es gibt hier also keinen
+ * Kassenstatus, kein Budget und keinen dritten Zahler — und es ist auch
+ * keiner geplant. Enterprise (/fuer-betriebe) rechnet weiterhin mit der
+ * Kasse ab, läuft aber über ein eigenes Modell außerhalb dieser App.
  */
 
 export type Customer = Database["public"]["Tables"]["customers"]["Row"];

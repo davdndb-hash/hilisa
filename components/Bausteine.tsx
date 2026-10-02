@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Bildmarke } from "@/components/Logo";
 import { HeroTitlePop } from "@/components/HeroTitlePop";
+import { HeroIllustration } from "@/components/Icons";
 import Rueckruf from "@/components/Rueckruf";
-import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
 import { KONTAKT } from "@/lib/kontakt";
+import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
 
 /**
  * Wiederverwendbare Blöcke. Jede Zweigseite ist aus diesen Bausteinen gebaut,
@@ -19,6 +20,10 @@ export function Abschnitt({
   titel,
   lead,
   narrow = false,
+  /** "rose" = zart lila-rosa Vollton hinter der ganzen Section (--rose-wash),
+   *  im Wechsel mit den unlackierten Sections darunter/darüber — reine
+   *  Zebra-Streifen fürs Scroll-Tempo, keine neue Bedeutung. */
+  tone,
   children,
   style,
 }: {
@@ -27,11 +32,15 @@ export function Abschnitt({
   titel?: string;
   lead?: string;
   narrow?: boolean;
+  tone?: "rose";
   children?: React.ReactNode;
   style?: React.CSSProperties;
 }) {
   return (
-    <section id={id} style={style}>
+    <section
+      id={id}
+      style={tone === "rose" ? { background: "var(--rose-wash)", ...style } : style}
+    >
       <div className={narrow ? "wrap narrow" : "wrap"}>
         {label ? <span className="label">{label}</span> : null}
         {titel ? <h2 style={{ fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2> : null}
@@ -87,6 +96,7 @@ export function Hero({
         >
           <div className="hero-texture" aria-hidden="true" />
           {gross ? <div className="hero-glow" aria-hidden="true" /> : null}
+          {gross ? <HeroIllustration /> : null}
           <div className="hero-content">
             <span className={dunkel ? "label on-dark" : "label on-olive"}>{eyebrow}</span>
             <h1
@@ -148,6 +158,67 @@ export function Kartenraster({
           )}
           <h3>{e.titel}</h3>
           <p style={{ marginBottom: 0, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Werteversprechen-Karten (siehe WERTEVERSPRECHEN in app/page.tsx) — nach
+ * Vorbild papa.com/companion-care: Icon-Badge, Titel, Text, auf einer echten
+ * Kartenfläche (.card) statt der Trennlinie von Kartenraster oben. Bewusst ein
+ * anderer Kartenstil als die Leistungen darunter, damit sich "Warum Hi Lisa"
+ * (Werteversprechen) und "Was wir machen" (Leistungen) auch optisch
+ * unterscheiden, obwohl beide ein Raster aus Icon+Titel+Text sind.
+ */
+export function Merkmalkarten({
+  eintraege,
+}: {
+  eintraege: { titel: string; text: string; icon: React.ReactNode }[];
+}) {
+  return (
+    <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
+      {eintraege.map((e) => (
+        <div key={e.titel} className="card" style={{ display: "flex", flexDirection: "column", gap: "var(--s3)" }}>
+          {e.icon}
+          <h3 style={{ marginTop: "var(--s2)" }}>{e.titel}</h3>
+          <p style={{ margin: 0, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Zielgruppen-Teaser (siehe ZIELGRUPPEN in app/page.tsx) — drei Karten, die auf
+ * die passende Unterseite verweisen: Angehörige (/care), Einrichtungen
+ * (/fuer-betriebe), Bewerber:innen (/mitarbeiten). Gleicher Kartenstil wie
+ * Merkmalkarten, aber mit CTA-Link am unteren Kartenrand (wie Zweigkarte).
+ */
+export function Zielgruppenkarten({
+  eintraege,
+}: {
+  eintraege: { titel: string; text: string; ctaText: string; href: string; icon: React.ReactNode }[];
+}) {
+  return (
+    <div className="grid grid-3" style={{ marginTop: "var(--s9)" }}>
+      {eintraege.map((e) => (
+        <div
+          key={e.titel}
+          className="card card-interactive"
+          style={{ display: "flex", flexDirection: "column", gap: "var(--s3)" }}
+        >
+          {e.icon}
+          <h3 style={{ marginTop: "var(--s2)" }}>{e.titel}</h3>
+          <p style={{ margin: 0, flex: 1, color: "var(--ink-70)", fontSize: 18 }}>{e.text}</p>
+          <Link
+            className="btn btn-outline"
+            href={e.href}
+            style={{ marginTop: "var(--s3)", alignSelf: "flex-start" }}
+          >
+            {e.ctaText}
+          </Link>
         </div>
       ))}
     </div>
@@ -292,19 +363,18 @@ export function Zweigkarte({ zweig, aktiv = false }: { zweig: Zweig; aktiv?: boo
 }
 
 /**
- * Querverweis am Fuß einer Zweigseite auf die anderen Zweige. Standardmäßig
- * beide übrigen — mit `nur` lässt sich das auf einen einschränken, für Seiten,
- * die (wie /privat seit dem Care-und-Privat-Fokus) nicht mehr auf Enterprise
- * verweisen sollen.
+ * Querverweis am Fuß einer Zweigseite auf die übrigen Zweige — passt sich der
+ * Anzahl an (Singular/Grid-1 mit nur noch Enterprise übrig, seit Care mit dem
+ * Pivot auf ausschließlich privat bezahlte Begleitung raus ist).
  */
-export function AndereZweige({ ausser, nur }: { ausser: ZweigId; nur?: ZweigId[] }) {
-  const andere = ZWEIG_LISTE.filter((z) => z.id !== ausser && (!nur || nur.includes(z.id)));
+export function AndereZweige({ ausser }: { ausser: ZweigId }) {
+  const andere = ZWEIG_LISTE.filter((z) => z.id !== ausser);
   const einzeln = andere.length === 1;
   return (
     <Abschnitt
       narrow={einzeln}
       label="Passt das nicht?"
-      titel={einzeln ? "Es gibt einen anderen Weg" : "Es gibt zwei andere Wege"}
+      titel={einzeln ? "Es gibt einen anderen Weg" : "Es gibt andere Wege"}
       lead={ZWEIGE[ausser].nichtFuer}
     >
       <div className={einzeln ? undefined : "grid grid-2"} style={{ marginTop: "var(--s9)" }}>
@@ -344,26 +414,22 @@ export function Rueckrufblock({
               </span>
               <h2 style={{ color: "var(--paper)", fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2>
               <p style={{ color: "rgba(252,251,247,0.8)" }}>{text ?? standard}</p>
-              {/* Anruf ist die primäre Handlung (accent-Button); die Rückrufkarte rechts
-                  ist der zweite, gleichwertige Weg. WhatsApp ist ein dritter Kanal für
-                  dieselbe Handlung — als großer zweiter Button konkurrierte er unnötig
-                  mit beiden. Jetzt ein schlanker Textlink direkt unter dem Anruf-Button. */}
               <div className="stack-cta" style={{ marginTop: "var(--s4)" }}>
                 <a className="btn btn-accent" href={KONTAKT.telefonHref}>
                   {KONTAKT.telefonAnzeige}
                 </a>
+                {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
+                    nicht über eine Festnetznummer wie die 089 oben. */}
+                <a
+                  className="btn btn-outline"
+                  href={KONTAKT.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
+                >
+                  {KONTAKT.whatsappAnzeige}
+                </a>
               </div>
-              {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
-                  nicht über eine Festnetznummer wie die 089 oben. */}
-              <a
-                href={KONTAKT.whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-link"
-                style={{ marginTop: "var(--s2)", textDecoration: "underline", textUnderlineOffset: 3 }}
-              >
-                Lieber per WhatsApp? {KONTAKT.whatsappAnzeige}
-              </a>
             </div>
             <div className="card" style={{ background: "var(--paper)", borderColor: "transparent" }}>
               <Rueckruf />

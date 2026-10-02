@@ -9,6 +9,7 @@
 export const KONTAKT = {
   telefonHref: "tel:+4989000000",
   telefonAnzeige: "089 — Nummer eintragen",
+  telefonKurz: "089 — Nummer",
   whatsappHref: "https://wa.me/491700000000",
   whatsappAnzeige: "WhatsApp — Nummer eintragen",
   emailAnzeige: "hallo@ — Adresse eintragen",

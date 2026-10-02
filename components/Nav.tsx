@@ -9,18 +9,33 @@ import { KONTAKT } from "@/lib/kontakt";
 /**
  * Kopfzeile.
  *
- * Seit 14.9.2026 Care-only: nur noch ein Link zur Info-Seite. Mitarbeiten steht
- * bewusst nicht mehr hier — das ist keine Kundennavigation, sondern eine
- * Bewerberinnen-Seite, und findet sich in der Fußzeile.
+ * Neuplanung 22.9.2026 (HiLisa_Startseite und Navigation.docx): Reihenfolge
+ * und Auswahl kommen jetzt komplett aus dem Dokument statt aus einer eigenen
+ * Abwägung — Leistungen (was bieten wir an?) → Begleiter finden (Hauptpfad,
+ * führt zu Umsatz) → Über uns (Vertrauensanker kurz vor der Entscheidung) →
+ * Begleiter werden (andere Zielgruppe, konkurriert nicht mit dem CTA, bleibt
+ * aber auffindbar). Für Einrichtungen ist damit aus der Hauptnavigation raus
+ * (weiterhin über die Fußzeile erreichbar, siehe layout.tsx) — das Dokument
+ * nennt keinen Enterprise-Punkt mehr.
  *
- * Bedienregeln: Schaltfläche 52 px hoch, aria-expanded, Escape schließt,
- * Klick außerhalb schließt, der Fokus bleibt sichtbar. Kein Overlay über den
- * ganzen Bildschirm — das verwirrt mehr, als es hilft.
+ * Alle vier Ziele sind mit führendem "/" verlinkt (auch die Anker), damit
+ * dieselbe Nav auf jeder Seite funktioniert: von der Startseite aus ein
+ * normaler Sprung, von einer Unterseite aus Navigation zur Startseite plus
+ * Sprung zum Anker. Das ersetzt den früheren Umschalter zwischen ABSCHNITTE
+ * (nur Startseite) und LINKS (nur Unterseiten) — eine Struktur für beide
+ * Fälle statt zwei parallele.
+ *
+ * "Über uns" zeigt vorerst auf eine Platzhalter-Section (siehe app/page.tsx,
+ * #ueber-uns) — das Dokument selbst nennt den Ziel-Anker als offenen Punkt
+ * ("Ziel-Anker der Nav-Links klären") und verschiebt Wording auf später
+ * ("Struktur zuerst, Wording danach").
  */
 
-const LINKS = [
-  { href: "/care", text: "So funktioniert's" },
-  { href: "/privat", text: "Privat" },
+const NAV_LINKS = [
+  { href: "/#leistungen", text: "Leistungen" },
+  { href: "/#rueckruf", text: "Begleiter finden" },
+  { href: "/#ueber-uns", text: "Über uns" },
+  { href: "/mitarbeiten", text: "Begleiter werden" },
 ];
 
 export default function Nav() {
@@ -47,7 +62,7 @@ export default function Nav() {
     };
   }, [offen]);
 
-  const aktiv = (href: string) => href !== "/" && pfad.startsWith(href);
+  const aktiv = (href: string) => !href.includes("#") && href !== "/" && pfad.startsWith(href);
 
   return (
     <header
@@ -77,7 +92,7 @@ export default function Nav() {
 
         <nav aria-label="Hauptnavigation" style={{ display: "flex", gap: "var(--s4)", alignItems: "center" }}>
           <span className="nav-links">
-            {LINKS.map((n) => (
+            {NAV_LINKS.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
@@ -95,22 +110,25 @@ export default function Nav() {
             ))}
           </span>
 
-          {/* Bei 390 px Breite passen Marke, volle Nummer und Menütaste nicht in eine
-              Zeile — die Menütaste rutschte aus dem Bild. Auf dem Telefon steht daher
-              „Anrufen" auf der Taste; die Nummer selbst steht im Menü und gleich
-              darunter im ersten Block, also ohne Scrollen. Der Anruf löst in beiden
-              Fällen dieselbe tel:-Verknüpfung aus. */}
+          {/* CTA in der Nav (Dokument: "beide zeigen") — Rückruf anfordern ist jetzt
+              der primäre, auffällige Button; die Nummer daneben eine dezentere
+              Zweitoption für alle, die lieber direkt anrufen. Auf dem Telefon bleibt
+              aus Platzgründen nur der Rückruf-Button in der Kopfzeile (bei 390 px passen
+              Marke, zwei Buttons und Menütaste nicht in eine Zeile) — die Nummer steht
+              dort weiterhin oben im aufklappbaren Menü, einen Tap entfernt. */}
+          <a className="btn btn-accent" href="/#rueckruf" style={{ whiteSpace: "nowrap" }}>
+            <span className="tel-lang">Rückruf anfordern</span>
+            <span className="tel-kurz">Rückruf</span>
+          </a>
           <a
-            className="btn btn-accent"
             href={KONTAKT.telefonHref}
             aria-label={`Anrufen: ${KONTAKT.telefonAnzeige}`}
-            style={{ whiteSpace: "nowrap" }}
+            className="nav-tel-sekundaer"
           >
-            <span aria-hidden="true" style={{ marginRight: 8, fontSize: 18 }}>
+            <span aria-hidden="true" style={{ marginRight: 6 }}>
               ✆
             </span>
-            <span className="tel-lang">089 — Nummer</span>
-            <span className="tel-kurz">Anrufen</span>
+            {KONTAKT.telefonKurz}
           </a>
 
           {/* Nur auf dem Telefon: das Menü. Am Rechner stehen die Links offen da. */}
@@ -155,11 +173,12 @@ export default function Nav() {
             </span>
             {KONTAKT.telefonAnzeige}
           </a>
-          {LINKS.map((n) => (
+          {NAV_LINKS.map((n) => (
             <Link
               key={n.href}
               href={n.href}
               aria-current={aktiv(n.href) ? "page" : undefined}
+              onClick={() => setOffen(false)}
               style={{
                 display: "flex",
                 alignItems: "center",
