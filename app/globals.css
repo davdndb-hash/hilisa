@@ -444,9 +444,21 @@ label.field {
   margin: 0 0 var(--s2);
 }
 
+/* Die Liste muss jeden Typ nennen, den wir tatsaechlich benutzen — ein nicht
+   genannter Typ faellt auf die Browser-Vorgabe zurueck. Genau das war der
+   Grund, warum das Passwortfeld auf /lisa/anmelden schmaler aussah als das
+   E-Mail-Feld darueber: input[type="password"] stand hier nicht. Nebenwirkung
+   auf dem Telefon: Vorgabe-Felder sind unter 16 px, und iOS Safari zoomt beim
+   Antippen jedes Feldes unter 16 px in die Seite hinein. */
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="number"],
+input[type="search"],
 select,
 textarea {
   width: 100%;
@@ -1123,9 +1135,21 @@ body:has(.lisa-schale) main { margin: 0 !important; }
   background: var(--paper);
   border: 1px solid var(--rule);
 }
+/* Die eigenen Nachrichten waren bisher --light-olive — derselbe Hexwert wie
+   --body-wash (siehe Kommentar an der Variablen ganz oben). Die Blase war
+   also unsichtbar, und wer von wem schreibt, ließ sich nur an der Ausrichtung
+   erraten. Jetzt dieselbe Paarung wie beim Primärknopf: --olive-deep mit
+   --on-olive, 4,56:1 und damit über AA. */
 .lisa-chat-kunde {
   align-self: flex-end;
-  background: var(--light-olive);
+  background: var(--olive-deep);
+  color: var(--on-olive);
+}
+/* Die Uhrzeit steht in der Blase und braucht auf dunklem Grund eine eigene
+   Farbe — --ink-55 wäre dort nicht mehr lesbar. Volle Deckkraft statt
+   abgeschwächt, weil 13 px schon knapp sind. */
+.lisa-chat-kunde .lisa-chat-blase-zeit {
+  color: var(--on-olive);
 }
 
 .lisa-anmelde-karte {
@@ -1174,4 +1198,149 @@ body:has(.lisa-schale) main { margin: 0 !important; }
   font-weight: 800;
   font-size: 24px;
   flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Telefon: Notch, Home-Indicator, Tastatur
+   Alles unterhalb hängt an env(safe-area-inset-*). Diese Werte sind nur dann
+   ungleich 0, wenn das Dokument mit viewport-fit=cover ausgeliefert wird —
+   das setzt app/layout.tsx über `viewport.viewportFit`. Ohne das greift hier
+   nichts, und die Regeln verhalten sich wie vorher.
+   ========================================================================== */
+
+html {
+  /* Querformat auf iOS vergrößert sonst eigenmächtig die Schrift. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* Überscrollen am oberen Rand soll nicht die ganze Seite mitziehen. */
+  overscroll-behavior-y: none;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+label,
+[role="button"] {
+  /* Chrome auf Android legt sonst ein hartes blaues Rechteck über das
+     angetippte Element — das sieht bei runden Knöpfen falsch aus. */
+  -webkit-tap-highlight-color: rgba(124, 138, 42, 0.18);
+}
+
+/* Der schwebende Menüknopf saß auf dem Home-Indicator des iPhones — dort
+   fängt iOS die Wischgeste ab, der Knopf war schwer zu treffen. */
+.lisa-rund-btn-menue {
+  bottom: calc(var(--s6) + env(safe-area-inset-bottom));
+  right: calc(var(--s6) + env(safe-area-inset-right));
+}
+
+.lisa-buehne {
+  padding:
+    calc(var(--s18) + env(safe-area-inset-top))
+    calc(var(--s6) + env(safe-area-inset-right))
+    calc(52px + var(--s12) + env(safe-area-inset-bottom))
+    calc(var(--s6) + env(safe-area-inset-left));
+}
+
+@media (min-width: 700px) {
+  .lisa-buehne {
+    padding:
+      calc(var(--s18) + env(safe-area-inset-top))
+      calc(var(--s12) + env(safe-area-inset-right))
+      calc(52px + var(--s12) + env(safe-area-inset-bottom))
+      calc(var(--s12) + env(safe-area-inset-left));
+  }
+}
+
+.lisa-inhalt {
+  padding:
+    calc(var(--s9) + env(safe-area-inset-top))
+    calc(var(--s6) + env(safe-area-inset-right))
+    calc(52px + var(--s12) + env(safe-area-inset-bottom))
+    calc(var(--s6) + env(safe-area-inset-left));
+}
+
+.lisa-menue-panel {
+  padding:
+    calc(var(--s6) + env(safe-area-inset-top))
+    calc(var(--s6) + env(safe-area-inset-right))
+    calc(var(--s6) + env(safe-area-inset-bottom))
+    var(--s6);
+  /* Kleine Telefone im Querformat: das Menü muss scrollen können, sonst sind
+     die unteren Einträge nicht erreichbar. */
+  overflow-y: auto;
+}
+
+/* Lange Links oder ein Wort ohne Leerzeichen sprengten die Blase. */
+.lisa-chat-blase {
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------- Chatseite
+   Der Chat bekommt eine eigene Scrollfläche, statt die ganze Seite scrollen
+   zu lassen: Kopf oben fest, Liste scrollt, Schreibzeile unten fest.
+
+   Vorher war die Schreibzeile position: sticky am Seitenende. Das sah richtig
+   aus, scrollte aber beim Öffnen nicht verlässlich ans Ende — die Seitenhöhe
+   ändert sich noch, wenn Bricolage und Manrope geladen sind und die
+   Ersatzschrift ablösen, und der App-Router stellt zusätzlich eine
+   gespeicherte Scrollposition wieder her. Beides zusammen landete je nach
+   Timing irgendwo in der Mitte. Eine eigene Scrollbox hat keine dieser
+   Abhängigkeiten: scrollTop = scrollHeight stimmt immer. */
+.lisa-schale:has(.lisa-chat-liste) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.lisa-inhalt:has(.lisa-chat-liste) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding-bottom: 0;
+}
+
+.lisa-chat-liste {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  /* Das Wischen im Verlauf soll nicht die Seite dahinter mitziehen. */
+  overscroll-behavior: contain;
+  /* Platz für den schwebenden Menüknopf, der über der unteren rechten Ecke
+     der Liste liegt — sonst steht die neueste Nachricht nach dem
+     automatischen Scrollen zur Hälfte darunter. */
+  padding-bottom: calc(52px + var(--s4));
+}
+
+/* Die Schreibzeile ist der letzte Eintrag der Spalte und braucht kein
+   sticky mehr. Die negativen Ränder heben die Seitenabstände auf, damit der
+   Balken bis an die Kanten reicht. */
+.lisa-textzeile-haftend {
+  flex-shrink: 0;
+  max-width: none;
+  margin-left: calc(-1 * (var(--s6) + env(safe-area-inset-left)));
+  margin-right: calc(-1 * (var(--s6) + env(safe-area-inset-right)));
+  padding:
+    var(--s3)
+    calc(var(--s6) + env(safe-area-inset-right))
+    calc(var(--s3) + env(safe-area-inset-bottom))
+    calc(var(--s6) + env(safe-area-inset-left));
+  background: var(--body-wash);
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* Der schwebende Menüknopf läge sonst auf dem Senden-Knopf. */
+.lisa-schale:has(.lisa-chat-liste) .lisa-rund-btn-menue {
+  bottom: calc(52px + var(--s6) + var(--s4) + env(safe-area-inset-bottom));
+}
+
+/* Im installierten Zustand (Startbildschirm, ohne Browserleiste) gibt es
+   keinen Zurück-Knopf des Browsers mehr. Der eigene Zurück-Link ist dann die
+   einzige Rückwärtsnavigation und darf nicht knapp bemessen sein. */
+@media (display-mode: standalone) {
+  .lisa-zurueck { min-height: 48px; }
 }

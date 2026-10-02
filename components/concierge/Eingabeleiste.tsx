@@ -25,6 +25,10 @@ export function Eingabeleiste({
 }) {
   const [modus, setModus] = useState<"sprache" | "text">("sprache");
   const [beschaeftigt, setBeschaeftigt] = useState(false);
+  // Derselbe Zustand, der nach oben gemeldet wird, nochmal lokal — der
+  // Sprechknopf färbt sich darüber ein (.lisa-sprich-btn[data-zustand]).
+  // Die Regel stand schon im CSS, nur hat sie nie jemand gesetzt.
+  const [zustand, setZustand] = useState<LisaZustand>("ruhig");
   const [text, setText] = useState("");
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -34,6 +38,11 @@ export function Eingabeleiste({
     };
   }, []);
 
+  function melden(neu: LisaZustand) {
+    setZustand(neu);
+    onZustandChange(neu);
+  }
+
   function ablaufStarten(nachHoeren: boolean, quelle: string) {
     setBeschaeftigt(true);
     const antwortText =
@@ -42,13 +51,13 @@ export function Eingabeleiste({
         : `So fühlt sich Sprechen mit Lisa an — für eine echte Anfrage oben „Neue Anfrage“ antippen.`;
 
     if (nachHoeren) {
-      onZustandChange("hoert");
+      melden("hoert");
       timers.current.push(
         setTimeout(() => {
-          onZustandChange("denkt");
+          melden("denkt");
           timers.current.push(
             setTimeout(() => {
-              onZustandChange("ruhig");
+              melden("ruhig");
               onAntwort(antwortText);
               setBeschaeftigt(false);
             }, 900)
@@ -56,10 +65,10 @@ export function Eingabeleiste({
         }, 1100)
       );
     } else {
-      onZustandChange("denkt");
+      melden("denkt");
       timers.current.push(
         setTimeout(() => {
-          onZustandChange("ruhig");
+          melden("ruhig");
           onAntwort(antwortText);
           setBeschaeftigt(false);
         }, 700)
@@ -81,6 +90,7 @@ export function Eingabeleiste({
           <button
             type="button"
             className="lisa-sprich-btn"
+            data-zustand={zustand}
             aria-label="Antippen zum Sprechen"
             disabled={beschaeftigt}
             onClick={() => ablaufStarten(true, "")}

@@ -29,12 +29,27 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: false, follow: false }, // Entwurf: noch nicht indexieren
+  applicationName: "Hi Lisa",
+  /* Vom Startbildschirm gestartet soll die App ohne Browserleiste laufen und
+     „Hi Lisa" heißen, nicht den Seitentitel tragen. Das Symbol dafür ist
+     app/apple-icon.png — iOS ignoriert die Symbole aus dem Manifest. */
+  appleWebApp: {
+    capable: true,
+    title: "Hi Lisa",
+    statusBarStyle: "default",
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
   themeColor: "#7c8a2a",
   width: "device-width",
   initialScale: 1,
+  /* Ohne viewport-fit=cover sind alle env(safe-area-inset-*) in globals.css
+     konstant 0, und die App endet auf dem iPhone unter dem Home-Indicator.
+     Mit cover reicht der Hintergrund bis an die Kanten und die Abstände
+     kommen aus dem CSS. */
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

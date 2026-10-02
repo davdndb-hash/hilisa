@@ -40,7 +40,16 @@ function Kundenzeile({
         ) : null}
       </td>
       <td style={{ padding: "var(--s3) var(--s2)", borderBottom: "1px solid var(--rule-soft)" }}>
-        <select value={wert} onChange={(e) => geaendert(e.target.value)} style={{ margin: 0 }}>
+        {/* Die Spaltenüberschrift der Tabelle reicht als Beschriftung nicht:
+            ein Vorleseprogramm nennt beim Sprung auf das Auswahlfeld nur
+            „Auswahl", ohne zu sagen, zu welcher Kundin es gehört. Deshalb
+            ein eigener Name pro Zeile (axe: select-name). */}
+        <select
+          value={wert}
+          onChange={(e) => geaendert(e.target.value)}
+          aria-label={`Begleiterin für ${kunde.email}`}
+          style={{ margin: 0 }}
+        >
           <option value="">— keine —</option>
           {begleiterinnen.map((b) => (
             <option key={b.id} value={b.id}>
