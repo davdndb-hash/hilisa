@@ -90,18 +90,16 @@ Ohne diese sechs Dinge stehen die Schritte 5 bis 7 still.
 
 ---
 
-## 3. Die eine offene Frage
+## 3. Anmeldung — entschieden, aber vertagt
 
-Du hast **passwortlos: Telefonnummer + Geburtsdatum** gewählt. Wörtlich genommen sind das zwei erratbare Angaben als einziger Zugang, und Supabase Auth kann das nicht von sich aus — es bräuchte eine eigene Route, die Sitzungen mit dem Service-Role-Key ausstellt. Für eine App, die später die Wohnadresse einer pflegebedürftigen Person hält, würde ich das nicht bauen.
+**Entschieden am 2.10.2026:** passwortlos über **Telefonnummer + sechsstelligen SMS-Code**. Das Geburtsdatum wird **bei der Registrierung** erhoben, nicht als Zugangsdatum — dort tut es die Arbeit, die es bei Papa tatsächlich tut: die Beziehung festlegen („ich buche für mich" vs. „für eine andere Person") samt Vollmachtsbestätigung und deren Zeitstempel.
 
-Mein Gegenvorschlag, gleiche Bedienung:
+Die wörtliche Papa-Variante (Telefonnummer + Geburtsdatum *als* Zugang) ist damit vom Tisch. Sie wären zwei erratbare Angaben als einziger Schutz gewesen, Supabase Auth kann das nicht von sich aus, und es hätte eine eigene Route gebraucht, die Sitzungen mit dem Service-Role-Key ausstellt — für eine App, die später die Wohnadresse einer pflegebedürftigen Person hält.
 
-- **Telefonnummer → sechsstelliger SMS-Code.** Weiterhin kein Passwort.
-- **Geburtsdatum nur bei der Registrierung**, dort wo es bei Papa die eigentliche Arbeit tut: die Beziehung festlegen („ich buche für mich" vs. „für eine andere Person") samt Vollmachtsbestätigung und deren Zeitstempel.
+**Gebaut wird das vorerst nicht.** Bis dahin bleibt E-Mail + Passwort in Betrieb. Zwei Dinge gehören deshalb weiterhin erledigt, auch wenn die Anmeldung später ersetzt wird:
 
-**Das ist noch nicht beantwortet.** Sag Bescheid, wenn du trotzdem die wörtliche Papa-Variante willst — dann baue ich die.
-
----
+- **Leaked-Password-Protection einschalten** (siehe Abschnitt 2). Solange Passwörter im Einsatz sind, zählt das.
+- **E-Mail-Bestätigung ist weiterhin aus.** Sie wurde in der Entwicklung abgeschaltet, weil der eingebaute Supabase-Versand Platzhalterdomains ablehnt. Vor echten Nutzerinnen muss sie an — oder die Telefon-Anmeldung muss bis dahin stehen. Es gibt außerdem **kein Passwort-Zurücksetzen**; wer sein Passwort vergisst, braucht dich im Supabase-Dashboard.
 
 ## 4. Die Reihenfolge von hier an
 

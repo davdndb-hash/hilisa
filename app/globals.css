@@ -1213,26 +1213,19 @@ body:has(.lisa-schale) main { margin: 0 !important; }
    nichts, und die Regeln verhalten sich wie vorher.
    ========================================================================== */
 
-html {
-  /* Querformat auf iOS vergrößert sonst eigenmächtig die Schrift. */
-  -webkit-text-size-adjust: 100%;
-}
+/* Hier standen bis eben eine zweite -webkit-text-size-adjust-Regel (die
+   erste steht oben bei den Grundregeln) und eine Tap-Highlight-Regel. Beide
+   gehören nicht in den Telefon-Abschnitt dieser App, weil sie für die ganze
+   Seite gelten — sie sind jetzt oben bei den Grundregeln, gemeinsam mit der
+   Website-Fassung auf main. So gibt es sie genau einmal.
 
-body {
-  /* Überscrollen am oberen Rand soll nicht die ganze Seite mitziehen. */
+   Ebenfalls entfernt: overscroll-behavior-y: none am body. Das sollte das
+   Gummiband-Scrollen der App-Fläche bändigen, galt so aber auch für die
+   Marketing-Seiten und hat dort das Herunterziehen zum Neuladen abgeschaltet.
+   Die App-Fläche regelt das jetzt selbst, siehe .lisa-schale unten. */
+
+.lisa-schale {
   overscroll-behavior-y: none;
-}
-
-a,
-button,
-input,
-select,
-textarea,
-label,
-[role="button"] {
-  /* Chrome auf Android legt sonst ein hartes blaues Rechteck über das
-     angetippte Element — das sieht bei runden Knöpfen falsch aus. */
-  -webkit-tap-highlight-color: rgba(124, 138, 42, 0.18);
 }
 
 /* Der schwebende Menüknopf saß auf dem Home-Indicator des iPhones — dort
