@@ -8,7 +8,7 @@
 
 ## 1. Was heute geschehen ist
 
-Fünf Commits auf `ask-lisa-preview`, alle deployt und auf der Vorschau-URL live.
+Alles auf `ask-lisa-preview` und auf der Vorschau-URL live. Ein Teil davon ging zusätzlich auf `main` und damit in die Produktion — siehe 1.5.
 
 ### 1.1 Die Vorschau zeigte das falsche Geschäftsmodell
 
@@ -62,6 +62,19 @@ Drei Dinge, die vorher nicht gingen:
    Das Absagen läuft über eine Datenbankfunktion, nicht über ein UPDATE: ein allgemeines Schreibrecht würde einer Kundin auch erlauben, ihren Status selbst auf „angenommen" zu setzen und sich eine Zusage vorzutäuschen, die keine Begleiterin gegeben hat.
 
 **Geprüft:** axe-core (wcag2a + wcag2aa) null Verstöße auf allen sieben `/lisa`-Bildschirmen, kein Querüberlauf bei 320 px und 375 px, Produktionsbau läuft durch.
+
+### 1.5 Was davon in die Produktion ging
+
+Auf `main` (und damit live auf hilisa-omega.vercel.app) liegt **nur, was die öffentliche Website betrifft**:
+
+- `lib/kontakt.ts` — Telefon, WhatsApp und E-Mail an 25 Stellen in 10 Dateien zusammengeführt. Die Werte sind unverändert Platzhalter; sobald es echte gibt, ändert sich **eine** Datei statt 25 Stellen.
+- Die fehlenden Feldtypen im CSS-Selektor und die Tap-Highlight-Farbe.
+
+**Nicht in der Produktion:** die Ask-Lisa-App selbst. `/lisa` und `/manifest.webmanifest` antworten dort mit 404 — nachgeprüft. Ebenfalls nicht übernommen: `viewport-fit=cover` samt Safe-Area-Abständen. Die braucht die App, weil sie einen Knopf an den unteren Bildschirmrand heftet; die Website hat kein einziges fest positioniertes Element und bekäme dadurch im Querformat nur Inhalt unter die Notch.
+
+Nebenbei aufgeräumt: zwei Regeln, die der Telefon-Durchgang doppelt bzw. zu breit gesetzt hatte. `-webkit-text-size-adjust` stand zweimal da, und `overscroll-behavior-y: none` hing am `body` — gedacht für die App-Fläche, abgeschaltet hat es damit aber auch das Herunterziehen zum Neuladen auf den Marketing-Seiten. Jetzt auf `.lisa-schale` begrenzt.
+
+**Die beiden Branches sind jetzt deckungsgleich**, bis auf die 14 Webapp-Commits: `ask-lisa-preview` liegt null Commits hinter `main`. Genau diese Divergenz war heute früh das erste Problem — bitte so halten.
 
 ---
 
