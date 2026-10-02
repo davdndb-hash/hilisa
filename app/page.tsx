@@ -8,6 +8,7 @@ import {
   Rueckrufblock,
   Schritte,
 } from "@/components/Bausteine";
+import { KONTAKT } from "@/lib/kontakt";
 import {
   IconAngehoerige,
   IconBegleitung,
@@ -273,10 +274,10 @@ export default function Home() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }

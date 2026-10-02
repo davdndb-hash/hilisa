@@ -3,6 +3,7 @@ import { Bildmarke } from "@/components/Logo";
 import { HeroTitlePop } from "@/components/HeroTitlePop";
 import { HeroIllustration } from "@/components/Icons";
 import Rueckruf from "@/components/Rueckruf";
+import { KONTAKT } from "@/lib/kontakt";
 import { ZWEIGE, ZWEIG_LISTE, type Zweig, type ZweigId } from "@/lib/zweige";
 
 /**
@@ -398,8 +399,8 @@ export function Rueckrufblock({
 }) {
   const standard =
     anrede === "sie"
-      ? "Rufen Sie uns an unter 089 — Nummer eintragen, Montag bis Freitag von 8 bis 18 Uhr. Oder lassen Sie uns Ihre Nummer da — wir melden uns am selben Werktag zurück."
-      : "Ruf uns an unter 089 — Nummer eintragen, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine Nummer da — wir melden uns am selben Werktag zurück.";
+      ? `Rufen Sie uns an unter ${KONTAKT.telefonAnzeige}, Montag bis Freitag von 8 bis 18 Uhr. Oder lassen Sie uns Ihre Nummer da — wir melden uns am selben Werktag zurück.`
+      : `Ruf uns an unter ${KONTAKT.telefonAnzeige}, Montag bis Freitag von 8 bis 18 Uhr. Oder lass uns deine Nummer da — wir melden uns am selben Werktag zurück.`;
 
   return (
     <section id="rueckruf" style={{ paddingBottom: 0 }}>
@@ -414,19 +415,19 @@ export function Rueckrufblock({
               <h2 style={{ color: "var(--paper)", fontSize: "clamp(26px, 4vw, 34px)" }}>{titel}</h2>
               <p style={{ color: "rgba(252,251,247,0.8)" }}>{text ?? standard}</p>
               <div className="stack-cta" style={{ marginTop: "var(--s4)" }}>
-                <a className="btn btn-accent" href="tel:+4989000000">
-                  089 — Nummer eintragen
+                <a className="btn btn-accent" href={KONTAKT.telefonHref}>
+                  {KONTAKT.telefonAnzeige}
                 </a>
                 {/* Braucht eine echte Mobilnummer vor dem Livegang — WhatsApp geht
                     nicht über eine Festnetznummer wie die 089 oben. */}
                 <a
                   className="btn btn-outline"
-                  href="https://wa.me/491700000000"
+                  href={KONTAKT.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
                 >
-                  WhatsApp — Nummer eintragen
+                  {KONTAKT.whatsappAnzeige}
                 </a>
               </div>
             </div>

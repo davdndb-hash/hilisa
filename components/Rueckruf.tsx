@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Rückrufformular — bewusst drei Felder.
@@ -132,7 +133,7 @@ export default function Rueckruf() {
           style={{ marginTop: "var(--s6)", marginBottom: 0, fontWeight: 500 }}
         >
           Entwurfsseite — dieses Formular versendet noch nichts. Ruf uns bitte direkt an
-          unter 089 — Nummer eintragen. Vor dem Livegang wird das Formular an ein Postfach
+          unter {KONTAKT.telefonAnzeige}. Vor dem Livegang wird das Formular an ein Postfach
           angebunden.
         </p>
       )}

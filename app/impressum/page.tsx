@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { KONTAKT } from "@/lib/kontakt";
 
 export const metadata: Metadata = { title: "Impressum — Hi Lisa" };
 
@@ -34,9 +35,9 @@ export default function Impressum() {
 
         <h2>Kontakt</h2>
         <p>
-          Telefon: 089 — Nummer eintragen
+          Telefon: {KONTAKT.telefonAnzeige}
           <br />
-          E-Mail: Adresse eintragen
+          E-Mail: {KONTAKT.emailAnzeige}
         </p>
 
         <h2>Registereintrag</h2>

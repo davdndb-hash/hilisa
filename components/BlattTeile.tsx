@@ -1,4 +1,5 @@
 import { Bildmarke } from "@/components/Logo";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Bausteine der Ein-Blatt-Übersichten.
@@ -92,7 +93,7 @@ export function BlattFuss({
         <span className="blatt-fuss-label">
           {anrede === "sie" ? "Rufen Sie an" : "Ruf an"}
         </span>
-        <span className="blatt-tel">089 — Nummer eintragen</span>
+        <span className="blatt-tel">{KONTAKT.telefonAnzeige}</span>
         <span className="blatt-fuss-zeit">Montag bis Freitag, 8 bis 18 Uhr</span>
       </div>
       <p className="blatt-fuss-zeile">{zeile}</p>

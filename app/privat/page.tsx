@@ -10,6 +10,7 @@ import {
   Rueckrufblock,
   Schritte,
 } from "@/components/Bausteine";
+import { KONTAKT } from "@/lib/kontakt";
 import { GRENZE, ZWEIGE } from "@/lib/zweige";
 
 const Z = ZWEIGE.privat;
@@ -111,10 +112,10 @@ export default function Privat() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }

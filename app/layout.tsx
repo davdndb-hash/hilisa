@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Nav from "@/components/Nav";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Die Schriften kommen als npm-Paket und werden von unserer eigenen Domain
@@ -76,10 +77,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <span className="label on-dark">Kontakt</span>
                 <p style={{ color: "rgba(252,251,247,0.78)", marginBottom: 4 }}>
-                  089 — Nummer eintragen
+                  {KONTAKT.telefonAnzeige}
                 </p>
                 <p style={{ color: "rgba(252,251,247,0.78)", marginBottom: 4 }}>
-                  hallo@ — Adresse eintragen
+                  {KONTAKT.emailAnzeige}
                 </p>
                 <p style={{ color: "rgba(252,251,247,0.78)", marginBottom: 4 }}>
                   Montag bis Freitag, 8 bis 18 Uhr

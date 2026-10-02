@@ -83,6 +83,18 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* Chrome auf Android legt sonst ein hartes blaues Rechteck ueber das
+   angetippte Element — bei runden Knoepfen und Karten sieht das falsch aus. */
+a,
+button,
+input,
+select,
+textarea,
+label,
+[role="button"] {
+  -webkit-tap-highlight-color: rgba(124, 138, 42, 0.18);
+}
+
 body {
   margin: 0;
   background: var(--body-wash);
@@ -444,9 +456,20 @@ label.field {
   margin: 0 0 var(--s2);
 }
 
+/* Die Liste muss jeden Typ nennen, den wir tatsaechlich benutzen — ein nicht
+   genannter Typ faellt auf die Browser-Vorgabe zurueck, und die liegt unter
+   16 px. iOS Safari zoomt beim Antippen jedes Feldes unter 16 px in die Seite
+   hinein. Aufgefallen ist das am Passwortfeld der Ask-Lisa-Anmeldung, das
+   deshalb auch sichtbar schmaler aussah als das E-Mail-Feld darueber. */
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="number"],
+input[type="search"],
 select,
 textarea {
   width: 100%;

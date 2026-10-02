@@ -10,6 +10,7 @@ import {
   Schritte,
 } from "@/components/Bausteine";
 import { ZWEIGE } from "@/lib/zweige";
+import { KONTAKT } from "@/lib/kontakt";
 
 const Z = ZWEIGE.enterprise;
 
@@ -136,10 +137,10 @@ export default function FuerBetriebe() {
             </a>
             <a
               className="btn btn-outline"
-              href="tel:+4989000000"
+              href={KONTAKT.telefonHref}
               style={{ color: "var(--paper)", borderColor: "var(--paper)" }}
             >
-              089 — Nummer eintragen
+              {KONTAKT.telefonAnzeige}
             </a>
           </>
         }

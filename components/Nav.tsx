@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
+import { KONTAKT } from "@/lib/kontakt";
 
 /**
  * Kopfzeile.
@@ -120,14 +121,14 @@ export default function Nav() {
             <span className="tel-kurz">Rückruf</span>
           </a>
           <a
-            href="tel:+4989000000"
-            aria-label="Anrufen: 089 — Nummer eintragen"
+            href={KONTAKT.telefonHref}
+            aria-label={`Anrufen: ${KONTAKT.telefonAnzeige}`}
             className="nav-tel-sekundaer"
           >
             <span aria-hidden="true" style={{ marginRight: 6 }}>
               ✆
             </span>
-            089 — Nummer
+            {KONTAKT.telefonKurz}
           </a>
 
           {/* Nur auf dem Telefon: das Menü. Am Rechner stehen die Links offen da. */}
@@ -156,7 +157,7 @@ export default function Nav() {
       >
         <div className="wrap" style={{ paddingTop: "var(--s3)", paddingBottom: "var(--s6)" }}>
           <a
-            href="tel:+4989000000"
+            href={KONTAKT.telefonHref}
             style={{
               display: "flex",
               alignItems: "center",
@@ -170,7 +171,7 @@ export default function Nav() {
             <span aria-hidden="true" style={{ marginRight: 10 }}>
               ✆
             </span>
-            089 — Nummer eintragen
+            {KONTAKT.telefonAnzeige}
           </a>
           {NAV_LINKS.map((n) => (
             <Link
